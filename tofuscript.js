@@ -1,4 +1,5 @@
 var tofuNumber; 
+var tofuKgNumber;
 var mayoNumber;
 var stringWhats = "Quiero comprar ";
     
@@ -9,6 +10,15 @@ var stringWhats = "Quiero comprar ";
       button.disabled = true;
       tofuString = `${tofuNumber} tofu/s, `;
       stringWhats += tofuString
+    }
+
+    function getTofuKg(){
+  var tNumber = document.getElementById("tofuKgNumberIn").value;
+      tofuKgNumber = tNumber;
+      var button = document.getElementById("tofuKgButton");
+      button.disabled = true;
+      tofuKgString = `${tofuKgNumber} tofu/s de 1 Kg, `;
+      stringWhats += tofuKgString
     }
      
     function getMayo(){
@@ -25,4 +35,5 @@ var url = "";
 function sendWhats(){
     var encodedString = encodeURIComponent(stringWhats);  
 url = `https://wa.me/522224026359?text=${encodedString}`;
+ window.open(url, '_blank')
 }
