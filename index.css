@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+:root {
+  --cor-1: #0C1A30;
+  --cor-2: #214989;
+  --cor-3: #3B74CF;
+  --fonte-principal: 'Montserrat', sans-serif;
+}
+
+body {
+  background: var(--cor-1);
+  font-family: var(--fonte-principal);
+}
+
+p{
+font-family: var(--fonte-principal); 
+  font-size: 30px;
+  color: white;
+}
+
+.c-header, .c-main {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.c-header img {
+  width: 10rem;
+  border-radius: 10rem;
+  border: 2px solid var(--cor-3);
+}
+
+button{
+  padding: 2rem;
+  border: 2px solid var(--cor-3);
+  border-radius: 2rem;
+    font-family: var(--fonte-principal);
+}
+
+input{
+   padding: 1rem;
+  border: 2px solid var(--cor-3);
+  border-radius: 2rem;
+  margin-bottom: 1rem; 
+}
+
+#whatsapp{
+  padding: 2rem;
+  font-size: 25px;
+}
