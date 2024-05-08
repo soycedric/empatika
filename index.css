@@ -17,6 +17,15 @@ body {
   font-family: var(--fonte-principal);
 }
 
+.whatsapp-btn {
+  background-image: url('./docs/icono-whats.png'); /* Ruta de la imagen de WhatsApp */
+  background-size: cover;
+  width: 50px; /* Ancho de la imagen */
+  height: 50px; /* Alto de la imagen */
+  border: none;
+  cursor: pointer;
+}
+
 p{
 font-family: var(--fonte-principal); 
   font-size: 30px;
@@ -60,3 +69,4 @@ input{
   padding: 2rem;
   font-size: 25px;
 }
+
