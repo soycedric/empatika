@@ -18,9 +18,20 @@
   <main class="c-main">
     <button class="main-c" style="font-size: larger;"><a href="./docs/empatika-catalogo-cdmx.pdf">Catálogo CDMX</a></button>
   </main>
-
+  <main class="c-main">
+    <button class="whatsapp-btn" onclick="abrirNuevaPagina()"></button>
+    <p style="font-size: 18px;" onclick="abrirNuevaPagina()">Enviar whatsapp</p>
+  </main>
+  <script>
+    function abrirNuevaPagina() {
+      window.open("https://api.whatsapp.com/send?phone=522224026359", "_blank");
+    }
+  </script>
   <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
 </body>
 </html>
+
+
+
 
 
