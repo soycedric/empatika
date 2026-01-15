@@ -1,0 +1,111 @@
+import TofuMascot from "./TofuMascot";
+import { Instagram, Facebook, Mail, MapPin } from "lucide-react";
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-cream border-t-4 border-foreground py-12 relative overflow-hidden">
+      {/* Decorative mascot */}
+      <div className="absolute -bottom-10 right-10 opacity-20 hidden lg:block">
+        <TofuMascot variant="neutral" size="lg" />
+      </div>
+
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <TofuMascot size="sm" variant="neutral" />
+              <span className="font-display text-3xl">empatika</span>
+            </div>
+            <p className="font-body text-sm text-muted-foreground max-w-sm mb-4">
+              Tofu artesanal mexicano. Proteína vegetal de la más alta calidad 
+              para una alimentación consciente y deliciosa.
+            </p>
+            <div className="flex gap-3">
+              <a
+                href="https://instagram.com/empatika.mx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 border-2 border-foreground bg-background shadow-brutal hover:-translate-y-1 transition-transform"
+                aria-label="Instagram de Empatika"
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href="https://facebook.com/empatika.mx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 border-2 border-foreground bg-background shadow-brutal hover:-translate-y-1 transition-transform"
+                aria-label="Facebook de Empatika"
+              >
+                <Facebook size={20} />
+              </a>
+              <a
+                href="mailto:hola@empatika.mx"
+                className="p-2 border-2 border-foreground bg-background shadow-brutal hover:-translate-y-1 transition-transform"
+                aria-label="Email de Empatika"
+              >
+                <Mail size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* Links */}
+          <div>
+            <h4 className="font-display text-lg mb-4">NAVEGACIÓN</h4>
+            <ul className="space-y-2 font-body text-sm">
+              <li><a href="#productos" className="hover:text-dymo transition-all">Productos</a></li>
+              <li><a href="/recetas" className="hover:text-dymo transition-all">Recetas</a></li>
+              <li><a href="#distribuidores" className="hover:text-dymo transition-all">Dónde Comprar</a></li>
+              <li><a href="#mayoristas" className="hover:text-dymo transition-all">Mayoristas</a></li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-display text-lg mb-4">CONTACTO</h4>
+            <ul className="space-y-3 font-body text-sm">
+              <li className="flex items-start gap-2">
+                <MapPin size={16} className="mt-1 flex-shrink-0" />
+                <span>Puebla, Puebla, México</span>
+              </li>
+              <li>
+                <a 
+                  href="mailto:hola@empatika.mx" 
+                  className="hover:text-dymo transition-all"
+                >
+                  hola@empatika.mx
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://wa.me/522215606205"
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="hover:text-dymo transition-all"
+                >
+                  +52 221 560 6205
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-12 pt-6 border-t-2 border-foreground/20 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="font-body text-xs text-muted-foreground">
+            © {currentYear} Empatika. Hecho con 💚 en México.
+          </p>
+          <div className="flex gap-4 font-body text-xs">
+            <a href="#" className="hover:underline">Aviso de Privacidad</a>
+            <a href="#" className="hover:underline">Términos y Condiciones</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

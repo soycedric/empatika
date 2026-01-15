@@ -1,0 +1,317 @@
+/* Local Fonts */
+@font-face {
+  font-family: 'Gunplay';
+  src: url('/fonts/gunplay.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gunplay3D';
+  src: url('/fonts/gunplay-3d.otf') format('opentype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CMU Typewriter Text';
+  src: url('/fonts/cmu-typewriter-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CMU Typewriter Text';
+  src: url('/fonts/cmu-typewriter-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Empatika Brutalist Design System */
+@layer base {
+  :root {
+    /* Core Palette - Extracted from labels */
+    --paper: 43 33% 92%;
+    --ink: 0 0% 10%;
+    --yellow-industrial: 50 100% 50%;
+    --orange-rust: 14 79% 55%;
+    --cream: 40 30% 95%;
+    
+    /* Semantic tokens */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--cream);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--yellow-industrial);
+    --primary-foreground: var(--ink);
+    --secondary: var(--orange-rust);
+    --secondary-foreground: 0 0% 100%;
+    --muted: 40 20% 88%;
+    --muted-foreground: 0 0% 30%;
+    --accent: var(--orange-rust);
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: var(--ink);
+    --input: var(--ink);
+    --ring: var(--yellow-industrial);
+    --radius: 0;
+
+    /* Typography */
+    --font-display: 'Gunplay', sans-serif;
+    --font-body: 'CMU Typewriter Text', monospace;
+    
+    /* Brutalist shadows */
+    --shadow-brutal: 4px 4px 0 hsl(var(--ink));
+    --shadow-brutal-lg: 8px 8px 0 hsl(var(--ink));
+    --shadow-brutal-yellow: 4px 4px 0 hsl(var(--yellow-industrial));
+    --shadow-brutal-orange: 4px 4px 0 hsl(var(--orange-rust));
+  }
+
+  .dark {
+    --background: var(--ink);
+    --foreground: var(--paper);
+    --card: 0 0% 15%;
+    --card-foreground: var(--paper);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  /* Paper texture effect - inspired by Giana's CodePen */
+  .paper-texture {
+    position: relative;
+    background-color: hsl(var(--paper));
+  }
+
+  .paper-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      /* Main paper grain */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .paper-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      /* Subtle lighting from top-left */
+      linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.02) 100%),
+      /* Slight vignette */
+      radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.03) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  h1, h2, h3, h4,
+  h1 *, h2 *, h3 *, h4 * {
+    font-family: 'Gunplay', sans-serif;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  /* Hero title layers */
+  .hero-title-3d,
+  .hero-title-3d * {
+    font-family: 'Gunplay3D', sans-serif !important;
+  }
+
+  .hero-title,
+  .hero-title * {
+    font-family: 'Gunplay', sans-serif !important;
+  }
+
+  p, a, li, label, input, textarea {
+    font-family: var(--font-body);
+  }
+}
+
+@layer components {
+  /* Brutalist Text Styles */
+  .text-dymo {
+    @apply bg-foreground text-background px-2 py-1 inline-block;
+    transform: rotate(-1deg);
+  }
+
+  .text-highlight-yellow {
+    @apply text-primary;
+  }
+
+  .text-highlight-orange {
+    @apply text-secondary;
+  }
+
+  /* Brutalist Card */
+  .card-brutal {
+    @apply bg-card border-2 border-foreground p-4;
+    box-shadow: var(--shadow-brutal);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .card-brutal:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  /* Brutalist Buttons */
+  .btn-brutal {
+    @apply inline-flex items-center justify-center px-6 py-3 font-display text-lg uppercase border-2 border-foreground bg-primary text-foreground cursor-pointer;
+    box-shadow: var(--shadow-brutal);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-brutal:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .btn-brutal:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+
+  .btn-brutal-orange {
+    @apply btn-brutal bg-secondary text-secondary-foreground;
+    box-shadow: var(--shadow-brutal-orange);
+  }
+
+  /* Torn edge effect */
+  .torn-edge {
+    clip-path: polygon(
+      0% 2%, 5% 0%, 10% 3%, 15% 0%, 20% 2%, 25% 0%, 30% 3%, 35% 1%, 40% 2%, 
+      45% 0%, 50% 3%, 55% 1%, 60% 2%, 65% 0%, 70% 3%, 75% 1%, 80% 2%, 
+      85% 0%, 90% 3%, 95% 1%, 100% 2%,
+      100% 98%, 95% 100%, 90% 97%, 85% 100%, 80% 98%, 75% 100%, 70% 97%, 
+      65% 99%, 60% 98%, 55% 100%, 50% 97%, 45% 99%, 40% 98%, 35% 100%, 
+      30% 97%, 25% 99%, 20% 98%, 15% 100%, 10% 97%, 5% 100%, 0% 98%
+    );
+  }
+
+  /* Background pattern text */
+  .bg-pattern-text {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-pattern-text::before {
+    content: "El tofu dejó de ser aburrido. " "El tofu dejó de ser aburrido. " "El tofu dejó de ser aburrido. ";
+    position: absolute;
+    inset: 0;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground) / 0.15);
+    white-space: pre-wrap;
+    word-break: break-all;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Asymmetric rotation classes */
+  .rotate-chaos-1 { transform: rotate(-2deg); }
+  .rotate-chaos-2 { transform: rotate(1deg); }
+  .rotate-chaos-3 { transform: rotate(-0.5deg); }
+
+  /* Sticker effect */
+  .sticker {
+    @apply inline-block border-2 border-foreground px-3 py-1;
+    box-shadow: var(--shadow-brutal);
+    transform: rotate(-3deg);
+  }
+
+  /* Floating animation for mascots */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(3deg); }
+    75% { transform: translateY(-5px) rotate(-2deg); }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* Tape effect */
+  .tape {
+    position: relative;
+  }
+
+  .tape::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 80px;
+    height: 25px;
+    background: hsl(var(--yellow-industrial) / 0.7);
+    border: 1px solid hsl(var(--ink) / 0.3);
+  }
+
+  /* Placeholder tile for pending assets */
+  .placeholder-tile {
+    @apply relative bg-cream border-2 border-foreground flex items-center justify-center overflow-hidden;
+    box-shadow: var(--shadow-brutal);
+    background-image: linear-gradient(135deg, hsl(var(--muted) / 0.25) 25%, transparent 25%),
+      linear-gradient(225deg, hsl(var(--muted) / 0.25) 25%, transparent 25%),
+      linear-gradient(45deg, hsl(var(--muted) / 0.15) 25%, transparent 25%),
+      linear-gradient(315deg, hsl(var(--muted) / 0.15) 25%, hsl(var(--cream)) 25%);
+    background-position: 10px 0, 10px 0, 0 0, 0 0;
+    background-size: 20px 20px;
+    background-repeat: repeat;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .shadow-brutal {
+    box-shadow: var(--shadow-brutal);
+  }
+
+  .shadow-brutal-lg {
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .shadow-brutal-yellow {
+    box-shadow: var(--shadow-brutal-yellow);
+  }
+
+  .shadow-brutal-orange {
+    box-shadow: var(--shadow-brutal-orange);
+  }
+}

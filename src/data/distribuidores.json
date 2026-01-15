@@ -1,0 +1,47 @@
+[
+  {
+    "name": "City Market Angelópolis",
+    "address": "Blvd. del Niño Poblano 2510, Puebla, Pue.",
+    "city": "Puebla",
+    "state": "Puebla",
+    "lat": 19.0343,
+    "lng": -98.2291,
+    "type": "supermarket"
+  },
+  {
+    "name": "The Green Corner Condesa",
+    "address": "Atlixco 90, Hipódromo, CDMX",
+    "city": "Ciudad de México",
+    "state": "CDMX",
+    "lat": 19.4128,
+    "lng": -99.1733,
+    "type": "organic"
+  },
+  {
+    "name": "Orgánica Roma",
+    "address": "Querétaro 225, Roma Norte, CDMX",
+    "city": "Ciudad de México",
+    "state": "CDMX",
+    "lat": 19.4209,
+    "lng": -99.1614,
+    "type": "specialty"
+  },
+  {
+    "name": "Fresko Lomas",
+    "address": "Bosques de Reforma 1216, CDMX",
+    "city": "Ciudad de México",
+    "state": "CDMX",
+    "lat": 19.3874,
+    "lng": -99.2823,
+    "type": "supermarket"
+  },
+  {
+    "name": "Mercadito Plant Based",
+    "address": "43 Oriente 1412, Barrio de Analco, Puebla",
+    "city": "Puebla",
+    "state": "Puebla",
+    "lat": 19.0386,
+    "lng": -98.1902,
+    "type": "specialty"
+  }
+]

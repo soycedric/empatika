@@ -1,0 +1,87 @@
+import { motion } from "framer-motion";
+
+// Data - Will be loaded from JSON
+const restaurants = [
+  {
+    name: "Forever Vegano",
+    location: "CDMX",
+    type: "Restaurante 100% vegano",
+  },
+  {
+    name: "Por Siempre Vegana Taquería",
+    location: "CDMX",
+    type: "Taquería vegana",
+  },
+  {
+    name: "Vegamo",
+    location: "Monterrey",
+    type: "Cocina plant-based",
+  },
+  {
+    name: "La Pitahaya Vegana",
+    location: "Guadalajara",
+    type: "Restaurante vegano",
+  },
+];
+
+const RestaurantsSection = () => {
+  return (
+    <section id="restaurantes" className="py-24 bg-foreground text-background relative overflow-hidden">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 space-y-3"
+        >
+          <span className="text-dymo text-xs inline-block">Restaurantes aliados</span>
+          <h2 className="font-display text-4xl sm:text-5xl text-background">
+            Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
+          </h2>
+          <p className="font-body text-sm text-background/70 max-w-2xl mx-auto">
+            Menús plant-based, taquerías y hoteles ya sirven Empatika. Próximamente añadiremos sus logos oficiales.
+          </p>
+        </motion.div>
+
+        {/* Restaurant logos/cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {restaurants.map((restaurant, index) => (
+            <motion.div
+              key={restaurant.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="card-brutal bg-background text-foreground"
+            >
+              {/* Logo placeholder */}
+              <div className="placeholder-tile w-16 h-16 mx-auto mb-4">
+                <span className="text-2xl">🍽️</span>
+              </div>
+              
+              <h3 className="font-display text-lg text-center mb-1">{restaurant.name}</h3>
+              <p className="font-body text-xs text-muted-foreground text-center">
+                {restaurant.location} · {restaurant.type}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-10 font-body text-sm text-background/70"
+        >
+          ¿Tu restaurante usa Empatika?{" "}
+          <a href="#contacto" className="underline text-primary hover:text-primary/80">
+            Contáctanos
+          </a>
+        </motion.p>
+      </div>
+    </section>
+  );
+};
+
+export default RestaurantsSection;
