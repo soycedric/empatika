@@ -16,16 +16,17 @@ type Distributor = {
 
 const distributors: Distributor[] = distributorsData;
 
-const markerIcon = new L.Icon({
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).toString(),
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).toString(),
-  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).toString(),
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+const markerIcon = L.icon({
+  iconUrl: "/tofuchos/tofucho_sarten.svg",
+  iconSize: [50, 50],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -34],
 });
 
 const center: [number, number] = [19.04, -98.2];
+const bounds = distributors.length
+  ? L.latLngBounds(distributors.map((dist) => [dist.lat, dist.lng] as [number, number]))
+  : null;
 
 const DistributorsSection = () => {
   return (
@@ -41,11 +42,21 @@ const DistributorsSection = () => {
           >
             <span className="text-dymo text-xs inline-block">Puntos de venta</span>
             <h2 className="font-display text-4xl sm:text-5xl">
-              <span className="text-highlight-yellow">DÓNDE</span> COMPRAR
+              <span className="inline-block bg-primary text-foreground px-2">DÓNDE</span> COMPRAR
             </h2>
 
             <div className="relative aspect-video border-4 border-foreground shadow-brutal overflow-hidden">
-              <MapContainer center={center} zoom={11} scrollWheelZoom={false} className="h-full w-full" zoomControl={false} dragging>
+              <MapContainer
+                {...(bounds
+                  ? { bounds, boundsOptions: { padding: [20, 20] as [number, number] } }
+                  : { center, zoom: 11 })}
+                scrollWheelZoom
+                zoomControl
+                dragging
+                doubleClickZoom
+                touchZoom
+                className="h-full w-full"
+              >
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
                   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -67,6 +78,27 @@ const DistributorsSection = () => {
                 ))}
               </MapContainer>
             </div>
+
+            {/* Delivery Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4"
+            >
+              <div>
+                <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
+                <p className="text-dymo text-sm rotate-1">Parque Delta, Plaza Universidad, Oasis Coyacán, Biblioteca Central UNAM</p>
+              </div>
+              <a
+                href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-brutal text-xs whitespace-nowrap"
+              >
+                Pedir ahora
+              </a>
+            </motion.div>
           </motion.div>
 
           {/* Right - List */}
@@ -76,7 +108,7 @@ const DistributorsSection = () => {
             viewport={{ once: true }}
             className="space-y-4"
           >
-            <h3 className="font-display text-xl text-highlight-orange">DISTRIBUIDORES</h3>
+            <h3 className="font-display text-xl inline-block bg-secondary text-secondary-foreground px-2">DISTRIBUIDORES</h3>
             
             {distributors.map((dist, index) => {
               const Icon = dist.type === "supermarket" ? ShoppingBag : dist.type === "organic" ? Leaf : Store;
@@ -100,18 +132,6 @@ const DistributorsSection = () => {
                 </motion.div>
               );
             })}
-
-            {/* CTA */}
-            <div className="pt-2">
-              <a
-                href="https://wa.me/522215606205?text=Hola!%20Quiero%20saber%20dónde%20comprar%20Empatika"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-brutal text-sm"
-              >
-                ¿No lo encuentras? Pregúntanos →
-              </a>
-            </div>
           </motion.div>
         </div>
       </div>

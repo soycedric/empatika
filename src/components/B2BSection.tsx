@@ -55,9 +55,6 @@ const B2BSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <span className="inline-block px-4 py-2 border-2 border-background text-sm font-body mb-6">
-              PARA NEGOCIOS
-            </span>
             <h2 className="font-display text-5xl sm:text-6xl lg:text-8xl mb-6">
               ¿ERES{" "}
               <span className="text-primary">MAYORISTA</span>?
@@ -109,7 +106,7 @@ const B2BSection = () => {
               QUIERO DISTRIBUIR
               <ArrowRight size={28} />
             </motion.a>
-            <p className="font-body text-sm text-background/60">
+            <p className="font-body text-sm text-background/80">
               Respuesta en menos de 24 horas
             </p>
           </motion.div>

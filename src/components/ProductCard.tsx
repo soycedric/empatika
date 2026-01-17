@@ -53,7 +53,7 @@ const ProductCard = ({ name, variant, description, weight, protein, image, index
       <div className="space-y-3">
         <h3 className="font-display text-3xl">
           TOFU{" "}
-          <span className={isYellow ? "text-highlight-yellow" : "text-highlight-orange"}>
+          <span className={isYellow ? "inline-block bg-primary text-foreground px-1" : "inline-block bg-secondary text-secondary-foreground px-1"}>
             {name}
           </span>
         </h3>

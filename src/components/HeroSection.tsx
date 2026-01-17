@@ -38,6 +38,7 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [showBuyOptions, setShowBuyOptions] = useState(false);
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -197,6 +198,9 @@ const HeroSection = () => {
             {/* Social proof + badge */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm">
               <span className="text-dymo">Nuevo lote fresco cada semana</span>
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 border border-foreground text-xs rotate-1">
+                🚚 Envíos Puebla y CDMX
+              </span>
             </div>
 
             {/* Main Headline - SEO H1 with 3D extrusion effect */}
@@ -248,51 +252,63 @@ const HeroSection = () => {
             </h1>
 
             <motion.p 
-              className="font-body text-sm sm:text-base max-w-md mx-auto lg:mx-0 leading-relaxed text-muted-foreground"
+              className="font-body text-xl lg:text-lg leading-relaxed text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Tofu artesanal hecho en Puebla. Proteína vegetal lista para dorar, marinar o comer directo. Textura firme y sabor brutal.
-            </motion.p>
+Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier receta:<b> marínalo, fríelo o cómelo directo.</b> </motion.p><motion.p className="text-dymo"> Cero complicaciones, 100% sabor brutal.            </motion.p>
 
-            {/* CTAs */}
+            {/* CTA */}
             <motion.div 
               className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <motion.a
-                href="#productos"
-                className="btn-brutal"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Ver productos
-              </motion.a>
-              <motion.a
-                href="#distribuidores"
-                className="btn-brutal-orange"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Comprar cerca
-              </motion.a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.75 }}
-              className="flex items-center justify-center lg:justify-start gap-3 text-xs sm:text-sm text-muted-foreground"
-            >
-              <span className="inline-flex items-center gap-1">
-                <span className="w-2 h-2 bg-primary border border-foreground" />
-                Lote semanal, stock limitado
-              </span>
-              <span className="hidden sm:inline">•</span>
-              <span className="hidden sm:inline">Envíos Puebla y CDMX</span>
+              <AnimatePresence mode="wait">
+                {!showBuyOptions ? (
+                  <motion.button
+                    key="main-cta"
+                    onClick={() => setShowBuyOptions(true)}
+                    className="btn-brutal"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Comprar Tofu
+                  </motion.button>
+                ) : (
+                  <motion.div
+                    key="options"
+                    className="flex flex-wrap gap-3"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                  >
+                    <motion.a
+                      href="#distribuidores"
+                      className="btn-brutal"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setShowBuyOptions(false)}
+                    >
+                      🛒 Minorista
+                    </motion.a>
+                    <motion.a
+                      href="#mayoristas"
+                      className="btn-brutal-orange"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setShowBuyOptions(false)}
+                    >
+                      🏢 Mayorista
+                    </motion.a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         </div>

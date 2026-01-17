@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, PhoneCall } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,15 +40,9 @@ const Header = () => {
             href="https://wa.me/522215606205?text=Hola%20Empatika!%20Quiero%20información"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-brutal text-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-colors"
           >
             WhatsApp
-          </a>
-          <a
-            href="tel:+522215606205"
-            className="inline-flex items-center gap-1 font-body text-sm hover:text-dymo"
-          >
-            <PhoneCall size={16} /> +52 221 560 6205
           </a>
         </div>
 
@@ -97,7 +91,7 @@ const Header = () => {
                   href="https://wa.me/522215606205"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-brutal w-full text-center"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-colors w-full"
                 >
                   WhatsApp
                 </a>

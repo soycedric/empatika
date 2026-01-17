@@ -5,15 +5,25 @@ const products = [
     name: "Extra Firme",
     variant: "extra-firme" as const,
     description: "Perfecto para freír, asar o saltear. Su textura firme mantiene la forma.",
-    weight: "400g",
+    weight: "400g | 1 kg",
     protein: "8g",
+    color: "yellow" as const,
   },
   {
     name: "Ahumado",
     variant: "ahumado" as const,
     description: "Ahumado con madera de mezquite. Listo para comer.",
-    weight: "400g",
+    weight: "400 g | 1 kg",
     protein: "8g",
+    color: "orange" as const,
+  },
+  {
+    name: "Veganesa",
+    variant: "veganesa" as const,
+    description: "Mayonesa vegana cremosa y deliciosa. Sin huevo, sin lácteos.",
+    weight: "250 g | 500 g",
+    protein: "0g",
+    color: "yellow" as const,
   },
 ];
 
@@ -38,7 +48,7 @@ const ProductsSection = () => {
             viewport={{ once: true }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
           >
-            SOMOS MÁS QUE <span className="text-highlight-yellow">TOFU</span>
+            SOMOS MÁS QUE <span className="inline-block bg-primary text-foreground px-2">TOFU</span>
           </motion.h2>
 
           <motion.p 
@@ -74,73 +84,93 @@ const ProductsSection = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-3xl mx-auto">
+        <div className="relative grid md:grid-cols-3 gap-8 sm:gap-12 max-w-5xl mx-auto px-4">
           {products.map((product, index) => {
-            const isYellow = product.variant === "extra-firme";
+            const bgColor = 
+              product.color === "yellow" ? "bg-primary" : 
+              product.color === "orange" ? "bg-secondary" : 
+              "bg-cream";
+            
+            const buttonClass = 
+              product.color === "yellow" ? "btn-brutal text-sm" : 
+              product.color === "orange" ? "btn-brutal-orange text-sm" :
+              "btn-brutal text-sm";
+            
+            const rotations = ["-2deg", "1.5deg", "-1deg"];
+            const scales = [1, 1.05, 0.98];
+            const zIndexes = [10, 20, 15];
             
             return (
               <motion.article
                 key={product.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 50, rotate: 0 }}
+                whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="card-brutal bg-background"
+                className="bg-background border-4 border-foreground shadow-brutal p-6 relative"
+                style={{ 
+                  transform: `rotate(${rotations[index]}) scale(${scales[index]})`,
+                  zIndex: zIndexes[index]
+                }}
               >
-                {/* Product Image with Tofucho */}
-                <div className="relative aspect-[4/3] mb-4 bg-muted/20 border-4 border-foreground overflow-hidden">
-                  <div className="absolute top-3 left-3 text-dymo text-[10px] z-10">
-                    {product.variant === "extra-firme" ? "Extra Firme" : "Ahumado"}
-                  </div>
-                  <motion.img
-                    src={product.variant === "extra-firme" ? "/tofuchos/tofucho_fuerte.svg" : "/tofuchos/tofucho_ahumado.svg"}
-                    alt={`Tofucho ${product.name}`}
-                    className="w-full h-full object-contain p-4"
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    transition={{ duration: 0.3 }}
+                {/* Product Image */}
+                <div className="relative aspect-square mb-4 bg-muted/20 border-2 border-foreground overflow-hidden">
+                  <img
+                    src={`/productos/${product.variant}.jpg`}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                    }}
                   />
+                  <div className="hidden absolute inset-0 flex items-center justify-center bg-muted">
+                    <span className="text-6xl">📦</span>
+                  </div>
                 </div>
 
-                {/* Product Info */}
-                <div className="space-y-2">
-                  <h3 className="font-display text-2xl">
-                    Tofu {" "}
-                    <span className={isYellow ? "text-highlight-yellow" : "text-highlight-orange"}>
+                {/* Product Title */}
+                <h3 className="font-display text-3xl mb-2">
+                  {product.variant === "veganesa" ? (
+                    <span className={`inline-block ${bgColor} text-foreground px-2`}>
                       {product.name}
                     </span>
-                  </h3>
-                  
-                  <p className="font-body text-sm text-muted-foreground">
-                    {product.description}
-                  </p>
+                  ) : (
+                    <>
+                      Tofu{" "}
+                      <span className={`inline-block ${bgColor} text-foreground px-2`}>
+                        {product.name}
+                      </span>
+                    </>
+                  )}
+                </h3>
+                
+                {/* Description */}
+                <p className="font-body text-sm text-muted-foreground mb-4 min-h-[40px]">
+                  {product.description}
+                </p>
 
-                  {/* Specs */}
-                  <div className="flex gap-2 pt-2 flex-wrap">
-                    <span className="sticker bg-muted text-xs" style={{ transform: "rotate(0deg)" }}>📦 {product.weight}</span>
-                    <span className="sticker bg-primary text-xs" style={{ transform: "rotate(-1deg)" }}>💪 {product.protein}</span>
-                    <span className="sticker bg-background text-xs" style={{ transform: "rotate(1deg)" }}>Sin conservadores</span>
-                  </div>
-
-                  {/* CTAs */}
-                  <div className="flex flex-wrap gap-3 pt-3">
-                    <a
-                      href={`https://wa.me/522215606205?text=Quiero%20comprar%20Tofu%20${encodeURIComponent(product.name)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={isYellow ? "btn-brutal text-sm" : "btn-brutal-orange text-sm"}
-                    >
-                      Comprar
-                    </a>
-                    <a
-                      href={`https://wa.me/522215606205?text=Quiero%20probar%20Tofu%20${encodeURIComponent(product.name)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-4 py-2 border-2 border-foreground font-body text-xs tracking-wide hover:bg-primary/20 transition-colors"
-                    >
-                      Quiero probar
-                    </a>
-                  </div>
+                {/* Specs - Minimalist */}
+                <div className="flex gap-3 mb-6 text-xs font-body">
+                  <span className="inline-flex items-center gap-1">
+                    <span className="w-2 h-2 bg-foreground"></span>
+                    {product.weight}
+                  </span>
+                  {product.protein !== "0g" && (
+                    <span className="inline-flex items-center gap-1">
+                      <span className="w-2 h-2 bg-foreground"></span>
+                      {product.protein} proteína
+                    </span>
+                  )}
                 </div>
+
+                {/* CTA */}
+                <a
+                  href="#distribuidores"
+                  className={buttonClass}
+                >
+                  Comprar
+                </a>
               </motion.article>
             );
           })}
