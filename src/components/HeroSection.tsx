@@ -1,44 +1,189 @@
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+// Platillos que se pueden hacer con tofu - agregar tus fotos aquí
+const dishes = [
+  {
+    id: 1,
+    name: "Tacos de Tofu",
+    description: "Crujientes y sazonados",
+    image: "/platillos/tacos-tofu.jpg",
+    tag: "Popular",
+  },
+  {
+    id: 2,
+    name: "Bowl Asiático",
+    description: "Con verduras salteadas",
+    image: "/platillos/bowl-asiatico.jpg",
+    tag: "Saludable",
+  },
+  {
+    id: 3,
+    name: "Tofu a la Plancha",
+    description: "Dorado y jugoso",
+    image: "/platillos/tofu-plancha.jpg",
+    tag: "Clásico",
+  },
+  {
+    id: 4,
+    name: "Sandwich de Tofu",
+    description: "Ahumado con aguacate",
+    image: "/platillos/sandwich-tofu.jpg",
+    tag: "Rápido",
+  },
+];
 
 const HeroSection = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % dishes.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + dishes.length) % dishes.length);
+  }, []);
+
+  const goToSlide = (index: number) => {
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+  };
+
+  // Auto-play
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const timer = setInterval(nextSlide, 4000);
+    return () => clearInterval(timer);
+  }, [isAutoPlaying, nextSlide]);
+
+  // Pause on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
+
+  // Rotaciones para cada card cuando está activa (todas diferentes)
+  const activeRotations = [-3, 4, -2, 3];
+  // Rotaciones para cards en el fondo
+  const stackRotations = [-8, 5, -6, 7];
+
   return (
     <section
       id="inicio"
-      className="paper-texture relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="paper-texture relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-0"
     >
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-16 items-center">
-          {/* Image - First on mobile, takes 2/5 on desktop */}
+      <div className="container mx-auto px-3 sm:px-4 relative z-10">
+        <div className="grid lg:grid-cols-5 gap-6 lg:gap-16 items-center">
+          {/* Dish Carousel - First on mobile, takes 2/5 on desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative flex items-center justify-center order-first lg:order-last lg:col-span-2"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            {/* Mascot Placeholder Area */}
-            <div className="relative w-full max-w-xs sm:max-w-sm lg:max-w-md aspect-square">
-              {/* Background shape */}
-              <div className="absolute inset-0 bg-primary/25 border-4 border-dashed border-foreground rotate-2" />
-              
-              {/* Main placeholder */}
-              <div className="absolute inset-5 placeholder-tile -rotate-1">
-                <div className="text-center p-8">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 border-4 border-dashed border-muted-foreground flex items-center justify-center">
-                    <span className="text-4xl">🧊</span>
-                  </div>
-                  <p className="font-body text-sm text-muted-foreground tracking-wide">
-                    Ilustración / Mascota
-                  </p>
-                </div>
+            {/* Container with side buttons */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              {/* Left Button */}
+              <motion.button
+                onClick={prevSlide}
+                className="p-1.5 sm:p-3 border-2 border-foreground bg-background shadow-brutal hover:bg-primary transition-colors flex-shrink-0"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Anterior"
+              >
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              </motion.button>
+
+              {/* Cards Stack */}
+              <div className="relative w-[240px] sm:w-[340px] lg:w-[420px] h-[300px] sm:h-[420px] lg:h-[520px]">
+                <AnimatePresence mode="popLayout">
+                  {dishes.map((dish, index) => {
+                    // Calcular posición relativa al índice actual
+                    const offset = index - currentIndex;
+                    const isActive = index === currentIndex;
+                    const isVisible = Math.abs(offset) <= 2;
+                    
+                    if (!isVisible) return null;
+
+                    return (
+                      <motion.div
+                        key={dish.id}
+                        className="absolute inset-0"
+                        initial={{ 
+                          scale: 0.9, 
+                          opacity: 0,
+                          rotate: stackRotations[index % stackRotations.length],
+                          x: direction > 0 ? 100 : -100,
+                        }}
+                        animate={{ 
+                          scale: isActive ? 1 : 0.9 - Math.abs(offset) * 0.05,
+                          opacity: isActive ? 1 : 0.6 - Math.abs(offset) * 0.2,
+                          rotate: isActive ? activeRotations[index % activeRotations.length] : stackRotations[index % stackRotations.length] + offset * 3,
+                          x: offset * 15,
+                          y: Math.abs(offset) * 8,
+                          zIndex: dishes.length - Math.abs(offset),
+                        }}
+                        exit={{
+                          scale: 0.8, 
+                          opacity: 0,
+                          rotate: direction > 0 ? -15 : 15,
+                          x: direction > 0 ? -150 : 150,
+                        }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 25,
+                        }}
+                        style={{ zIndex: dishes.length - Math.abs(offset) }}
+                      >
+                        <div 
+                          className={`w-full h-full bg-background border-4 border-foreground shadow-brutal overflow-hidden ${
+                            isActive ? '' : 'pointer-events-none'
+                          }`}
+                        >
+                          {/* Image */}
+                          <div className="relative h-[calc(100%-48px)] sm:h-[calc(100%-60px)] bg-muted overflow-hidden">
+                            <img
+                              src={dish.image}
+                              alt={dish.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                              }}
+                            />
+                            <div className="hidden absolute inset-0 flex items-center justify-center bg-muted">
+                              <span className="text-5xl sm:text-7xl">🍳</span>
+                            </div>
+                          </div>
+                          
+                          {/* Caption */}
+                          <div className="h-[48px] sm:h-[60px] flex items-center justify-center bg-background border-t-2 border-foreground">
+                            <p className="font-display text-base sm:text-xl lg:text-2xl">{dish.name}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
               </div>
 
-              {/* Corner accent */}
-              <motion.div
-                className="absolute -bottom-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-secondary border-4 border-foreground"
-                animate={{ rotate: [0, 4, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
+              {/* Right Button */}
+              <motion.button
+                onClick={nextSlide}
+                className="p-1.5 sm:p-3 border-2 border-foreground bg-background shadow-brutal hover:bg-primary transition-colors flex-shrink-0"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Siguiente"
+              >
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              </motion.button>
             </div>
           </motion.div>
 
@@ -47,10 +192,10 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-6 order-last lg:order-first lg:col-span-3"
+            className="space-y-4 sm:space-y-6 order-last lg:order-first lg:col-span-3 text-center lg:text-left"
           >
             {/* Social proof + badge */}
-            <div className="flex flex-wrap items-center gap-3 text-sm">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-sm">
               <span className="text-dymo">Nuevo lote fresco cada semana</span>
             </div>
 
@@ -103,7 +248,7 @@ const HeroSection = () => {
             </h1>
 
             <motion.p 
-              className="font-body text-base max-w-md leading-relaxed text-muted-foreground"
+              className="font-body text-sm sm:text-base max-w-md mx-auto lg:mx-0 leading-relaxed text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -113,7 +258,7 @@ const HeroSection = () => {
 
             {/* CTAs */}
             <motion.div 
-              className="flex flex-wrap gap-4 pt-2"
+              className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
@@ -140,7 +285,7 @@ const HeroSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.75 }}
-              className="flex items-center gap-3 text-sm text-muted-foreground"
+              className="flex items-center justify-center lg:justify-start gap-3 text-xs sm:text-sm text-muted-foreground"
             >
               <span className="inline-flex items-center gap-1">
                 <span className="w-2 h-2 bg-primary border border-foreground" />
@@ -153,9 +298,9 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - hidden on mobile */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:block"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >

@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import TofuMascot from "./TofuMascot";
 
 interface ProductCardProps {
   name: string;
@@ -42,7 +41,11 @@ const ProductCard = ({ name, variant, description, weight, protein, image, index
           animate={{ y: [0, -5, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          <TofuMascot variant={variant} size="md" />
+          <img 
+            src={variant === "extra-firme" ? "/tofuchos/tofucho_fuerte.svg" : "/tofuchos/tofucho_ahumado.svg"} 
+            alt={`Tofucho ${name}`} 
+            className="w-24 h-24" 
+          />
         </motion.div>
       </div>
 

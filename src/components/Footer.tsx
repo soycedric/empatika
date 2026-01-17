@@ -1,4 +1,3 @@
-import TofuMascot from "./TofuMascot";
 import { Instagram, Facebook, Mail, MapPin } from "lucide-react";
 
 const Footer = () => {
@@ -8,20 +7,20 @@ const Footer = () => {
     <footer className="bg-cream border-t-4 border-foreground py-12 relative overflow-hidden">
       {/* Decorative mascot */}
       <div className="absolute -bottom-10 right-10 opacity-20 hidden lg:block">
-        <TofuMascot variant="neutral" size="lg" />
+        <img src="/tofuchos/tofucho_fuerte.svg" alt="" className="w-32 h-32" />
       </div>
 
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <TofuMascot size="sm" variant="neutral" />
-              <span className="font-display text-3xl">empatika</span>
+            <div className="flex items-center gap-3 mb-4">
+              <img src="/logo/logo_icono_empatika.svg" alt="Empatika" className="h-10 w-auto" />
+              <img src="/logo/letras_empatika.svg" alt="empátika" className="h-10 w-auto" />
             </div>
             <p className="font-body text-sm text-muted-foreground max-w-sm mb-4">
-              Tofu artesanal mexicano. Proteína vegetal de la más alta calidad 
-              para una alimentación consciente y deliciosa.
+              Tofu artesanal poblano. Proteína vegetal de la más alta calidad 
+              para una alimentación consciente.
             </p>
             <div className="flex gap-3">
               <a

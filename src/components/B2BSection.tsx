@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Building2, Truck, Phone, ArrowRight } from "lucide-react";
-import TofuMascot from "./TofuMascot";
 
 const benefits = [
   {
@@ -38,14 +37,14 @@ const B2BSection = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        <TofuMascot variant="extra-firme" size="lg" />
+        <img src="/tofuchos/tofucho_fuerte.svg" alt="Tofucho" className="w-32 h-32" />
       </motion.div>
       <motion.div
         className="absolute bottom-20 left-10 hidden lg:block"
         animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 6, repeat: Infinity, delay: 1 }}
       >
-        <TofuMascot variant="ahumado" size="md" />
+        <img src="/tofuchos/tofucho_ahumado.svg" alt="Tofucho Ahumado" className="w-24 h-24" />
       </motion.div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -64,7 +63,7 @@ const B2BSection = () => {
               <span className="text-primary">MAYORISTA</span>?
             </h2>
             <p className="font-body text-lg text-background/80 max-w-xl mx-auto mb-12">
-              Llevamos el mejor tofu de México a tu negocio. Precios competitivos, entregas puntuales y productos de primera calidad.
+              Llevamos el mejor tofu de Puebla a tu negocio.<br></br> Precios competitivos y entregas a domicilio.
             </p>
             <div className="font-body text-sm text-background/80 max-w-xl mx-auto mb-8 space-y-1">
               <p>• Puebla: entregas jueves, viernes y sábado.</p>
@@ -115,20 +114,6 @@ const B2BSection = () => {
             </p>
           </motion.div>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="mt-16 flex flex-wrap justify-center gap-8 text-background/60 font-body text-sm"
-          >
-            <span>+100 negocios confían en nosotros</span>
-            <span>•</span>
-            <span>Entregas en toda la República</span>
-            <span>•</span>
-            <span>Facturación inmediata</span>
-          </motion.div>
         </div>
       </div>
     </section>

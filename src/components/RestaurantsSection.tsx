@@ -27,6 +27,15 @@ const restaurants = [
 const RestaurantsSection = () => {
   return (
     <section id="restaurantes" className="py-24 bg-foreground text-background relative overflow-hidden">
+      {/* Tofucho con sartén flotante */}
+      <motion.div
+        className="absolute top-10 right-10 hidden lg:block"
+        animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho_sarten.svg" alt="Tofucho cocinando" className="w-32 h-32 opacity-80" />
+      </motion.div>
+
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, PhoneCall } from "lucide-react";
-import TofuMascot from "./TofuMascot";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +9,6 @@ const Header = () => {
     { href: "#productos", label: "Productos" },
     { href: "#distribuidores", label: "Dónde comprar" },
     { href: "#mayoristas", label: "Mayoristas" },
-    { href: "/recetas", label: "Recetas" },
   ];
 
   return (
@@ -18,8 +16,8 @@ const Header = () => {
       <nav className="container mx-auto flex items-center justify-between py-3 px-4">
         {/* Logo */}
         <a href="/#inicio" className="flex items-center gap-2 group">
-          <TofuMascot size="sm" variant="neutral" />
-          <span className="font-display text-3xl tracking-tight">empatika</span>
+          <img src="/logo/logo_icono_empatika.svg" alt="Empatika" className="h-8 w-auto" />
+          <img src="/logo/letras_empatika.svg" alt="empátika" className="h-8 w-auto hidden sm:block" />
         </a>
 
         {/* Desktop Navigation */}
