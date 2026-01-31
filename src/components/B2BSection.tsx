@@ -31,20 +31,58 @@ const B2BSection = () => {
         </div>
       </div>
 
-      {/* Floating mascots */}
+      {/* Tofucho pensando - haciendo negocios - Desktop */}
       <motion.div
         className="absolute top-20 right-10 hidden lg:block"
-        animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+        animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho_fuerte.svg" alt="Tofucho" className="w-32 h-32" />
+        <img src="/tofuchos/tofucho pensando.png" alt="Tofucho pensando" className="w-36 h-36 object-contain drop-shadow-lg" />
       </motion.div>
+
+      {/* Tofucho ahumado - representando producto premium - Desktop */}
       <motion.div
         className="absolute bottom-20 left-10 hidden lg:block"
         animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 6, repeat: Infinity, delay: 1 }}
       >
-        <img src="/tofuchos/tofucho_ahumado.svg" alt="Tofucho Ahumado" className="w-24 h-24" />
+        <img src="/tofuchos/tofucho ahumado.png" alt="Tofucho Ahumado" className="w-28 h-28 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho corriendo - entregas - Desktop XL */}
+      <motion.div
+        className="absolute top-1/2 left-20 hidden xl:block"
+        animate={{ x: [0, 20, 0], y: [0, -10, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho corriendo.png" alt="Tofucho corriendo" className="w-24 h-24 object-contain opacity-70 drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho pensando - Mobile */}
+      <motion.div
+        className="absolute top-6 right-4 lg:hidden z-40"
+        animate={{ y: [0, -12, 0], rotate: [0, 4, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        <img src="/tofuchos/tofucho pensando.png" alt="Tofucho pensando" className="w-18 h-18 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho ahumado - Mobile */}
+      <motion.div
+        className="absolute bottom-6 left-4 lg:hidden z-40"
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 5, repeat: Infinity }}
+      >
+        <img src="/tofuchos/tofucho ahumado.png" alt="Tofucho Ahumado" className="w-16 h-16 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho corriendo - Mobile centro */}
+      <motion.div
+        className="absolute top-1/2 left-2 lg:hidden z-40"
+        animate={{ x: [0, 10, 0], y: [0, -5, 0] }}
+        transition={{ duration: 3, repeat: Infinity }}
+      >
+        <img src="/tofuchos/tofucho corriendo.png" alt="Tofucho corriendo" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
 
       <div className="container mx-auto px-4 relative z-10">

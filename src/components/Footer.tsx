@@ -1,14 +1,46 @@
 import { Instagram, Facebook, Mail, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-cream border-t-4 border-foreground py-12 relative overflow-hidden">
-      {/* Decorative mascot */}
-      <div className="absolute -bottom-10 right-10 opacity-20 hidden lg:block">
-        <img src="/tofuchos/tofucho_fuerte.svg" alt="" className="w-32 h-32" />
-      </div>
+      {/* Tofucho meditando - Desktop */}
+      <motion.div 
+        className="absolute -bottom-4 right-10 hidden lg:block"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho meditando.png" alt="Tofucho meditando" className="w-32 h-32 object-contain opacity-40" />
+      </motion.div>
+
+      {/* Tofucho durmiendo - Desktop */}
+      <motion.div 
+        className="absolute bottom-4 left-10 hidden lg:block"
+        animate={{ rotate: [-2, 2, -2] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho durmiendo.png" alt="Tofucho durmiendo" className="w-24 h-24 object-contain opacity-30" />
+      </motion.div>
+
+      {/* Tofucho meditando - Mobile */}
+      <motion.div 
+        className="absolute bottom-4 right-4 lg:hidden z-40"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho meditando.png" alt="Tofucho meditando" className="w-16 h-16 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho durmiendo - Mobile */}
+      <motion.div 
+        className="absolute top-4 left-4 lg:hidden z-40"
+        animate={{ rotate: [-2, 2, -2] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho durmiendo.png" alt="Tofucho durmiendo" className="w-14 h-14 object-contain drop-shadow-lg" />
+      </motion.div>
 
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">

@@ -17,10 +17,10 @@ type Distributor = {
 const distributors: Distributor[] = distributorsData;
 
 const markerIcon = L.icon({
-  iconUrl: "/tofuchos/tofucho_sarten.svg",
+  iconUrl: "/tofuchos/tofucho corriendo.png",
   iconSize: [50, 50],
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -34],
+  iconAnchor: [25, 50],
+  popupAnchor: [0, -40],
 });
 
 const center: [number, number] = [19.04, -98.2];
@@ -30,7 +30,42 @@ const bounds = distributors.length
 
 const DistributorsSection = () => {
   return (
-    <section id="distribuidores" className="py-24 relative overflow-hidden">
+    <section id="distribuidores" className="py-24 relative overflow-hidden bg-paper-texture">
+      {/* Tofucho sorprendido decorativo - Desktop */}
+      <motion.div
+        className="absolute top-10 right-10 hidden lg:block z-10"
+        animate={{ y: [0, -12, 0], scale: [1, 1.05, 1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-28 h-28 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho corriendo - Mobile */}
+      <motion.div
+        className="absolute top-8 right-22 lg:hidden z-40"
+        animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho corriendo.png" alt="Tofucho corriendo" className="w-24 h-24 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho sorprendido - Mobile */}
+      <motion.div
+        className="absolute bottom-6 left-4 lg:hidden z-40"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-14 h-14 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho pensando - Mobile centro */}
+      <motion.div
+        className="absolute top-1/3 left-2 lg:hidden z-40"
+        animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho pensando.png" alt="Tofucho pensando" className="w-12 h-12 object-contain drop-shadow-lg" />
+      </motion.div>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
           {/* Left - Map */}
@@ -38,7 +73,7 @@ const DistributorsSection = () => {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-4"
+            className="space-y-4 order-first lg:order-first"
           >
             <span className="text-dymo text-xs inline-block">Puntos de venta</span>
             <h2 className="font-display text-4xl sm:text-5xl">
@@ -58,7 +93,7 @@ const DistributorsSection = () => {
                 className="h-full w-full"
               >
                 <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                  attribution=''
                   url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
                 {distributors.map((dist) => (
@@ -79,12 +114,12 @@ const DistributorsSection = () => {
               </MapContainer>
             </div>
 
-            {/* Delivery Info */}
+            {/* Delivery Info (desktop only) */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4"
+              className="hidden lg:flex p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4"
             >
               <div>
                 <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
@@ -106,7 +141,7 @@ const DistributorsSection = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-4"
+            className="space-y-4 order-last lg:order-last"
           >
             <h3 className="font-display text-xl inline-block bg-secondary text-secondary-foreground px-2">DISTRIBUIDORES</h3>
             
@@ -134,6 +169,27 @@ const DistributorsSection = () => {
             })}
           </motion.div>
         </div>
+
+        {/* Delivery Info - Mobile (placed after grid so it's last on mobile) */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="lg:hidden p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4 mt-6 max-w-6xl mx-auto"
+        >
+          <div>
+            <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
+            <p className="text-dymo text-sm rotate-1">Parque Delta, Plaza Universidad, Oasis Coyacán, Biblioteca Central UNAM</p>
+          </div>
+          <a
+            href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-brutal text-xs whitespace-nowrap"
+          >
+            Pedir ahora
+          </a>
+        </motion.div>
       </div>
     </section>
   );

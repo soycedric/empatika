@@ -27,9 +27,52 @@ const products = [
   },
 ];
 
+// Tofuchos para decorar la sección de productos - posiciones en los bordes
+const productTofuchos = [
+  { src: "/tofuchos/tofucho riendo.png", position: "bottom-8 left-4 xl:left-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
+  { src: "/tofuchos/tofucho sorprendido.png", position: "top-20 right-4 xl:right-12", size: "w-14 h-14 xl:w-18 xl:h-18", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
+];
+
+// Tofuchos para mobile - más grandes y distribuidos
+const productMobileTofuchos = [
+  { src: "/tofuchos/tofucho ahumado.png", position: "top-8 right-4", size: "w-24 h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
+  { src: "/tofuchos/tofucho riendo.png", position: "bottom-8 right-4", size: "w-30 h-30", animation: { y: [0, -10, 0] } },
+];
+
 const ProductsSection = () => {
   return (
-    <section id="productos" className="py-24 relative overflow-hidden bg-muted/30">
+    <section id="productos" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
+      {/* Tofuchos decorativos flotantes - Desktop */}
+      {productTofuchos.map((tofucho, index) => (
+        <motion.div
+          key={index}
+          className={`absolute ${tofucho.position} z-10 hidden lg:block`}
+          animate={tofucho.animation}
+          transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img 
+            src={tofucho.src} 
+            alt="Tofucho decorativo" 
+            className={`${tofucho.size} object-contain opacity-80 drop-shadow-lg`}
+          />
+        </motion.div>
+      ))}
+
+      {/* Tofuchos decorativos flotantes - Mobile */}
+      {productMobileTofuchos.map((tofucho, index) => (
+        <motion.div
+          key={`mobile-${index}`}
+          className={`absolute ${tofucho.position} z-40 lg:hidden`}
+          animate={tofucho.animation}
+          transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img 
+            src={tofucho.src} 
+            alt="Tofucho decorativo" 
+            className={`${tofucho.size} object-contain drop-shadow-lg`}
+          />
+        </motion.div>
+      ))}
       <div className="container mx-auto px-4">
         {/* Section Header - Unified */}
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -58,8 +101,7 @@ const ProductsSection = () => {
             transition={{ delay: 0.1 }}
             className="font-body text-sm sm:text-base leading-relaxed text-muted-foreground max-w-xl mx-auto mb-6"
           >
-            Somos una empresa mexicana que nació para demostrar que la proteína vegetal puede ser deliciosa. 
-            Dos perfiles artesanales sin conservadores, listos para plancha o sandwich.
+            Somos una empresa mexicana que nació para demostrar que la proteína vegetal puede ser deliciosa.
           </motion.p>
 
           {/* Values - Compact */}

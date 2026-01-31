@@ -2,6 +2,26 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+// Tofuchos para decoración - posicionados en espacios en blanco sin interferir
+const heroTofuchos = [
+  // Arriba izquierda - en la esquina, lejos del texto
+  { src: "/tofuchos/tofucho saludando.png", alt: "Tofucho saludando", position: "bottom-20 right-30 lg:bottom-24 lg:right-30 xl:right-30", size: "w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] }, showOnMobile: false },
+  // Centro-derecha arriba - entre texto y carrusel, arriba
+  { src: "/tofuchos/tofucho riendo.png", alt: "Tofucho riendo", position: "top-28 left-[55%] lg:top-32 lg:left-[52%] xl:left-[50%]", size: "w-20 h-20 lg:w-28 lg:h-28 xl:w-32 xl:h-32", animation: { rotate: [-2, 4, -2], y: [0, -6, 0] }, showOnMobile: false },
+  // Abajo derecha - en la esquina
+  { src: "/tofuchos/tofucho saltando.png", alt: "Tofucho saltando", position: "bottom-16 right-4 lg:bottom-20 lg:right-6 xl:right-10", size: "w-24 h-24 lg:w-32 lg:h-32 xl:w-36 xl:h-36", animation: { y: [0, -18, 0], scale: [1, 1.04, 1] }, showOnMobile: false },
+  // Arriba derecha - encima del carrusel en la esquina
+  { src: "/tofuchos/tofucho sorprendido.png", alt: "Tofucho sorprendido", position: "top-20 right-8 lg:top-24 lg:right-12 xl:right-20", size: "w-20 h-20 lg:w-28 lg:h-28 xl:w-32 xl:h-32", animation: { y: [0, -10, 0], rotate: [0, 5, 0] }, showOnMobile: false },
+];
+
+// Tofuchos específicos para mobile - más grandes y distribuidos
+const mobileTofuchos = [
+  // Arriba izquierda
+  { src: "/tofuchos/tofucho saludando.png", alt: "Tofucho saludando", position: "top-5/8 left-2", size: "w-20 h-20", animation: { y: [0, -10, 0], rotate: [-4, 4, -4] } },
+  // Centro derecha
+  { src: "/tofuchos/tofucho riendo.png", alt: "Tofucho riendo", position: "top-5/8 right-2", size: "w-22 h-22", animation: { y: [0, -10, 0], scale: [1, 1.05, 1] } },
+];
+
 // Platillos que se pueden hacer con tofu - agregar tus fotos aquí
 const dishes = [
   {
@@ -77,6 +97,38 @@ const HeroSection = () => {
       id="inicio"
       className="paper-texture relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-0"
     >
+      {/* Tofuchos flotantes decorativos - Desktop */}
+      {heroTofuchos.map((tofucho, index) => (
+        <motion.div
+          key={tofucho.alt}
+          className={`absolute ${tofucho.position} z-20 hidden sm:block`}
+          animate={tofucho.animation}
+          transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img 
+            src={tofucho.src} 
+            alt={tofucho.alt} 
+            className={`${tofucho.size} object-contain drop-shadow-lg`}
+          />
+        </motion.div>
+      ))}
+
+      {/* Tofuchos flotantes decorativos - Mobile */}
+      {mobileTofuchos.map((tofucho, index) => (
+        <motion.div
+          key={`mobile-${tofucho.alt}`}
+          className={`absolute ${tofucho.position} z-40 sm:hidden`}
+          animate={tofucho.animation}
+          transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img 
+            src={tofucho.src} 
+            alt={tofucho.alt} 
+            className={`${tofucho.size} object-contain drop-shadow-lg`}
+          />
+        </motion.div>
+      ))}
+
       <div className="container mx-auto px-3 sm:px-4 relative z-10">
         <div className="grid lg:grid-cols-5 gap-6 lg:gap-16 items-center">
           {/* Dish Carousel - First on mobile, takes 2/5 on desktop */}

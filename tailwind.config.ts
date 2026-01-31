@@ -92,6 +92,17 @@ export default {
         wiggle: "wiggle 1s ease-in-out infinite",
         "bounce-slow": "bounce 3s ease-in-out infinite",
       },
+      // Tamaños personalizados para tofuchos - pasos graduales de 4px
+      spacing: {
+        '13': '3.25rem',  // 52px
+        '15': '3.75rem',  // 60px
+        '17': '4.25rem',  // 68px
+        '18': '4.5rem',   // 72px
+        '19': '4.75rem',  // 76px
+        '22': '5.5rem',   // 88px
+        '26': '6.5rem',   // 104px
+        '30': '7.5rem',   // 120px
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

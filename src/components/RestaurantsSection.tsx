@@ -27,23 +27,50 @@ const restaurants = [
 const RestaurantsSection = () => {
   return (
     <section id="restaurantes" className="py-24 bg-foreground text-background relative overflow-hidden">
-      {/* Tofucho con sartén flotante */}
+      {/* Tofucho cocinando flotante - Desktop */}
       <motion.div
         className="absolute top-10 right-10 hidden lg:block"
         animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho_sarten.svg" alt="Tofucho cocinando" className="w-32 h-32 opacity-80" />
+        <img src="/tofuchos/tofucho cocinando.png" alt="Tofucho cocinando" className="w-36 h-36 object-contain opacity-90 drop-shadow-lg" />
       </motion.div>
 
-      <div className="container mx-auto px-4">
+      {/* Tofucho leyendo recetas - Desktop */}
+      <motion.div
+        className="absolute bottom-20 left-10 hidden lg:block"
+        animate={{ y: [0, 10, 0], rotate: [2, -2, 2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      >
+        <img src="/tofuchos/tofucho leyendo.png" alt="Tofucho leyendo recetas" className="w-28 h-28 object-contain opacity-80 drop-shadow-lg" />
+      </motion.div>
+
+      {/* Tofucho cocinando - Mobile */}
+      <div className="flex justify-center w-full absolute top-6 left-0 lg:hidden z-40">
+        <motion.div
+          animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img src="/tofuchos/tofucho cocinando.png" alt="Tofucho cocinando" className="w-28 h-28 object-contain drop-shadow-lg" />
+        </motion.div>
+      </div>
+
+      {/* Tofucho leyendo - Mobile */}
+      <motion.div
+        className="flex justify-center w-full absolute bottom-0 left-0 lg:hidden z-40"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/tofuchos/tofucho leyendo.png" alt="Tofucho leyendo" className="w-24 h-24 object-contain drop-shadow-lg" />
+      </motion.div>
+
+      <div className="container mx-auto px-4 mt-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-12 space-y-3"
         >
-          <span className="text-dymo text-xs inline-block">Restaurantes aliados</span>
           <h2 className="font-display text-4xl sm:text-5xl text-background">
             Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
           </h2>
