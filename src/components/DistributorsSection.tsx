@@ -40,7 +40,7 @@ const DistributorsSection = () => {
         <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
-      {/* Tofucho corriendo - Mobile */}
+      {/* Tofucho corriendo - Mobile y Tablet */}
       <motion.div
         className="absolute top-8 right-22 lg:hidden z-40"
         animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
@@ -49,7 +49,7 @@ const DistributorsSection = () => {
         <img src="/tofuchos/tofucho corriendo.png" alt="Tofucho corriendo" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
-      {/* Tofucho sorprendido - Mobile */}
+      {/* Tofucho sorprendido - Mobile y Tablet */}
       <motion.div
         className="absolute bottom-6 left-4 lg:hidden z-40"
         animate={{ y: [0, -8, 0] }}
@@ -58,7 +58,7 @@ const DistributorsSection = () => {
         <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
 
-      {/* Tofucho pensando - Mobile centro */}
+      {/* Tofucho pensando - Mobile y Tablet centro */}
       <motion.div
         className="absolute top-1/3 left-2 lg:hidden z-40"
         animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}

@@ -35,14 +35,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Empatika Brutalist Design System */
+/* Empátika Brutalist Design System */
 @layer base {
   :root {
     /* Core Palette - Extracted from labels */
     --paper: 43 33% 92%;
     --ink: 0 0% 10%;
     --yellow-industrial: 50 100% 50%;
-    --orange-rust: 14 79% 55%;
+    --orange-rust: 25 85% 37%;
     --cream: 40 30% 95%;
     
     /* Semantic tokens */

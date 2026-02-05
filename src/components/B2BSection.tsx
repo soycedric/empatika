@@ -134,7 +134,7 @@ const B2BSection = () => {
             className="space-y-4"
           >
             <motion.a
-              href="https://wa.me/522215606205?text=Hola!%20Soy%20mayorista%20y%20me%20interesa%20distribuir%20tofu%20Empatika"
+              href="https://wa.me/522215606205?text=Hola!%20Soy%20mayorista%20y%20me%20interesa%20distribuir%20tofu%20Empátika"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-primary text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background))] hover:shadow-[12px_12px_0_0_hsl(var(--background))] hover:-translate-x-1 hover:-translate-y-1 transition-all"

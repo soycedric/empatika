@@ -10,9 +10,9 @@ interface SEOHeadProps {
 }
 
 const SEOHead = ({
-  title = "Empatika - Tofu Artesanal Mexicano | Proteína Vegetal",
+  title = "Empátika - Tofu Artesanal Mexicano | Proteína Vegetal",
   description = "El tofu dejó de ser aburrido. Tofu artesanal mexicano, proteína vegetal 100% natural. Extra Firme y Ahumado. Encuentra distribuidores en México y recetas deliciosas.",
-  keywords = "tofu México, proteína vegetal, recetas con tofu, tofu firme, tofu ahumado, distribuidora de alimentos veganos, Empatika, tofu artesanal, comida vegana México",
+  keywords = "tofu México, proteína vegetal, recetas con tofu, tofu firme, tofu ahumado, distribuidora de alimentos veganos, Empátika, tofu artesanal, comida vegana México",
   ogImage = "https://empatika.mx/og-image.jpg",
   ogType = "website",
   canonicalUrl = "https://empatika.mx",
@@ -50,12 +50,12 @@ const SEOHead = ({
       {
         "@type": "Product",
         position: 1,
-        name: "Tofu Extra Firme Empatika",
+        name: "Tofu Extra Firme Empátika",
         description: "Tofu extra firme ideal para freír, asar o saltear. Proteína vegetal mexicana de alta calidad.",
         image: "https://empatika.mx/tofu-extra-firme.jpg",
         brand: {
           "@type": "Brand",
-          name: "Empatika",
+          name: "Empátika",
         },
         offers: {
           "@type": "Offer",
@@ -63,7 +63,7 @@ const SEOHead = ({
           availability: "https://schema.org/InStock",
           seller: {
             "@type": "Organization",
-            name: "Empatika",
+            name: "Empátika",
           },
         },
         nutrition: {
@@ -76,12 +76,12 @@ const SEOHead = ({
       {
         "@type": "Product",
         position: 2,
-        name: "Tofu Ahumado Empatika",
+        name: "Tofu Ahumado Empátika",
         description: "Tofu ahumado naturalmente con madera de mezquite. Sabor intenso, listo para comer.",
         image: "https://empatika.mx/tofu-ahumado.jpg",
         brand: {
           "@type": "Brand",
-          name: "Empatika",
+          name: "Empátika",
         },
         offers: {
           "@type": "Offer",
@@ -89,7 +89,7 @@ const SEOHead = ({
           availability: "https://schema.org/InStock",
           seller: {
             "@type": "Organization",
-            name: "Empatika",
+            name: "Empátika",
           },
         },
         nutrition: {

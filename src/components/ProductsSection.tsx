@@ -58,7 +58,7 @@ const ProductsSection = () => {
         </motion.div>
       ))}
 
-      {/* Tofuchos decorativos flotantes - Mobile */}
+      {/* Tofuchos decorativos flotantes - Mobile y Tablet */}
       {productMobileTofuchos.map((tofucho, index) => (
         <motion.div
           key={`mobile-${index}`}

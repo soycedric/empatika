@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 // Tofuchos para decoración - posicionados en espacios en blanco sin interferir
 const heroTofuchos = [
   // Arriba izquierda - en la esquina, lejos del texto
-  { src: "/tofuchos/tofucho saludando.png", alt: "Tofucho saludando", position: "bottom-20 right-30 lg:bottom-24 lg:right-30 xl:right-30", size: "w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] }, showOnMobile: false },
+  { src: "/tofuchos/tofucho saludando.png", alt: "Tofucho saludando", position: "bottom-20 left-[45%] lg:bottom-24 lg:left-[45%] xl:left-[45%]", size: "w-32 h-32 lg:w-36 lg:h-36 xl:w-40 xl:h-40", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] }, showOnMobile: false },
   // Centro-derecha arriba - entre texto y carrusel, arriba
   { src: "/tofuchos/tofucho riendo.png", alt: "Tofucho riendo", position: "top-28 left-[55%] lg:top-32 lg:left-[52%] xl:left-[50%]", size: "w-20 h-20 lg:w-28 lg:h-28 xl:w-32 xl:h-32", animation: { rotate: [-2, 4, -2], y: [0, -6, 0] }, showOnMobile: false },
   // Abajo derecha - en la esquina
@@ -101,7 +101,7 @@ const HeroSection = () => {
       {heroTofuchos.map((tofucho, index) => (
         <motion.div
           key={tofucho.alt}
-          className={`absolute ${tofucho.position} z-20 hidden sm:block`}
+          className={`absolute ${tofucho.position} z-20 hidden lg:block`}
           animate={tofucho.animation}
           transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -113,11 +113,11 @@ const HeroSection = () => {
         </motion.div>
       ))}
 
-      {/* Tofuchos flotantes decorativos - Mobile */}
+      {/* Tofuchos flotantes decorativos - Mobile y Tablet */}
       {mobileTofuchos.map((tofucho, index) => (
         <motion.div
           key={`mobile-${tofucho.alt}`}
-          className={`absolute ${tofucho.position} z-40 sm:hidden`}
+          className={`absolute ${tofucho.position} z-40 lg:hidden`}
           animate={tofucho.animation}
           transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -154,7 +154,7 @@ const HeroSection = () => {
               </motion.button>
 
               {/* Cards Stack */}
-              <div className="relative w-[240px] sm:w-[340px] lg:w-[420px] h-[300px] sm:h-[420px] lg:h-[520px]">
+              <div className="relative w-[240px] sm:w-[300px] md:w-[360px] lg:w-[400px] xl:w-[420px] h-[300px] sm:h-[375px] md:h-[450px] lg:h-[500px] xl:h-[520px]">
                 <AnimatePresence mode="popLayout">
                   {dishes.map((dish, index) => {
                     // Calcular posición relativa al índice actual
@@ -201,11 +201,11 @@ const HeroSection = () => {
                           }`}
                         >
                           {/* Image */}
-                          <div className="relative h-[calc(100%-48px)] sm:h-[calc(100%-60px)] bg-muted overflow-hidden">
+                          <div className="relative h-[calc(100%-48px)] sm:h-[calc(100%-56px)] md:h-[calc(100%-60px)] bg-muted overflow-hidden">
                             <img
                               src={dish.image}
                               alt={dish.name}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
@@ -217,8 +217,8 @@ const HeroSection = () => {
                           </div>
                           
                           {/* Caption */}
-                          <div className="h-[48px] sm:h-[60px] flex items-center justify-center bg-background border-t-2 border-foreground">
-                            <p className="font-display text-base sm:text-xl lg:text-2xl">{dish.name}</p>
+                          <div className="h-[48px] sm:h-[56px] md:h-[60px] flex items-center justify-center bg-background border-t-2 border-foreground">
+                            <p className="font-display text-base sm:text-lg md:text-xl lg:text-2xl">{dish.name}</p>
                           </div>
                         </div>
                       </motion.div>

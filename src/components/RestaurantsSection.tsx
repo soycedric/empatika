@@ -45,7 +45,7 @@ const RestaurantsSection = () => {
         <img src="/tofuchos/tofucho leyendo.png" alt="Tofucho leyendo recetas" className="w-28 h-28 object-contain opacity-80 drop-shadow-lg" />
       </motion.div>
 
-      {/* Tofucho cocinando - Mobile */}
+      {/* Tofucho cocinando - Mobile y Tablet */}
       <div className="flex justify-center w-full absolute top-6 left-0 lg:hidden z-40">
         <motion.div
           animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
@@ -55,7 +55,7 @@ const RestaurantsSection = () => {
         </motion.div>
       </div>
 
-      {/* Tofucho leyendo - Mobile */}
+      {/* Tofucho leyendo - Mobile y Tablet */}
       <motion.div
         className="flex justify-center w-full absolute bottom-0 left-0 lg:hidden z-40"
         animate={{ y: [0, -8, 0] }}
@@ -75,7 +75,7 @@ const RestaurantsSection = () => {
             Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
           </h2>
           <p className="font-body text-sm text-background/70 max-w-2xl mx-auto">
-            Menús plant-based, taquerías y hoteles ya sirven Empatika. Próximamente añadiremos sus logos oficiales.
+            Menús plant-based, taquerías y hoteles ya sirven Empátika. Próximamente añadiremos sus logos oficiales.
           </p>
         </motion.div>
 
@@ -110,7 +110,7 @@ const RestaurantsSection = () => {
           transition={{ delay: 0.4 }}
           className="text-center mt-10 font-body text-sm text-background/70"
         >
-          ¿Tu restaurante usa Empatika?{" "}
+          ¿Tu restaurante usa Empátika?{" "}
           <a href="#contacto" className="underline text-primary hover:text-primary/80">
             Contáctanos
           </a>
