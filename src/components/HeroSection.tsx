@@ -58,7 +58,6 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [showBuyOptions, setShowBuyOptions] = useState(false);
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -318,49 +317,16 @@ Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier r
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <AnimatePresence mode="wait">
-                {!showBuyOptions ? (
-                  <motion.button
-                    key="main-cta"
-                    onClick={() => setShowBuyOptions(true)}
-                    className="btn-brutal"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Comprar Tofu
-                  </motion.button>
-                ) : (
-                  <motion.div
-                    key="options"
-                    className="flex flex-wrap gap-3"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                  >
-                    <motion.a
-                      href="#distribuidores"
-                      className="btn-brutal"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setShowBuyOptions(false)}
-                    >
-                      🛒 Minorista
-                    </motion.a>
-                    <motion.a
-                      href="#mayoristas"
-                      className="btn-brutal-orange"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setShowBuyOptions(false)}
-                    >
-                      🏢 Mayorista
-                    </motion.a>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <motion.a
+                href="#calculadora"
+                className="btn-brutal"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Comprar Tofu
+              </motion.a>
             </motion.div>
           </motion.div>
         </div>

@@ -6,6 +6,7 @@ import B2BSection from "@/components/B2BSection";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import Header from "@/components/Header";
+import { OrderCalculator } from "@/components/OrderCalculator";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
         <main>
           <HeroSection />
           <ProductsSection />
+          <OrderCalculator />
           <RestaurantsSection />
           <DistributorsSection />
           <B2BSection />

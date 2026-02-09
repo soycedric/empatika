@@ -21,7 +21,7 @@ const products = [
     name: "Veganesa",
     variant: "veganesa" as const,
     description: "Mayonesa vegana cremosa y deliciosa. Sin huevo, sin lácteos.",
-    weight: "250 g | 500 g",
+    weight: "500 g",
     protein: "0g",
     color: "yellow" as const,
   },
@@ -208,7 +208,7 @@ const ProductsSection = () => {
 
                 {/* CTA */}
                 <a
-                  href="#distribuidores"
+                  href="#calculadora"
                   className={buttonClass}
                 >
                   Comprar
