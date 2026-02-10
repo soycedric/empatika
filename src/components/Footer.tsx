@@ -12,7 +12,7 @@ const Footer = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho meditando.png" alt="Tofucho meditando" className="w-32 h-32 object-contain opacity-40" />
+        <img src="/tofuchos/tofucho meditando.png" alt="" aria-hidden="true" className="w-32 h-32 object-contain opacity-40" />
       </motion.div>
 
 
@@ -22,7 +22,7 @@ const Footer = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho meditando.png" alt="Tofucho meditando" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho meditando.png" alt="" aria-hidden="true" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
 

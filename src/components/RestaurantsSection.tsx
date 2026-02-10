@@ -1,26 +1,35 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 // Data - Will be loaded from JSON
 const restaurants = [
   {
-    name: "Forever Vegano",
-    location: "CDMX",
-    type: "Restaurante 100% vegano",
+    name: "Musabbaha",
+    location: "Puebla",
+    mapUrl: "https://maps.app.goo.gl/acYy1r5QcNHhzHJL9", // Agregar enlace real de Google Maps
+    logo: "/logos/musabbaha.jpg", // Agregar logo en /public/logos/
+    instagram: "@musabbaha.veggie",
   },
   {
-    name: "Por Siempre Vegana Taquería",
-    location: "CDMX",
-    type: "Taquería vegana",
+    name: "Britches",
+    location: "Puebla",
+    mapUrl: "https://maps.app.goo.gl/P6L7wXYzVSfwPWuJ6", // Agregar enlace real de Google Maps
+    logo: "/logos/britches.jpg", // Agregar logo en /public/logos/
+    instagram: "@britches.puebla",
   },
   {
-    name: "Vegamo",
-    location: "Monterrey",
-    type: "Cocina plant-based",
+    name: "Plant Neta Café",
+    location: "Puebla",
+    mapUrl: "https://maps.app.goo.gl/8DJ8dWRCXnWiQeJE8", // Agregar enlace real de Google Maps
+    logo: "/logos/plantneta.jpg", // Agregar logo en /public/logos/
+    instagram: "@plantnetacafe",
   },
   {
-    name: "La Pitahaya Vegana",
-    location: "Guadalajara",
-    type: "Restaurante vegano",
+    name: "Break Free",
+    location: "Puebla",
+    mapUrl: "https://maps.app.goo.gl/uteK8Us41AHfd7Z26", // Agregar enlace real de Google Maps
+    logo: "/logos/breakfree.jpg", // Agregar logo en /public/logos/
+    instagram: "@breakfree_rest",
   },
 ];
 
@@ -33,7 +42,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho cocinando.png" alt="Tofucho cocinando" className="w-36 h-36 object-contain opacity-90 drop-shadow-lg" />
+        <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-36 h-36 object-contain opacity-90 drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho leyendo recetas - Desktop */}
@@ -42,7 +51,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, 10, 0], rotate: [2, -2, 2] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="Tofucho leyendo recetas" className="w-28 h-28 object-contain opacity-80 drop-shadow-lg" />
+        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain opacity-80 drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho cocinando - Mobile y Tablet */}
@@ -51,7 +60,7 @@ const RestaurantsSection = () => {
           animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img src="/tofuchos/tofucho cocinando.png" alt="Tofucho cocinando" className="w-28 h-28 object-contain drop-shadow-lg" />
+          <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
         </motion.div>
       </div>
 
@@ -61,7 +70,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="Tofucho leyendo" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       <div className="container mx-auto px-4 mt-8">
@@ -75,31 +84,14 @@ const RestaurantsSection = () => {
             Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
           </h2>
           <p className="font-body text-sm text-background/70 max-w-2xl mx-auto">
-            Menús plant-based, taquerías y hoteles ya sirven Empátika. Próximamente añadiremos sus logos oficiales.
-          </p>
+            Restaurantes que ya sirven Empátika. ¿Qué esperas para formar parte de esta lista?
+            </p>
         </motion.div>
 
         {/* Restaurant logos/cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {restaurants.map((restaurant, index) => (
-            <motion.div
-              key={restaurant.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="card-brutal bg-background text-foreground"
-            >
-              {/* Logo placeholder */}
-              <div className="placeholder-tile w-16 h-16 mx-auto mb-4">
-                <span className="text-2xl">🍽️</span>
-              </div>
-              
-              <h3 className="font-display text-lg text-center mb-1">{restaurant.name}</h3>
-              <p className="font-body text-xs text-muted-foreground text-center">
-                {restaurant.location} · {restaurant.type}
-              </p>
-            </motion.div>
+            <RestaurantCard key={restaurant.name} restaurant={restaurant} index={index} />
           ))}
         </div>
 
@@ -111,12 +103,62 @@ const RestaurantsSection = () => {
           className="text-center mt-10 font-body text-sm text-background/70"
         >
           ¿Tu restaurante usa Empátika?{" "}
-          <a href="#contacto" className="underline text-primary hover:text-primary/80">
+          <a href="https://wa.me/522215606205" className="underline text-primary hover:text-primary/80">
             Contáctanos
           </a>
         </motion.p>
       </div>
     </section>
+  );
+};
+
+/** Subcomponente con manejo de errores de imagen basado en estado */
+const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[number]; index: number }) => {
+  const [logoFailed, setLogoFailed] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="card-brutal bg-background text-foreground"
+    >
+      {/* Logo */}
+      <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg border-2 border-foreground flex items-center justify-center overflow-hidden">
+        {logoFailed ? (
+          <span className="text-2xl" aria-hidden="true">🍽️</span>
+        ) : (
+          <img
+            src={restaurant.logo}
+            alt={`Logo de ${restaurant.name}`}
+            className="w-full h-full object-contain"
+            loading="lazy"
+            onError={() => setLogoFailed(true)}
+          />
+        )}
+      </div>
+
+      <h3 className="font-display text-lg text-center mb-1">{restaurant.name}</h3>
+      <a
+        href={restaurant.mapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-body text-xs text-center mb-2 block hover:text-foreground/80 transition-colors"
+        aria-label={`Ver ubicación de ${restaurant.name} en el mapa`}
+      >
+        📍 {restaurant.location}
+      </a>
+      <a
+        href={`https://instagram.com/${restaurant.instagram.replace('@', '')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-body text-xs text-foreground hover:text-foreground/80 text-center block transition-colors font-medium"
+        aria-label={`Instagram de ${restaurant.name}`}
+      >
+        {restaurant.instagram}
+      </a>
+    </motion.div>
   );
 };
 

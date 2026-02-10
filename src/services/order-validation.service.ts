@@ -1,9 +1,11 @@
 /**
  * Servicio de validación de pedidos
- * Validación simplificada: Mínimo 3 kg para envío gratuito
+ * Validación simplificada: Mínimo 3 kg para envío gratuito (Puebla) o recogida (CDMX)
  */
 
 import type { OrderItem, ValidationResult } from '@/types/order';
+
+type DeliveryZone = 'puebla' | 'cdmx';
 
 /**
  * Volumen mínimo requerido para envío gratuito (en kg)
@@ -15,12 +17,13 @@ const MINIMUM_VOLUME_FOR_FREE_SHIPPING = 3.0;
  */
 export class OrderValidationService {
   /**
-   * Valida si un pedido cumple con el volumen mínimo para envío gratuito
+   * Valida si un pedido cumple con el volumen mínimo para envío gratuito o recogida
    * 
    * @param items - Items del pedido
+   * @param zone - Zona de entrega ('puebla' o 'cdmx')
    * @returns Resultado de la validación
    */
-  static validateOrder(items: OrderItem[]): ValidationResult {
+  static validateOrder(items: OrderItem[], zone: DeliveryZone = 'puebla'): ValidationResult {
     // Validación básica
     if (!items || items.length === 0) {
       return {
@@ -36,14 +39,21 @@ export class OrderValidationService {
     const totalVolume = this.calculateTotalVolume(items);
     const isValid = totalVolume >= MINIMUM_VOLUME_FOR_FREE_SHIPPING;
     
+    // Mensajes personalizados según la zona
+    const successMessage = zone === 'puebla'
+      ? '✅ ¡Envío GRATIS! Tu pedido cumple con el mínimo de volumen'
+      : '✅ ¡Listo! Tu pedido cumple con el mínimo para recogida';
+    
+    const failureMessage = zone === 'puebla'
+      ? `Necesitas ${(MINIMUM_VOLUME_FOR_FREE_SHIPPING - totalVolume).toFixed(2)} kg más para envío gratis`
+      : `Necesitas ${(MINIMUM_VOLUME_FOR_FREE_SHIPPING - totalVolume).toFixed(2)} kg más para recogida`;
+    
     return {
       isValid,
       totalVolume,
       minimumRequired: MINIMUM_VOLUME_FOR_FREE_SHIPPING,
       zone: 'local',
-      message: isValid
-        ? '✅ ¡Envío GRATIS! Tu pedido cumple con el mínimo de volumen'
-        : `Necesitas ${(MINIMUM_VOLUME_FOR_FREE_SHIPPING - totalVolume).toFixed(2)} kg más para envío gratis`,
+      message: isValid ? successMessage : failureMessage,
       shouldRedirectToDistributors: !isValid
     };
   }

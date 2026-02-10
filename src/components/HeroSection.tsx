@@ -29,28 +29,24 @@ const dishes = [
     name: "Tacos de Tofu",
     description: "Crujientes y sazonados",
     image: "/platillos/tacos-tofu.jpg",
-    tag: "Popular",
   },
   {
     id: 2,
     name: "Bowl Asiático",
     description: "Con verduras salteadas",
     image: "/platillos/bowl-asiatico.jpg",
-    tag: "Saludable",
   },
   {
     id: 3,
     name: "Tofu a la Plancha",
     description: "Dorado y jugoso",
     image: "/platillos/tofu-plancha.jpg",
-    tag: "Clásico",
   },
   {
     id: 4,
     name: "Sandwich de Tofu",
     description: "Ahumado con aguacate",
     image: "/platillos/sandwich-tofu.jpg",
-    tag: "Rápido",
   },
 ];
 
@@ -86,6 +82,19 @@ const HeroSection = () => {
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);
 
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevSlide();
+      setIsAutoPlaying(false);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextSlide();
+      setIsAutoPlaying(false);
+    }
+  }, [prevSlide, nextSlide]);
+
   // Rotaciones para cada card cuando está activa (todas diferentes)
   const activeRotations = [-3, 4, -2, 3];
   // Rotaciones para cards en el fondo
@@ -106,7 +115,8 @@ const HeroSection = () => {
         >
           <img 
             src={tofucho.src} 
-            alt={tofucho.alt} 
+            alt="" 
+            aria-hidden="true"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
           />
         </motion.div>
@@ -122,7 +132,8 @@ const HeroSection = () => {
         >
           <img 
             src={tofucho.src} 
-            alt={tofucho.alt} 
+            alt="" 
+            aria-hidden="true"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
           />
         </motion.div>
@@ -138,6 +149,11 @@ const HeroSection = () => {
             className="relative flex items-center justify-center order-first lg:order-last lg:col-span-2"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            role="region"
+            aria-roledescription="carrusel"
+            aria-label="Platillos que puedes hacer con tofu"
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
           >
             {/* Container with side buttons */}
             <div className="flex items-center gap-2 sm:gap-4">
@@ -153,7 +169,7 @@ const HeroSection = () => {
               </motion.button>
 
               {/* Cards Stack */}
-              <div className="relative w-[240px] sm:w-[300px] md:w-[360px] lg:w-[400px] xl:w-[420px] h-[300px] sm:h-[375px] md:h-[450px] lg:h-[500px] xl:h-[520px]">
+              <div className="relative w-[200px] sm:w-[240px] md:w-[280px] lg:w-[320px] xl:w-[340px] h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] xl:h-[420px]">
                 <AnimatePresence mode="popLayout">
                   {dishes.map((dish, index) => {
                     // Calcular posición relativa al índice actual
@@ -200,11 +216,11 @@ const HeroSection = () => {
                           }`}
                         >
                           {/* Image */}
-                          <div className="relative h-[calc(100%-48px)] sm:h-[calc(100%-56px)] md:h-[calc(100%-60px)] bg-muted overflow-hidden">
+                          <div className="relative h-[calc(100%-40px)] sm:h-[calc(100%-45px)] md:h-[calc(100%-48px)] bg-muted overflow-hidden">
                             <img
                               src={dish.image}
                               alt={dish.name}
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
@@ -216,8 +232,8 @@ const HeroSection = () => {
                           </div>
                           
                           {/* Caption */}
-                          <div className="h-[48px] sm:h-[56px] md:h-[60px] flex items-center justify-center bg-background border-t-2 border-foreground">
-                            <p className="font-display text-base sm:text-lg md:text-xl lg:text-2xl">{dish.name}</p>
+                          <div className="h-[40px] sm:h-[45px] md:h-[48px] flex items-center justify-center bg-background border-t-2 border-foreground">
+                            <p className="font-display text-sm sm:text-base md:text-lg lg:text-xl">{dish.name}</p>
                           </div>
                         </div>
                       </motion.div>
@@ -236,6 +252,27 @@ const HeroSection = () => {
               >
                 <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
               </motion.button>
+            </div>
+
+            {/* Dot indicators */}
+            <div className="flex gap-2 justify-center mt-4 absolute -bottom-8 left-1/2 -translate-x-1/2" role="tablist" aria-label="Seleccionar platillo">
+              {dishes.map((dish, index) => (
+                <button
+                  key={dish.id}
+                  onClick={() => goToSlide(index)}
+                  role="tab"
+                  aria-selected={index === currentIndex}
+                  aria-label={`${dish.name} (${index + 1} de ${dishes.length})`}
+                  className={`w-2.5 h-2.5 border-2 border-foreground transition-all ${
+                    index === currentIndex ? 'bg-primary scale-125' : 'bg-muted hover:bg-primary/50'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Screen reader live region */}
+            <div className="sr-only" aria-live="polite" aria-atomic="true">
+              Mostrando {dishes[currentIndex].name}: {dishes[currentIndex].description}
             </div>
           </motion.div>
 

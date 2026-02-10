@@ -12,7 +12,7 @@ const products = [
   {
     name: "Ahumado",
     variant: "ahumado" as const,
-    description: "Ahumado con madera de mezquite. Listo para comer.",
+    description: "Nuestro famoso tofu, pero ahumado. Listo para comer.",
     weight: "400 g | 1 kg",
     protein: "8g",
     color: "orange" as const,
@@ -52,7 +52,9 @@ const ProductsSection = () => {
         >
           <img 
             src={tofucho.src} 
-            alt="Tofucho decorativo" 
+            alt="" 
+            aria-hidden="true"
+            loading="lazy"
             className={`${tofucho.size} object-contain opacity-80 drop-shadow-lg`}
           />
         </motion.div>
@@ -68,7 +70,9 @@ const ProductsSection = () => {
         >
           <img 
             src={tofucho.src} 
-            alt="Tofucho decorativo" 
+            alt="" 
+            aria-hidden="true"
+            loading="lazy"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
           />
         </motion.div>

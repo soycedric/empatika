@@ -1,5 +1,6 @@
+import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
-import { Store, ShoppingBag, Leaf } from "lucide-react";
+import { Store, ShoppingBag, Leaf, MapPin, Instagram } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import distributorsData from "@/data/distribuidores.json";
@@ -11,7 +12,9 @@ type Distributor = {
   state: string;
   lat: number;
   lng: number;
-  type: "supermarket" | "organic" | "specialty";
+  type: "supermarket" | "organic" | "specialty" | "restaurant";
+  instagram: string;
+  mapUrl: string;
 };
 
 const distributors: Distributor[] = distributorsData;
@@ -37,7 +40,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -12, 0], scale: [1, 1.05, 1] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-28 h-28 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - Mobile y Tablet */}
@@ -46,7 +49,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="Tofucho corriendo" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho sorprendido - Mobile y Tablet */}
@@ -55,7 +58,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho sorprendido.png" alt="Tofucho sorprendido" className="w-14 h-14 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho pensando - Mobile y Tablet centro */}
@@ -64,7 +67,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="Tofucho pensando" className="w-12 h-12 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-12 h-12 object-contain drop-shadow-lg" />
       </motion.div>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
@@ -159,10 +162,31 @@ const DistributorsSection = () => {
                   <div className="p-2 bg-primary border-2 border-foreground shrink-0">
                     <Icon size={18} />
                   </div>
-                  <div>
-                    <h4 className="font-display text-base">{dist.name}</h4>
-                    <p className="font-body text-xs text-muted-foreground">{dist.address}</p>
-                    <p className="font-body text-xs">{dist.city}, {dist.state}</p>
+                  <div className="flex-1">
+                    <h4 className="font-display text-base mb-1">{dist.name}</h4>
+                    <p className="font-body text-xs text-muted-foreground mb-1">{dist.address}</p>
+                    <p className="font-body text-xs mb-2">{dist.city}, {dist.state}</p>
+                    
+                    <div className="flex gap-3">
+                      <a 
+                        href={dist.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-xs text-foreground hover:text-foreground/80 transition-colors"
+                      >
+                        <MapPin className="w-3 h-3" />
+                        <span>Ver en Maps</span>
+                      </a>
+                      <a 
+                        href={`https://instagram.com/${dist.instagram.replace('@', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-xs text-foreground hover:text-foreground/80 transition-colors"
+                      >
+                        <Instagram className="w-3 h-3" />
+                        <span>{dist.instagram}</span>
+                      </a>
+                    </div>
                   </div>
                 </motion.div>
               );

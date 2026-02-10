@@ -5,17 +5,21 @@
     "city": "Puebla",
     "state": "Puebla",
     "lat": 19.0160449305048,
-    "lng": -98.25438110469126 ,
-    "type": "supermarket"
+    "lng": -98.25438110469126,
+    "type": "supermarket",
+    "instagram": "@mr.tofu.oficial",
+    "mapUrl": "https://maps.app.goo.gl/"
   },
   {
     "name": "Veggie Deli",
-    "address": "Calle 2 Nte. 1215, San Andrés Cholula, 72810 ",
+    "address": "Calle 2 Nte. 1215, San Andrés Cholula, 72810",
     "city": "Cholula",
     "state": "Puebla",
     "lat": 19.056377485840716,
     "lng": -98.29514723167624,
-    "type": "supermarket"
+    "type": "supermarket",
+    "instagram": "@veggiedeli.cholula",
+    "mapUrl": "https://maps.app.goo.gl/"
   },
   {
     "name": "El Rincón de Tacotlan",
@@ -24,7 +28,9 @@
     "state": "Puebla",
     "lat": 19.047923858226287,
     "lng": -98.21355527962417,
-    "type": "restaurant"
+    "type": "restaurant",
+    "instagram": "@rincontacotlan",
+    "mapUrl": "https://maps.app.goo.gl/"
   },
   {
     "name": "Huella Vegana",
@@ -33,6 +39,8 @@
     "state": "Puebla",
     "lat": 19.0393391,
     "lng": -98.1939283,
-    "type": "supermarket"
+    "type": "supermarket",
+    "instagram": "@huellavegana.pue",
+    "mapUrl": "https://maps.app.goo.gl/"
   }
 ]

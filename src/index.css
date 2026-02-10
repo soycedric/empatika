@@ -57,7 +57,7 @@
     --secondary: var(--orange-rust);
     --secondary-foreground: 0 0% 100%;
     --muted: 40 20% 88%;
-    --muted-foreground: 0 0% 30%;
+    --muted-foreground: 0 0% 25%;
     --accent: var(--orange-rust);
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
@@ -95,9 +95,43 @@
     scroll-behavior: smooth;
   }
 
+  /* Compensar header fijo en navegación por anchors */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  /* Skip link para accesibilidad */
+  .skip-link {
+    @apply absolute -top-full left-4 z-[100] bg-primary text-foreground px-4 py-2 font-display border-2 border-foreground;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     letter-spacing: -0.01em;
+  }
+
+  /* Focus visible ring para accesibilidad de teclado */
+  :focus-visible {
+    outline: 3px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Clase para screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 
   /* Paper texture effect - using crumpled paper background */
