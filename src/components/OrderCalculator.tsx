@@ -121,18 +121,20 @@ export const OrderCalculator = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
               className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
             >
               CALCULA TU <span className="inline-block bg-primary text-foreground px-2">PEDIDO</span>
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
               className="text-muted-foreground max-w-2xl mx-auto"
             >
               Agrega productos y verifica si calificas para envío gratuito (Puebla) o recogida en puntos (CDMX). Mínimo 3 kg.

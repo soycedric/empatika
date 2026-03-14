@@ -84,6 +84,21 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-20px)" },
         },
+        "snap-in-left": {
+          "0%": { transform: "translateX(-30px)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        "snap-in-up": {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        glitch: {
+          "0%": { transform: "translateX(-2px) skewX(-2deg)", opacity: "0.8" },
+          "25%": { transform: "translateX(2px) skewX(2deg)", opacity: "0.6" },
+          "50%": { transform: "translateX(-1px)", opacity: "0.9" },
+          "75%": { transform: "translateX(1px) skewX(-1deg)", opacity: "0.7" },
+          "100%": { transform: "translateX(0)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -91,6 +106,9 @@ export default {
         float: "float 4s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
         "bounce-slow": "bounce 3s ease-in-out infinite",
+        "snap-in-left": "snap-in-left 0.15s cubic-bezier(0.4,0,0.2,1) both",
+        "snap-in-up": "snap-in-up 0.15s cubic-bezier(0.4,0,0.2,1) both",
+        glitch: "glitch 0.3s steps(2) forwards",
       },
       // Tamaños personalizados para tofuchos - pasos graduales de 4px
       spacing: {

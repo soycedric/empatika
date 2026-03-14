@@ -89,9 +89,10 @@ const B2BSection = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           >
             <h2 className="font-display text-5xl sm:text-6xl lg:text-8xl mb-6">
               ¿ERES{" "}
@@ -111,10 +112,10 @@ const B2BSection = () => {
             {benefits.map((benefit, index) => (
               <motion.div
                 key={benefit.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
+                transition={{ delay: index * 0.1, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 className={`p-6 border-2 border-background bg-background/5 backdrop-blur-sm ${index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
                   }`}
               >
@@ -136,7 +137,8 @@ const B2BSection = () => {
               href="https://wa.me/522215606205?text=Hola!%20Soy%20mayorista%20y%20me%20interesa%20distribuir%20tofu%20Empátika"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-primary text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background))] hover:shadow-[12px_12px_0_0_hsl(var(--background))] hover:-translate-x-1 hover:-translate-y-1 transition-all"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-primary text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background))] hover:shadow-[12px_12px_0_0_hsl(var(--background))] hover:-translate-x-1 hover:-translate-y-1 transition-all btn-brutal"
+              data-text="QUIERO DISTRIBUIR"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

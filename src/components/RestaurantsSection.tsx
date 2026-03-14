@@ -75,13 +75,14 @@ const RestaurantsSection = () => {
 
       <div className="container mx-auto px-4 mt-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           className="text-center mb-12 space-y-3"
         >
           <h2 className="font-display text-4xl sm:text-5xl text-background">
-            Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
+            Restaurantes que <span className="marker-highlight text-background">confían</span> en nosotros
           </h2>
           <p className="font-body text-sm text-background/70 max-w-2xl mx-auto">
             Restaurantes que ya sirven Empátika. ¿Qué esperas para formar parte de esta lista?
@@ -118,10 +119,10 @@ const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: index * 0.08, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
       className="card-brutal bg-background text-foreground"
     >
       {/* Logo */}

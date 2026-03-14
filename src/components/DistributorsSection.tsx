@@ -73,9 +73,10 @@ const DistributorsSection = () => {
         <div className="grid lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
           {/* Left - Map */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             className="space-y-4 order-first lg:order-first"
           >
             <span className="text-dymo text-xs inline-block">Puntos de venta</span>
@@ -141,9 +142,10 @@ const DistributorsSection = () => {
 
           {/* Right - List */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
             className="space-y-4 order-last lg:order-last"
           >
             <h3 className="font-display text-xl inline-block bg-secondary text-secondary-foreground px-2">DISTRIBUIDORES</h3>
@@ -153,10 +155,10 @@ const DistributorsSection = () => {
               return (
                 <motion.div
                   key={dist.name}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 15 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.04, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                   className="flex items-start gap-4 p-4 border-2 border-foreground bg-background hover:bg-primary/10 transition-colors"
                 >
                   <div className="p-2 bg-primary border-2 border-foreground shrink-0">

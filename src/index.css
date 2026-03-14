@@ -185,6 +185,19 @@
     z-index: 0;
   }
 
+  /* SVG noise grain overlay - applied globally for the "dirty paper" feel */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+
   h1,
   h2,
   h3,
@@ -240,11 +253,11 @@
   .card-brutal {
     @apply bg-card border-2 border-foreground p-4;
     box-shadow: var(--shadow-brutal);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .card-brutal:hover {
-    transform: translate(-2px, -2px);
+    transform: translate(-3px, -3px);
     box-shadow: var(--shadow-brutal-lg);
   }
 
@@ -252,12 +265,47 @@
   .btn-brutal {
     @apply inline-flex items-center justify-center px-6 py-3 font-display text-lg uppercase border-2 border-foreground bg-primary text-foreground cursor-pointer;
     box-shadow: var(--shadow-brutal);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-brutal::before,
+  .btn-brutal::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: inherit;
+    opacity: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
   }
 
   .btn-brutal:hover {
-    transform: translate(-2px, -2px);
+    transform: translate(-3px, -3px);
     box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .btn-brutal:hover::before {
+    opacity: 0.7;
+    animation: glitch-before 0.25s steps(2) infinite;
+    color: hsl(var(--ink));
+    clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
+    left: 3px;
+  }
+
+  .btn-brutal:hover::after {
+    opacity: 0.5;
+    animation: glitch-after 0.25s steps(2) infinite reverse;
+    color: hsl(var(--ink));
+    clip-path: polygon(0 65%, 100% 65%, 100% 82%, 0 82%);
+    left: -3px;
   }
 
   .btn-brutal:active {
@@ -341,7 +389,7 @@
     animation: float 4s ease-in-out infinite;
   }
 
-  /* Tape effect */
+  /* Tape effect - solid black industrial tape block */
   .tape {
     position: relative;
   }
@@ -353,9 +401,93 @@
     left: 50%;
     transform: translateX(-50%) rotate(-2deg);
     width: 80px;
-    height: 25px;
-    background: hsl(var(--yellow-industrial) / 0.7);
-    border: 1px solid hsl(var(--ink) / 0.3);
+    height: 22px;
+    background: hsl(var(--ink));
+    border: none;
+  }
+
+  /* Rubber stamp / sello de goma effect */
+  .stamp {
+    @apply inline-block border-4 border-current px-3 py-1 uppercase font-display;
+    opacity: 0.85;
+    mix-blend-mode: multiply;
+    transform: rotate(-4deg);
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 2px currentColor;
+    filter: contrast(1.4);
+  }
+
+  .stamp-red {
+    @apply stamp text-red-600 border-red-600;
+  }
+
+  .stamp-yellow {
+    @apply stamp text-primary border-primary;
+  }
+
+  /* Yellow marker / highlighter effect */
+  .marker-highlight {
+    background-image: linear-gradient(
+      transparent 30%,
+      hsl(var(--yellow-industrial) / 0.6) 30%,
+      hsl(var(--yellow-industrial) / 0.6) 85%,
+      transparent 85%
+    );
+    background-size: 100% 100%;
+    padding: 0 2px;
+    transition: background-size 0.2s ease;
+  }
+
+  /* Glitch button hover effect */
+  .btn-glitch {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-glitch::before,
+  .btn-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: inherit;
+    opacity: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+  }
+
+  .btn-glitch:hover::before {
+    opacity: 0.8;
+    animation: glitch-before 0.3s steps(2) infinite;
+    color: hsl(var(--yellow-industrial));
+    clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    left: 2px;
+  }
+
+  .btn-glitch:hover::after {
+    opacity: 0.6;
+    animation: glitch-after 0.3s steps(2) infinite reverse;
+    color: hsl(var(--orange-rust));
+    clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    left: -2px;
+  }
+
+  /* Glitch keyframes */
+  @keyframes glitch-before {
+    0%   { transform: translateX(-2px) skewX(-2deg); }
+    50%  { transform: translateX(2px) skewX(2deg); }
+    100% { transform: translateX(-1px) skewX(-1deg); }
+  }
+
+  @keyframes glitch-after {
+    0%   { transform: translateX(2px) skewX(1deg); }
+    50%  { transform: translateX(-2px) skewX(-2deg); }
+    100% { transform: translateX(1px) skewX(1deg); }
   }
 
   /* Placeholder tile for pending assets */

@@ -62,7 +62,8 @@ const Header = () => {
             href="https://wa.me/522215606205?text=Hola%20Empatika!%20Quiero%20información"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal-lg"
+            data-text="WhatsApp"
           >
             WhatsApp
           </a>

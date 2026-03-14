@@ -143,9 +143,9 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-5 gap-6 lg:gap-16 items-center">
           {/* Dish Carousel - First on mobile, takes 2/5 on desktop */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.35, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
             className="relative flex items-center justify-center order-first lg:order-last lg:col-span-2"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -276,9 +276,9 @@ const HeroSection = () => {
 
           {/* Text Content - takes 3/5 on desktop */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             className="space-y-4 sm:space-y-6 order-last lg:order-first lg:col-span-3 text-center lg:text-left"
           >
             {/* Social proof + badge */}
@@ -287,15 +287,22 @@ const HeroSection = () => {
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 border border-foreground text-xs rotate-1">
                 🚚 Envíos Puebla y CDMX
               </span>
+              <span
+                className="hidden lg:inline-block font-display text-[10px] border-4 border-primary text-primary px-2 py-0.5 uppercase"
+                style={{ transform: "rotate(-3deg)", opacity: 0.85, mixBlendMode: "multiply", filter: "contrast(1.4)", letterSpacing: "0.05em" }}
+                aria-hidden="true"
+              >
+                Punk Profesional
+              </span>
             </div>
 
             {/* Main Headline - SEO H1 with 3D extrusion effect */}
             <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[0.95] uppercase">
               <motion.span
                 className="block text-primary"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.15, duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                 style={{
                   WebkitTextStroke: '2px hsl(var(--ink))',
                   textShadow: `
@@ -315,9 +322,9 @@ const HeroSection = () => {
               </motion.span>
               <motion.span
                 className="block text-secondary"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
+                transition={{ delay: 0.25, duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                 style={{
                   WebkitTextStroke: '2px hsl(var(--ink))',
                   textShadow: `
@@ -341,9 +348,13 @@ const HeroSection = () => {
               className="font-body text-xl lg:text-lg leading-relaxed text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.35, duration: 0.2 }}
             >
-              Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier receta:<b> marínalo, fríelo o cómelo directo.</b> </motion.p><motion.p className="text-dymo"> Cero complicaciones, 100% sabor brutal.            </motion.p>
+              Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier receta:<b> marínalo, fríelo o cómelo directo.</b> </motion.p><motion.p
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.42, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+              className="text-dymo"> Cero complicaciones, 100% sabor brutal.            </motion.p>
 
             {/* CTA */}
             <motion.div
@@ -355,6 +366,7 @@ const HeroSection = () => {
               <motion.a
                 href="#calculadora"
                 className="btn-brutal"
+                data-text="Comprar Tofu"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.02 }}

@@ -81,28 +81,30 @@ const ProductsSection = () => {
         {/* Section Header - Unified */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             className="text-dymo text-xs mb-6 inline-block"
           >
             Tofu artesanal mexicano
           </motion.span>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
           >
             SOMOS MÁS QUE <span className="inline-block bg-primary text-foreground px-2">TOFU</span>
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.1, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             className="font-body text-sm sm:text-base leading-relaxed text-muted-foreground max-w-xl mx-auto mb-6"
           >
             Somos una empresa mexicana que nació para demostrar que la proteína vegetal puede ser deliciosa.
@@ -110,10 +112,10 @@ const ProductsSection = () => {
 
           {/* Values - Compact */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.15, duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             className="flex flex-wrap justify-center gap-2 sm:gap-3"
           >
             <span className="sticker bg-background text-xs sm:text-sm">🌱 100% Vegano</span>
@@ -149,14 +151,20 @@ const ProductsSection = () => {
             return (
               <motion.article
                 key={product.name}
-                initial={{ opacity: 0, y: 50, rotate: 0 }}
+                initial={{ opacity: 0, y: 40, rotate: 0 }}
                 whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                transition={{ duration: 0.3, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
                 className="bg-background border-4 border-foreground shadow-brutal p-6 relative"
                 style={{
                   transform: `rotate(${rotations[index]}) scale(${scales[index]})`,
                   zIndex: zIndexes[index]
+                }}
+                whileHover={{
+                  y: -4,
+                  x: -4,
+                  boxShadow: "12px 12px 0px 0px hsl(var(--ink))",
+                  transition: { duration: 0.1, ease: [0.4, 0, 0.2, 1] },
                 }}
               >
                 {/* Product Image */}
@@ -214,6 +222,7 @@ const ProductsSection = () => {
                 <a
                   href="#calculadora"
                   className={buttonClass}
+                  data-text="Comprar"
                 >
                   Comprar
                 </a>
