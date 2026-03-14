@@ -113,9 +113,9 @@ const HeroSection = () => {
           animate={tofucho.animation}
           transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img 
-            src={tofucho.src} 
-            alt="" 
+          <img
+            src={tofucho.src}
+            alt=""
             aria-hidden="true"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
           />
@@ -130,9 +130,9 @@ const HeroSection = () => {
           animate={tofucho.animation}
           transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img 
-            src={tofucho.src} 
-            alt="" 
+          <img
+            src={tofucho.src}
+            alt=""
             aria-hidden="true"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
           />
@@ -176,20 +176,20 @@ const HeroSection = () => {
                     const offset = index - currentIndex;
                     const isActive = index === currentIndex;
                     const isVisible = Math.abs(offset) <= 2;
-                    
+
                     if (!isVisible) return null;
 
                     return (
                       <motion.div
                         key={dish.id}
                         className="absolute inset-0"
-                        initial={{ 
-                          scale: 0.9, 
+                        initial={{
+                          scale: 0.9,
                           opacity: 0,
                           rotate: stackRotations[index % stackRotations.length],
                           x: direction > 0 ? 100 : -100,
                         }}
-                        animate={{ 
+                        animate={{
                           scale: isActive ? 1 : 0.9 - Math.abs(offset) * 0.05,
                           opacity: isActive ? 1 : 0.6 - Math.abs(offset) * 0.2,
                           rotate: isActive ? activeRotations[index % activeRotations.length] : stackRotations[index % stackRotations.length] + offset * 3,
@@ -198,7 +198,7 @@ const HeroSection = () => {
                           zIndex: dishes.length - Math.abs(offset),
                         }}
                         exit={{
-                          scale: 0.8, 
+                          scale: 0.8,
                           opacity: 0,
                           rotate: direction > 0 ? -15 : 15,
                           x: direction > 0 ? -150 : 150,
@@ -210,10 +210,9 @@ const HeroSection = () => {
                         }}
                         style={{ zIndex: dishes.length - Math.abs(offset) }}
                       >
-                        <div 
-                          className={`w-full h-full bg-background border-4 border-foreground shadow-brutal overflow-hidden ${
-                            isActive ? '' : 'pointer-events-none'
-                          }`}
+                        <div
+                          className={`w-full h-full bg-background border-4 border-foreground shadow-brutal overflow-hidden ${isActive ? '' : 'pointer-events-none'
+                            }`}
                         >
                           {/* Image */}
                           <div className="relative h-[calc(100%-40px)] sm:h-[calc(100%-45px)] md:h-[calc(100%-48px)] bg-muted overflow-hidden">
@@ -230,7 +229,7 @@ const HeroSection = () => {
                               <span className="text-5xl sm:text-7xl">🍳</span>
                             </div>
                           </div>
-                          
+
                           {/* Caption */}
                           <div className="h-[40px] sm:h-[45px] md:h-[48px] flex items-center justify-center bg-background border-t-2 border-foreground">
                             <p className="font-display text-sm sm:text-base md:text-lg lg:text-xl">{dish.name}</p>
@@ -263,9 +262,8 @@ const HeroSection = () => {
                   role="tab"
                   aria-selected={index === currentIndex}
                   aria-label={`${dish.name} (${index + 1} de ${dishes.length})`}
-                  className={`w-2.5 h-2.5 border-2 border-foreground transition-all ${
-                    index === currentIndex ? 'bg-primary scale-125' : 'bg-muted hover:bg-primary/50'
-                  }`}
+                  className={`w-2.5 h-2.5 border-2 border-foreground transition-all ${index === currentIndex ? 'bg-primary scale-125' : 'bg-muted hover:bg-primary/50'
+                    }`}
                 />
               ))}
             </div>
@@ -339,16 +337,16 @@ const HeroSection = () => {
               </motion.span>
             </h1>
 
-            <motion.p 
+            <motion.p
               className="font-body text-xl lg:text-lg leading-relaxed text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier receta:<b> marínalo, fríelo o cómelo directo.</b> </motion.p><motion.p className="text-dymo"> Cero complicaciones, 100% sabor brutal.            </motion.p>
+              Nuestro tofu artesanal poblano tiene la firmeza exacta para aguantar cualquier receta:<b> marínalo, fríelo o cómelo directo.</b> </motion.p><motion.p className="text-dymo"> Cero complicaciones, 100% sabor brutal.            </motion.p>
 
             {/* CTA */}
-            <motion.div 
+            <motion.div
               className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -147,7 +147,7 @@ const DistributorsSection = () => {
             className="space-y-4 order-last lg:order-last"
           >
             <h3 className="font-display text-xl inline-block bg-secondary text-secondary-foreground px-2">DISTRIBUIDORES</h3>
-            
+
             {distributors.map((dist, index) => {
               const Icon = dist.type === "supermarket" ? ShoppingBag : dist.type === "organic" ? Leaf : Store;
               return (
@@ -166,9 +166,9 @@ const DistributorsSection = () => {
                     <h4 className="font-display text-base mb-1">{dist.name}</h4>
                     <p className="font-body text-xs text-muted-foreground mb-1">{dist.address}</p>
                     <p className="font-body text-xs mb-2">{dist.city}, {dist.state}</p>
-                    
+
                     <div className="flex gap-3">
-                      <a 
+                      <a
                         href={dist.mapUrl}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -177,7 +177,7 @@ const DistributorsSection = () => {
                         <MapPin className="w-3 h-3" />
                         <span>Ver en Maps</span>
                       </a>
-                      <a 
+                      <a
                         href={`https://instagram.com/${dist.instagram.replace('@', '')}`}
                         target="_blank"
                         rel="noopener noreferrer"

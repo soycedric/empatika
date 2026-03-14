@@ -107,9 +107,9 @@ export const OrderCalculator = () => {
           animate={tofucho.animation}
           transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img 
-            src={tofucho.src} 
-            alt="" 
+          <img
+            src={tofucho.src}
+            alt=""
             aria-hidden="true"
             className={`${tofucho.size} object-contain opacity-70 drop-shadow-lg`}
           />
@@ -120,7 +120,7 @@ export const OrderCalculator = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -129,7 +129,7 @@ export const OrderCalculator = () => {
               CALCULA TU <span className="inline-block bg-primary text-foreground px-2">PEDIDO</span>
             </motion.h2>
 
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -150,22 +150,21 @@ export const OrderCalculator = () => {
               />
 
               {/* Card de items del pedido */}
-              <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${
-                validation.isValid 
-                  ? 'bg-green-50 dark:bg-green-950/30' 
+              <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
+                  ? 'bg-green-50 dark:bg-green-950/30'
                   : items.length === 0
-                  ? ''
-                  : 'bg-orange-50 dark:bg-orange-950/30'
-              }`}>
+                    ? ''
+                    : 'bg-orange-50 dark:bg-orange-950/30'
+                }`}>
                 <div className="flex justify-between items-center pb-3 border-b-2 border-foreground/20 mb-6">
                   <h3 className="font-display text-2xl flex items-center gap-2">
                     <Package className="w-6 h-6" />
                     TU PEDIDO
                   </h3>
                   {items.length > 0 && (
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={clearOrder}
                       className="text-destructive hover:text-destructive border-2 border-destructive hover:bg-destructive/10"
                       aria-label="Vaciar pedido completo"

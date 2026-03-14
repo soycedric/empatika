@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className="bg-cream border-t-4 border-foreground py-12 relative overflow-hidden">
       {/* Tofucho meditando - Desktop */}
-      <motion.div 
+      <motion.div
         className="absolute bottom-20 right-10 hidden lg:block"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -17,7 +17,7 @@ const Footer = () => {
 
 
       {/* Tofucho meditando - Mobile */}
-      <motion.div 
+      <motion.div
         className="absolute bottom-40 right-20 lg:hidden z-40"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -35,7 +35,7 @@ const Footer = () => {
               <img src="/logo/letras_empatika.svg" alt="empátika" className="h-10 w-auto" />
             </div>
             <p className="font-body text-sm text-muted-foreground max-w-sm mb-4">
-              Tofu artesanal poblano. Proteína vegetal de la más alta calidad 
+              Tofu artesanal poblano. Proteína vegetal de la más alta calidad
               para una alimentación consciente.
             </p>
             <div className="flex gap-3">
@@ -79,10 +79,10 @@ const Footer = () => {
                 <span>7 sur 2907, Col. Chulavista, Puebla, Puebla, México</span>
               </li>
               <li>
-                <a 
+                <a
                   href="https://wa.me/522215606205"
                   target="_blank"
-                  rel="noopener noreferrer" 
+                  rel="noopener noreferrer"
                   className="hover:text-dymo transition-all"
                 >
                   +52 221 560 6205

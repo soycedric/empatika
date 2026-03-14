@@ -115,9 +115,8 @@ const B2BSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15 }}
-                className={`p-6 border-2 border-background bg-background/5 backdrop-blur-sm ${
-                  index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
-                }`}
+                className={`p-6 border-2 border-background bg-background/5 backdrop-blur-sm ${index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
+                  }`}
               >
                 <benefit.icon size={40} className="mb-4 text-primary mx-auto" />
                 <h3 className="font-display text-xl mb-2">{benefit.title}</h3>

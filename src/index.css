@@ -44,7 +44,7 @@
     --yellow-industrial: 50 100% 50%;
     --orange-rust: 25 85% 37%;
     --cream: 40 30% 95%;
-    
+
     /* Semantic tokens */
     --background: var(--paper);
     --foreground: var(--ink);
@@ -70,7 +70,7 @@
     /* Typography */
     --font-display: 'Gunplay', sans-serif;
     --font-body: 'CMU Typewriter Text', monospace;
-    
+
     /* Brutalist shadows */
     --shadow-brutal: 4px 4px 0 hsl(var(--ink));
     --shadow-brutal-lg: 8px 8px 0 hsl(var(--ink));
@@ -160,9 +160,9 @@
     inset: 0;
     background:
       /* Subtle lighting from top-left */
-      linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.02) 100%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%, rgba(0, 0, 0, 0.02) 100%),
       /* Slight vignette */
-      radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.03) 100%);
+      radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.03) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -185,8 +185,14 @@
     z-index: 0;
   }
 
-  h1, h2, h3, h4,
-  h1 *, h2 *, h3 *, h4 * {
+  h1,
+  h2,
+  h3,
+  h4,
+  h1 *,
+  h2 *,
+  h3 *,
+  h4 * {
     font-family: 'Gunplay', sans-serif;
     text-transform: none;
     letter-spacing: -0.01em;
@@ -204,12 +210,18 @@
     font-family: 'Gunplay', sans-serif !important;
   }
 
-  p, a, li, label, input, textarea {
+  p,
+  a,
+  li,
+  label,
+  input,
+  textarea {
     font-family: var(--font-body);
   }
 }
 
 @layer components {
+
   /* Brutalist Text Styles */
   .text-dymo {
     @apply bg-foreground text-background px-2 py-1 inline-block;
@@ -260,14 +272,12 @@
 
   /* Torn edge effect */
   .torn-edge {
-    clip-path: polygon(
-      0% 2%, 5% 0%, 10% 3%, 15% 0%, 20% 2%, 25% 0%, 30% 3%, 35% 1%, 40% 2%, 
-      45% 0%, 50% 3%, 55% 1%, 60% 2%, 65% 0%, 70% 3%, 75% 1%, 80% 2%, 
-      85% 0%, 90% 3%, 95% 1%, 100% 2%,
-      100% 98%, 95% 100%, 90% 97%, 85% 100%, 80% 98%, 75% 100%, 70% 97%, 
-      65% 99%, 60% 98%, 55% 100%, 50% 97%, 45% 99%, 40% 98%, 35% 100%, 
-      30% 97%, 25% 99%, 20% 98%, 15% 100%, 10% 97%, 5% 100%, 0% 98%
-    );
+    clip-path: polygon(0% 2%, 5% 0%, 10% 3%, 15% 0%, 20% 2%, 25% 0%, 30% 3%, 35% 1%, 40% 2%,
+        45% 0%, 50% 3%, 55% 1%, 60% 2%, 65% 0%, 70% 3%, 75% 1%, 80% 2%,
+        85% 0%, 90% 3%, 95% 1%, 100% 2%,
+        100% 98%, 95% 100%, 90% 97%, 85% 100%, 80% 98%, 75% 100%, 70% 97%,
+        65% 99%, 60% 98%, 55% 100%, 50% 97%, 45% 99%, 40% 98%, 35% 100%,
+        30% 97%, 25% 99%, 20% 98%, 15% 100%, 10% 97%, 5% 100%, 0% 98%);
   }
 
   /* Background pattern text */
@@ -291,9 +301,17 @@
   }
 
   /* Asymmetric rotation classes */
-  .rotate-chaos-1 { transform: rotate(-2deg); }
-  .rotate-chaos-2 { transform: rotate(1deg); }
-  .rotate-chaos-3 { transform: rotate(-0.5deg); }
+  .rotate-chaos-1 {
+    transform: rotate(-2deg);
+  }
+
+  .rotate-chaos-2 {
+    transform: rotate(1deg);
+  }
+
+  .rotate-chaos-3 {
+    transform: rotate(-0.5deg);
+  }
 
   /* Sticker effect */
   .sticker {
@@ -304,9 +322,19 @@
 
   /* Floating animation for mascots */
   @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-10px) rotate(3deg); }
-    75% { transform: translateY(-5px) rotate(-2deg); }
+
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+      transform: translateY(-10px) rotate(3deg);
+    }
+
+    75% {
+      transform: translateY(-5px) rotate(-2deg);
+    }
   }
 
   .animate-float {

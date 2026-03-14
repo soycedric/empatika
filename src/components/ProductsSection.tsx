@@ -50,9 +50,9 @@ const ProductsSection = () => {
           animate={tofucho.animation}
           transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img 
-            src={tofucho.src} 
-            alt="" 
+          <img
+            src={tofucho.src}
+            alt=""
             aria-hidden="true"
             loading="lazy"
             className={`${tofucho.size} object-contain opacity-80 drop-shadow-lg`}
@@ -68,9 +68,9 @@ const ProductsSection = () => {
           animate={tofucho.animation}
           transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img 
-            src={tofucho.src} 
-            alt="" 
+          <img
+            src={tofucho.src}
+            alt=""
             aria-hidden="true"
             loading="lazy"
             className={`${tofucho.size} object-contain drop-shadow-lg`}
@@ -80,7 +80,7 @@ const ProductsSection = () => {
       <div className="container mx-auto px-4">
         {/* Section Header - Unified */}
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -88,8 +88,8 @@ const ProductsSection = () => {
           >
             Tofu artesanal mexicano
           </motion.span>
-          
-          <motion.h2 
+
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -98,7 +98,7 @@ const ProductsSection = () => {
             SOMOS MÁS QUE <span className="inline-block bg-primary text-foreground px-2">TOFU</span>
           </motion.h2>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -109,7 +109,7 @@ const ProductsSection = () => {
           </motion.p>
 
           {/* Values - Compact */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -132,20 +132,20 @@ const ProductsSection = () => {
         {/* Products Grid */}
         <div className="relative grid md:grid-cols-3 gap-8 sm:gap-12 max-w-5xl mx-auto px-4">
           {products.map((product, index) => {
-            const bgColor = 
-              product.color === "yellow" ? "bg-primary" : 
-              product.color === "orange" ? "bg-secondary" : 
-              "bg-cream";
-            
-            const buttonClass = 
-              product.color === "yellow" ? "btn-brutal text-sm" : 
-              product.color === "orange" ? "btn-brutal-orange text-sm" :
-              "btn-brutal text-sm";
-            
+            const bgColor =
+              product.color === "yellow" ? "bg-primary" :
+                product.color === "orange" ? "bg-secondary" :
+                  "bg-cream";
+
+            const buttonClass =
+              product.color === "yellow" ? "btn-brutal text-sm" :
+                product.color === "orange" ? "btn-brutal-orange text-sm" :
+                  "btn-brutal text-sm";
+
             const rotations = ["-2deg", "1.5deg", "-1deg"];
             const scales = [1, 1.05, 0.98];
             const zIndexes = [10, 20, 15];
-            
+
             return (
               <motion.article
                 key={product.name}
@@ -154,7 +154,7 @@ const ProductsSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="bg-background border-4 border-foreground shadow-brutal p-6 relative"
-                style={{ 
+                style={{
                   transform: `rotate(${rotations[index]}) scale(${scales[index]})`,
                   zIndex: zIndexes[index]
                 }}
@@ -190,7 +190,7 @@ const ProductsSection = () => {
                     </>
                   )}
                 </h3>
-                
+
                 {/* Description */}
                 <p className="font-body text-sm text-muted-foreground mb-4 min-h-[40px]">
                   {product.description}
