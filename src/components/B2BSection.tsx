@@ -37,7 +37,7 @@ const B2BSection = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-36 h-36 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho ahumado - representando producto premium - Desktop */}
@@ -46,7 +46,7 @@ const B2BSection = () => {
         animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 6, repeat: Infinity, delay: 1 }}
       >
-        <img src="/tofuchos/tofucho ahumado.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho ahumado.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - entregas - Desktop XL */}
@@ -55,7 +55,7 @@ const B2BSection = () => {
         animate={{ x: [0, 20, 0], y: [0, -10, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain opacity-70 drop-shadow-lg" />
+        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain opacity-80 drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho pensando - Mobile */}
@@ -64,7 +64,7 @@ const B2BSection = () => {
         animate={{ y: [0, -12, 0], rotate: [0, 4, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho ahumado - Mobile */}
@@ -95,7 +95,7 @@ const B2BSection = () => {
           >
             <h2 className="font-display text-5xl sm:text-6xl lg:text-8xl mb-6">
               ¿ERES{" "}
-              <span className="text-primary">MAYORISTA</span>?
+              <span className="text-background">MAYORISTA</span>?
             </h2>
             <p className="font-body text-lg text-background/80 max-w-xl mx-auto mb-12">
               Llevamos el mejor tofu de Puebla a tu negocio.<br></br> Precios competitivos y entregas a domicilio.
@@ -118,7 +118,7 @@ const B2BSection = () => {
                 className={`p-6 border-2 border-background bg-background/5 backdrop-blur-sm ${index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
                   }`}
               >
-                <benefit.icon size={40} className="mb-4 text-primary mx-auto" />
+                <benefit.icon size={40} className="mb-4 text-background mx-auto" />
                 <h3 className="font-display text-xl mb-2">{benefit.title}</h3>
                 <p className="font-body text-sm text-background/70">{benefit.description}</p>
               </motion.div>
@@ -136,7 +136,7 @@ const B2BSection = () => {
               href="https://wa.me/522215606205?text=Hola!%20Soy%20mayorista%20y%20me%20interesa%20distribuir%20tofu%20Empátika"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-primary text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background))] hover:shadow-[12px_12px_0_0_hsl(var(--background))] hover:-translate-x-1 hover:-translate-y-1 transition-all"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-background text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background)/0.3)] hover:shadow-[12px_12px_0_0_hsl(var(--background)/0.3)] hover:-translate-x-1 hover:-translate-y-1 transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

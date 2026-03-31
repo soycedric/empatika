@@ -50,7 +50,7 @@ export const ProductSelector = ({ products, deliveryZone, onZoneChange, onAddPro
       {/* Zona de entrega */}
       <div className="mb-4 p-3 bg-muted border-2 border-foreground/20">
         <div className="flex items-center gap-2 mb-2">
-          <MapPin className="w-4 h-4 text-primary" />
+          <MapPin className="w-4 h-4 text-foreground" />
           <label className="text-xs font-display uppercase tracking-wider text-muted-foreground">
             Zona de entrega
           </label>
@@ -75,7 +75,7 @@ export const ProductSelector = ({ products, deliveryZone, onZoneChange, onAddPro
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="p-3 bg-primary/10 border-2 border-primary/30 rounded"
+          className="p-3 bg-foreground/5 border-2 border-foreground/30 rounded"
         >
           <p className="text-xs font-display uppercase tracking-wider text-muted-foreground mb-2">
             📦 Puntos de recogida en CDMX:
@@ -83,7 +83,7 @@ export const ProductSelector = ({ products, deliveryZone, onZoneChange, onAddPro
           <ul className="text-xs space-y-1">
             {CDMX_PICKUP_POINTS.map((point, index) => (
               <li key={index} className="flex items-center gap-2">
-                <span className="text-primary">•</span>
+                <span className="text-foreground">•</span>
                 <span>{point}</span>
               </li>
             ))}
@@ -108,7 +108,7 @@ export const ProductSelector = ({ products, deliveryZone, onZoneChange, onAddPro
           onClick={handleAdd}
           disabled={!selectedProductId}
           size="icon"
-          className="btn-brutal-icon"
+          className="p-2 border-2 border-foreground bg-foreground text-background shadow-brutal hover:translate-x-[-1px] hover:translate-y-[-1px] transition-transform"
           aria-label="Agregar producto al pedido"
         >
           <Plus className="w-4 h-4" />

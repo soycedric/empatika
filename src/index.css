@@ -38,12 +38,12 @@
 /* Empátika Brutalist Design System */
 @layer base {
   :root {
-    /* Core Palette - Extracted from labels */
-    --paper: 43 33% 92%;
-    --ink: 0 0% 10%;
+    /* Core Palette - Matched to physical label */
+    --paper: 40 30% 90%;
+    --ink: 0 0% 0%;
     --yellow-industrial: 50 100% 50%;
     --orange-rust: 25 85% 37%;
-    --cream: 40 30% 95%;
+    --cream: 40 28% 93%;
 
     /* Semantic tokens */
     --background: var(--paper);
@@ -56,8 +56,8 @@
     --primary-foreground: var(--ink);
     --secondary: var(--orange-rust);
     --secondary-foreground: 0 0% 100%;
-    --muted: 40 20% 88%;
-    --muted-foreground: 0 0% 25%;
+    --muted: 40 20% 86%;
+    --muted-foreground: 0 0% 20%;
     --accent: var(--orange-rust);
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
@@ -134,55 +134,28 @@
     border-width: 0;
   }
 
-  /* Paper texture effect - using crumpled paper background */
+  /* Clean flat cream background — no paper texture */
   .paper-texture {
     position: relative;
     background-color: hsl(var(--paper));
   }
 
   .paper-texture::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/background_papel.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
-    opacity: 0.35;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 1;
+    display: none;
   }
 
   .paper-texture::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      /* Subtle lighting from top-left */
-      linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%, rgba(0, 0, 0, 0.02) 100%),
-      /* Slight vignette */
-      radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.03) 100%);
-    pointer-events: none;
-    z-index: 1;
+    display: none;
   }
 
-  /* Global paper background for all sections */
+  /* Global flat cream background for all sections */
   .bg-paper-texture {
     position: relative;
+    background-color: hsl(var(--paper));
   }
 
   .bg-paper-texture::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/background_papel.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.25;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 0;
+    display: none;
   }
 
   h1,
@@ -194,9 +167,9 @@
   h3 *,
   h4 * {
     font-family: 'Gunplay', sans-serif;
-    text-transform: none;
-    letter-spacing: -0.01em;
-    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
   }
 
   /* Hero title layers */
@@ -356,6 +329,79 @@
     height: 25px;
     background: hsl(var(--yellow-industrial) / 0.7);
     border: 1px solid hsl(var(--ink) / 0.3);
+  }
+
+  /* Heading massive — hero-scale display text */
+  .heading-massive {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 0.9;
+  }
+
+  /* Label nutrimental — black block with white text (from physical label) */
+  .label-nutrimental {
+    @apply bg-foreground text-background font-body;
+    padding: 0.75rem 1rem;
+    border: 3px solid hsl(var(--ink));
+  }
+
+  .label-nutrimental th,
+  .label-nutrimental td {
+    @apply font-body text-xs;
+    padding: 0.2rem 0.5rem;
+    border-bottom: 1px solid hsl(var(--background) / 0.2);
+    text-align: left;
+  }
+
+  .label-nutrimental th {
+    @apply font-bold uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .label-nutrimental .label-header {
+    @apply font-display text-sm uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid hsl(var(--background) / 0.4);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Diagonal stripe pattern — replicates the TOFU label diagonal bars */
+  .diagonal-stripe {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagonal-stripe::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(-55deg,
+        transparent,
+        transparent 12px,
+        hsl(var(--ink)) 12px,
+        hsl(var(--ink)) 24px);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Map brutalist filter — grayscale + sepia to match cream/black palette */
+  .map-brutalist {
+    filter: grayscale(1) contrast(1.15) sepia(0.2) brightness(0.95);
+  }
+
+  .map-brutalist .leaflet-tile {
+    filter: grayscale(1) contrast(1.15) sepia(0.2) brightness(0.95);
+  }
+
+  /* Macro badge — aggressive nutritional highlight for fitness audience */
+  .macro-badge {
+    @apply inline-flex items-center gap-1 bg-foreground text-background font-body text-xs uppercase tracking-wider px-3 py-1.5;
+    border: 2px solid hsl(var(--ink));
+    letter-spacing: 0.08em;
   }
 
   /* Placeholder tile for pending assets */

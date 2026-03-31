@@ -35,7 +35,7 @@ export const OrderItemsList = ({ items, onUpdateQuantity, onRemoveItem }: OrderI
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="flex items-center gap-3 p-3 bg-muted/50 border-2 border-foreground/20 hover:border-primary/50 transition-colors"
+                className="flex items-center gap-3 p-3 bg-muted/50 border-2 border-foreground/20 hover:border-foreground/50 transition-colors"
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm truncate">
@@ -45,7 +45,7 @@ export const OrderItemsList = ({ items, onUpdateQuantity, onRemoveItem }: OrderI
                     {(item.product.weight * item.quantity).toFixed(2)} kg
                   </p>
                 </div>
-                
+
                 <div className="flex items-center gap-1">
                   <Button
                     variant="outline"
@@ -56,11 +56,11 @@ export const OrderItemsList = ({ items, onUpdateQuantity, onRemoveItem }: OrderI
                   >
                     <Minus className="w-3 h-3" />
                   </Button>
-                  
+
                   <span className="w-7 text-center font-bold font-display text-sm" aria-label={`Cantidad: ${item.quantity}`}>
                     {item.quantity}
                   </span>
-                  
+
                   <Button
                     variant="outline"
                     size="icon"
@@ -70,7 +70,7 @@ export const OrderItemsList = ({ items, onUpdateQuantity, onRemoveItem }: OrderI
                   >
                     <Plus className="w-3 h-3" />
                   </Button>
-                  
+
                   <Button
                     variant="ghost"
                     size="icon"

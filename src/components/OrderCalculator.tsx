@@ -126,7 +126,7 @@ export const OrderCalculator = () => {
               viewport={{ once: true }}
               className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
             >
-              CALCULA TU <span className="inline-block bg-primary text-foreground px-2">PEDIDO</span>
+              CALCULA TU <span className="inline-block bg-foreground text-background px-2">PEDIDO</span>
             </motion.h2>
 
             <motion.p
@@ -150,12 +150,7 @@ export const OrderCalculator = () => {
               />
 
               {/* Card de items del pedido */}
-              <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
-                  ? 'bg-green-50 dark:bg-green-950/30'
-                  : items.length === 0
-                    ? ''
-                    : 'bg-orange-50 dark:bg-orange-950/30'
-                }`}>
+              <div className={`bg-background border-4 border-foreground shadow-brutal p-6`}>
                 <div className="flex justify-between items-center pb-3 border-b-2 border-foreground/20 mb-6">
                   <h3 className="font-display text-2xl flex items-center gap-2">
                     <Package className="w-6 h-6" />

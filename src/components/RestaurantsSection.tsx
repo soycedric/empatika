@@ -42,7 +42,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-36 h-36 object-contain opacity-90 drop-shadow-lg" />
+        <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho leyendo recetas - Desktop */}
@@ -51,7 +51,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, 10, 0], rotate: [2, -2, 2] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain opacity-80 drop-shadow-lg" />
+        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho cocinando - Mobile y Tablet */}
@@ -60,7 +60,7 @@ const RestaurantsSection = () => {
           animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
+          <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
         </motion.div>
       </div>
 
@@ -70,7 +70,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
       </motion.div>
 
       <div className="container mx-auto px-4 mt-8">
@@ -81,11 +81,11 @@ const RestaurantsSection = () => {
           className="text-center mb-12 space-y-3"
         >
           <h2 className="font-display text-4xl sm:text-5xl text-background">
-            Restaurantes que <span className="text-highlight-yellow">confían</span> en nosotros
+            Restaurantes que <span className="bg-background text-foreground px-1">confían</span> en nosotros
           </h2>
           <p className="font-body text-sm text-background/70 max-w-2xl mx-auto">
             Restaurantes que ya sirven Empátika. ¿Qué esperas para formar parte de esta lista?
-            </p>
+          </p>
         </motion.div>
 
         {/* Restaurant logos/cards */}
@@ -103,7 +103,7 @@ const RestaurantsSection = () => {
           className="text-center mt-10 font-body text-sm text-background/70"
         >
           ¿Tu restaurante usa Empátika?{" "}
-          <a href="https://wa.me/522215606205" className="underline text-primary hover:text-primary/80">
+          <a href="https://wa.me/522215606205" className="underline text-background hover:text-background/70">
             Contáctanos
           </a>
         </motion.p>

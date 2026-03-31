@@ -82,13 +82,12 @@ export const OrderSummary = ({
       </div>
 
       {/* Card Principal: Estado */}
-      <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${
-        validation.isValid 
-          ? 'bg-green-50 dark:bg-green-950/30' 
+      <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
+          ? 'bg-green-50 dark:bg-green-950/30'
           : items.length === 0
-          ? ''
-          : 'bg-orange-50 dark:bg-orange-950/30'
-      }`}>
+            ? ''
+            : 'bg-orange-50 dark:bg-orange-950/30'
+        }`}>
         <div className="space-y-6">
           {/* Estado e Icono */}
           <div className="text-center">
@@ -108,8 +107,8 @@ export const OrderSummary = ({
               )}
             </div>
             <h4 className="font-display text-2xl mb-2">
-              {validation.isValid 
-                ? (deliveryZone === 'puebla' ? '¡ENVÍO GRATIS!' : '¡LISTO PARA RECOGER!') 
+              {validation.isValid
+                ? (deliveryZone === 'puebla' ? '¡ENVÍO GRATIS!' : '¡LISTO PARA RECOGER!')
                 : items.length > 0 ? 'COMPLETA TU PEDIDO' : ''}
             </h4>
           </div>
@@ -120,7 +119,7 @@ export const OrderSummary = ({
               Volumen Total
             </p>
             <div className="flex items-baseline justify-center gap-2">
-              <span className="text-7xl font-display font-bold text-primary">
+              <span className="text-7xl font-display font-bold text-foreground">
                 {totalVolume.toFixed(1)}
               </span>
               <span className="text-3xl font-display text-muted-foreground">kg</span>
@@ -138,14 +137,13 @@ export const OrderSummary = ({
 
             <div className="h-4 bg-muted border-2 border-foreground overflow-hidden">
               <motion.div
-                className={`h-full ${
-                  validation.isValid 
-                    ? 'bg-green-500' 
-                    : 'bg-primary'
-                }`}
+                className={`h-full ${validation.isValid
+                    ? 'bg-green-500'
+                    : 'bg-foreground'
+                  }`}
                 initial={{ width: 0 }}
-                animate={{ 
-                  width: `${Math.min(100, (totalVolume / minimumVolume) * 100)}%` 
+                animate={{
+                  width: `${Math.min(100, (totalVolume / minimumVolume) * 100)}%`
                 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               />
@@ -154,11 +152,10 @@ export const OrderSummary = ({
 
           {/* Mensaje de validación */}
           {items.length > 0 && (
-            <div className={`p-4 border-2 border-foreground text-center font-medium text-sm ${
-              validation.isValid 
-                ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200' 
+            <div className={`p-4 border-2 border-foreground text-center font-medium text-sm ${validation.isValid
+                ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200'
                 : 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200'
-            }`}>
+              }`}>
               {validation.message}
             </div>
           )}
@@ -168,13 +165,13 @@ export const OrderSummary = ({
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 bg-primary/10 border-2 border-primary/40 flex items-start gap-3"
+              className="p-4 bg-foreground/5 border-2 border-foreground/40 flex items-start gap-3"
             >
-              <Lightbulb className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <Lightbulb className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
               <p className="text-sm">
                 <span className="font-bold">Tip:</span>{' '}
                 Agrega{' '}
-                <span className="font-bold text-primary">
+                <span className="font-bold text-foreground">
                   {suggestion.quantity} {suggestion.product.name} ({suggestion.product.weight} kg)
                 </span>{' '}
                 para alcanzar el mínimo de {minimumVolume} kg y obtener{' '}
@@ -201,8 +198,8 @@ export const OrderSummary = ({
                   Encuentra nuestros productos en distribuidores cerca de ti
                 </p>
               </div>
-              <Button 
-                className="w-full font-display text-base py-6 btn-brutal" 
+              <Button
+                className="w-full font-display text-base py-6 inline-flex items-center justify-center px-8 border-[3px] border-foreground bg-foreground text-background cursor-pointer shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg uppercase"
                 size="lg"
                 onClick={onCalculate}
               >
@@ -216,13 +213,13 @@ export const OrderSummary = ({
                   {deliveryZone === 'puebla' ? '¡LISTO PARA ENVIAR!' : '¡LISTO PARA RECOGER!'}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {deliveryZone === 'puebla' 
-                    ? 'Tu pedido califica para envío gratis' 
+                  {deliveryZone === 'puebla'
+                    ? 'Tu pedido califica para envío gratis'
                     : 'Coméntanos el punto de entrega de tu pedido.'}
                 </p>
               </div>
-              <Button 
-                className="w-full font-display text-base py-6 bg-green-600 hover:bg-green-700 border-4 border-foreground shadow-brutal hover:shadow-brutal-hover active:shadow-none transition-all" 
+              <Button
+                className="w-full font-display text-base py-6 bg-green-600 hover:bg-green-700 border-4 border-foreground shadow-brutal hover:shadow-brutal-hover active:shadow-none transition-all"
                 size="lg"
                 onClick={onCalculate}
               >

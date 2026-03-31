@@ -12,20 +12,19 @@ interface ProductCardProps {
 
 const ProductCard = ({ name, variant, description, weight, protein, image, index }: ProductCardProps) => {
   const isYellow = variant === "extra-firme";
-  
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      className={`card-brutal relative overflow-hidden ${
-        index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
-      }`}
+      className={`card-brutal relative overflow-hidden ${index % 2 === 0 ? "rotate-chaos-1" : "rotate-chaos-2"
+        }`}
     >
       {/* Tape effect */}
       <div className="tape" />
-      
+
       {/* Product Image */}
       <div className="relative aspect-square mb-4 bg-cream border-2 border-foreground overflow-hidden">
         <img
@@ -34,17 +33,17 @@ const ProductCard = ({ name, variant, description, weight, protein, image, index
           className="w-full h-full object-cover"
           loading="lazy"
         />
-        
+
         {/* Floating mascot */}
         <motion.div
           className="absolute -bottom-4 -right-4"
           animate={{ y: [0, -5, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          <img 
-            src={variant === "extra-firme" ? "/tofuchos/tofucho_fuerte.svg" : "/tofuchos/tofucho_ahumado.svg"} 
-            alt={`Tofucho ${name}`} 
-            className="w-24 h-24" 
+          <img
+            src={variant === "extra-firme" ? "/tofuchos/tofucho_fuerte.svg" : "/tofuchos/tofucho_ahumado.svg"}
+            alt={`Tofucho ${name}`}
+            className="w-24 h-24"
           />
         </motion.div>
       </div>
@@ -53,11 +52,11 @@ const ProductCard = ({ name, variant, description, weight, protein, image, index
       <div className="space-y-3">
         <h3 className="font-display text-3xl">
           TOFU{" "}
-          <span className={isYellow ? "inline-block bg-primary text-foreground px-1" : "inline-block bg-secondary text-secondary-foreground px-1"}>
+          <span className="inline-block bg-foreground text-background px-1">
             {name}
           </span>
         </h3>
-        
+
         <p className="font-body text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>

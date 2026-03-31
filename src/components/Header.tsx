@@ -71,7 +71,7 @@ const Header = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 border-2 border-foreground shadow-brutal bg-primary"
+          className="md:hidden p-2 border-2 border-foreground shadow-brutal bg-background"
           aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={isMenuOpen}
         >

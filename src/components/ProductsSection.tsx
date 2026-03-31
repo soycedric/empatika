@@ -8,6 +8,14 @@ const products = [
     weight: "400g | 1 kg",
     protein: "8g",
     color: "yellow" as const,
+    macros: {
+      calorias: "110 kcal",
+      proteina: "13 g",
+      grasa: "7 g",
+      carbohidratos: "<1 g",
+      sodio: "10 mg",
+    },
+    ingredientes: "Agua, Soya, Cloruro de magnesio.",
   },
   {
     name: "Ahumado",
@@ -16,6 +24,14 @@ const products = [
     weight: "400 g | 1 kg",
     protein: "8g",
     color: "orange" as const,
+    macros: {
+      calorias: "110 kcal",
+      proteina: "13 g",
+      grasa: "7 g",
+      carbohidratos: "<1 g",
+      sodio: "15 mg",
+    },
+    ingredientes: "Agua, Soya, Cloruro de magnesio, Humo natural.",
   },
   {
     name: "Veganesa",
@@ -24,61 +40,22 @@ const products = [
     weight: "500 g",
     protein: "0g",
     color: "yellow" as const,
+    macros: {
+      calorias: "90 kcal",
+      proteina: "0 g",
+      grasa: "8 g",
+      carbohidratos: "3 g",
+      sodio: "120 mg",
+    },
+    ingredientes: "Aceite vegetal, Agua, Vinagre, Sal, Mostaza.",
   },
-];
-
-// Tofuchos para decorar la sección de productos - posiciones en los bordes
-const productTofuchos = [
-  { src: "/tofuchos/tofucho riendo.png", position: "bottom-8 left-4 xl:left-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
-  { src: "/tofuchos/tofucho sorprendido.png", position: "top-20 right-4 xl:right-12", size: "w-14 h-14 xl:w-18 xl:h-18", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
-];
-
-// Tofuchos para mobile - más grandes y distribuidos
-const productMobileTofuchos = [
-  { src: "/tofuchos/tofucho ahumado.png", position: "top-8 right-4", size: "w-24 h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
-  { src: "/tofuchos/tofucho riendo.png", position: "bottom-8 right-4", size: "w-30 h-30", animation: { y: [0, -10, 0] } },
 ];
 
 const ProductsSection = () => {
   return (
     <section id="productos" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
-      {/* Tofuchos decorativos flotantes - Desktop */}
-      {productTofuchos.map((tofucho, index) => (
-        <motion.div
-          key={index}
-          className={`absolute ${tofucho.position} z-10 hidden lg:block`}
-          animate={tofucho.animation}
-          transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <img
-            src={tofucho.src}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            className={`${tofucho.size} object-contain opacity-80 drop-shadow-lg`}
-          />
-        </motion.div>
-      ))}
-
-      {/* Tofuchos decorativos flotantes - Mobile y Tablet */}
-      {productMobileTofuchos.map((tofucho, index) => (
-        <motion.div
-          key={`mobile-${index}`}
-          className={`absolute ${tofucho.position} z-40 lg:hidden`}
-          animate={tofucho.animation}
-          transition={{ duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <img
-            src={tofucho.src}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            className={`${tofucho.size} object-contain drop-shadow-lg`}
-          />
-        </motion.div>
-      ))}
       <div className="container mx-auto px-4">
-        {/* Section Header - Unified */}
+        {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <motion.span
             initial={{ opacity: 0 }}
@@ -95,7 +72,7 @@ const ProductsSection = () => {
             viewport={{ once: true }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
           >
-            SOMOS MÁS QUE <span className="inline-block bg-primary text-foreground px-2">TOFU</span>
+            SOMOS MÁS QUE <span className="inline-block bg-foreground text-background px-2">TOFU</span>
           </motion.h2>
 
           <motion.p
@@ -116,35 +93,28 @@ const ProductsSection = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-wrap justify-center gap-2 sm:gap-3"
           >
-            <span className="sticker bg-background text-xs sm:text-sm">🌱 100% Vegano</span>
-            <span className="sticker bg-background text-xs sm:text-sm" style={{ transform: "rotate(1deg)" }}>
+            <span className="border-2 border-foreground font-body text-xs px-3 py-1.5 uppercase tracking-wider">🌱 100% Vegano</span>
+            <span className="border-2 border-foreground font-body text-xs px-3 py-1.5 uppercase tracking-wider" style={{ transform: "rotate(1deg)" }}>
               🇲🇽 Hecho en México
             </span>
-            <span className="sticker bg-background text-xs sm:text-sm" style={{ transform: "rotate(-1deg)" }}>
+            <span className="border-2 border-foreground font-body text-xs px-3 py-1.5 uppercase tracking-wider" style={{ transform: "rotate(-1deg)" }}>
               💪 Alto en proteína
             </span>
-            <span className="sticker bg-background text-xs sm:text-sm" style={{ transform: "rotate(2deg)" }}>
+            <span className="border-2 border-foreground font-body text-xs px-3 py-1.5 uppercase tracking-wider" style={{ transform: "rotate(2deg)" }}>
               ❤️ Artesanal
             </span>
           </motion.div>
         </div>
 
         {/* Products Grid */}
-        <div className="relative grid md:grid-cols-3 gap-8 sm:gap-12 max-w-5xl mx-auto px-4">
+        <div className="relative grid md:grid-cols-3 gap-8 sm:gap-10 max-w-5xl mx-auto px-4">
           {products.map((product, index) => {
-            const bgColor =
-              product.color === "yellow" ? "bg-primary" :
-                product.color === "orange" ? "bg-secondary" :
-                  "bg-cream";
+            const bgColor = "bg-foreground";
+            const textColor = "text-background";
 
-            const buttonClass =
-              product.color === "yellow" ? "btn-brutal text-sm" :
-                product.color === "orange" ? "btn-brutal-orange text-sm" :
-                  "btn-brutal text-sm";
+            const buttonClass = "inline-flex items-center justify-center px-6 py-3 font-display text-sm uppercase border-[3px] border-foreground bg-foreground text-background cursor-pointer shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg";
 
-            const rotations = ["-2deg", "1.5deg", "-1deg"];
-            const scales = [1, 1.05, 0.98];
-            const zIndexes = [10, 20, 15];
+            const rotations = ["-1.5deg", "1deg", "-0.5deg"];
 
             return (
               <motion.article
@@ -153,18 +123,15 @@ const ProductsSection = () => {
                 whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="bg-background border-4 border-foreground shadow-brutal p-6 relative"
-                style={{
-                  transform: `rotate(${rotations[index]}) scale(${scales[index]})`,
-                  zIndex: zIndexes[index]
-                }}
+                className="bg-background border-[3px] border-foreground shadow-brutal relative diagonal-stripe"
+                style={{ transform: `rotate(${rotations[index]})` }}
               >
                 {/* Product Image */}
-                <div className="relative aspect-square mb-4 bg-muted/20 border-2 border-foreground overflow-hidden">
+                <div className="relative aspect-square bg-muted/20 border-b-[3px] border-foreground overflow-hidden">
                   <img
                     src={`/productos/${product.variant}.jpg`}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover relative z-[1]"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                       e.currentTarget.nextElementSibling?.classList.remove('hidden');
@@ -175,48 +142,86 @@ const ProductsSection = () => {
                   </div>
                 </div>
 
-                {/* Product Title */}
-                <h3 className="font-display text-3xl mb-2">
-                  {product.variant === "veganesa" ? (
-                    <span className={`inline-block ${bgColor} text-foreground px-2`}>
-                      {product.name}
-                    </span>
-                  ) : (
-                    <>
-                      Tofu{" "}
-                      <span className={`inline-block ${bgColor} text-foreground px-2`}>
+                {/* Product Info */}
+                <div className="p-5 relative z-[1]">
+                  {/* Product Title */}
+                  <h3 className="font-display text-2xl sm:text-3xl mb-2">
+                    {product.variant === "veganesa" ? (
+                      <span className={`inline-block ${bgColor} ${textColor} px-2`}>
                         {product.name}
                       </span>
-                    </>
-                  )}
-                </h3>
+                    ) : (
+                      <>
+                        Tofu{" "}
+                        <span className={`inline-block ${bgColor} ${textColor} px-2`}>
+                          {product.name}
+                        </span>
+                      </>
+                    )}
+                  </h3>
 
-                {/* Description */}
-                <p className="font-body text-sm text-muted-foreground mb-4 min-h-[40px]">
-                  {product.description}
-                </p>
+                  {/* Description */}
+                  <p className="font-body text-sm text-muted-foreground mb-4 min-h-[40px]">
+                    {product.description}
+                  </p>
 
-                {/* Specs - Minimalist */}
-                <div className="flex gap-3 mb-6 text-xs font-body">
-                  <span className="inline-flex items-center gap-1">
-                    <span className="w-2 h-2 bg-foreground"></span>
-                    {product.weight}
-                  </span>
-                  {product.protein !== "0g" && (
-                    <span className="inline-flex items-center gap-1">
-                      <span className="w-2 h-2 bg-foreground"></span>
-                      {product.protein} proteína
+                  {/* Macro Badges — aggressive black blocks */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="border-2 border-foreground font-body text-xs uppercase tracking-wider px-3 py-1.5">
+                      📦 {product.weight}
                     </span>
-                  )}
-                </div>
+                    {product.protein !== "0g" && (
+                      <span className="border-2 border-foreground font-body text-xs uppercase tracking-wider px-3 py-1.5">
+                        💪 {product.protein} proteína
+                      </span>
+                    )}
+                  </div>
 
-                {/* CTA */}
-                <a
-                  href="#calculadora"
-                  className={buttonClass}
-                >
-                  Comprar
-                </a>
+                  {/* Declaración Nutrimental — label style */}
+                  <div className="label-nutrimental">
+                    <div className="label-header">Declaración Nutrimental</div>
+                    <p className="text-[10px] text-background/60 mb-2 font-body">
+                      Por 100g
+                    </p>
+                    <table className="w-full">
+                      <tbody>
+                        <tr>
+                          <td>Calorías</td>
+                          <td className="text-right font-bold">{product.macros.calorias}</td>
+                        </tr>
+                        <tr>
+                          <td>Proteína</td>
+                          <td className="text-right font-bold">{product.macros.proteina}</td>
+                        </tr>
+                        <tr>
+                          <td>Grasa</td>
+                          <td className="text-right font-bold">{product.macros.grasa}</td>
+                        </tr>
+                        <tr>
+                          <td>Carbohidratos</td>
+                          <td className="text-right font-bold">{product.macros.carbohidratos}</td>
+                        </tr>
+                        <tr>
+                          <td>Sodio</td>
+                          <td className="text-right font-bold">{product.macros.sodio}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Ingredientes */}
+                  <p className="font-body text-[10px] text-muted-foreground mt-3 italic">
+                    Ingredientes: {product.ingredientes}
+                  </p>
+
+                  {/* CTA */}
+                  <a
+                    href="#calculadora"
+                    className={`${buttonClass} mt-4 w-full justify-center`}
+                  >
+                    Comprar
+                  </a>
+                </div>
               </motion.article>
             );
           })}

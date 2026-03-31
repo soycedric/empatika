@@ -21,9 +21,9 @@ const distributors: Distributor[] = distributorsData;
 
 const markerIcon = L.icon({
   iconUrl: "/tofuchos/tofucho corriendo.png",
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
-  popupAnchor: [0, -40],
+  iconSize: [24, 24],
+  iconAnchor: [12, 24],
+  popupAnchor: [0, -20],
 });
 
 const center: [number, number] = [19.04, -98.2];
@@ -40,7 +40,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -12, 0], scale: [1, 1.05, 1] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - Mobile y Tablet */}
@@ -49,7 +49,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho sorprendido - Mobile y Tablet */}
@@ -67,7 +67,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-12 h-12 object-contain drop-shadow-lg" />
+        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">
@@ -80,7 +80,7 @@ const DistributorsSection = () => {
           >
             <span className="text-dymo text-xs inline-block">Puntos de venta</span>
             <h2 className="font-display text-4xl sm:text-5xl">
-              <span className="inline-block bg-primary text-foreground px-2">DÓNDE</span> COMPRAR
+              <span className="inline-block bg-foreground text-background px-2">DÓNDE</span> COMPRAR
             </h2>
 
             <div className="relative aspect-video border-4 border-foreground shadow-brutal overflow-hidden">
@@ -93,7 +93,7 @@ const DistributorsSection = () => {
                 dragging
                 doubleClickZoom
                 touchZoom
-                className="h-full w-full"
+                className="h-full w-full map-brutalist"
               >
                 <TileLayer
                   attribution=''
@@ -122,7 +122,7 @@ const DistributorsSection = () => {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="hidden lg:flex p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4"
+              className="hidden lg:flex p-4 border-2 border-foreground bg-foreground/5 flex items-center justify-between gap-4"
             >
               <div>
                 <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
@@ -132,7 +132,7 @@ const DistributorsSection = () => {
                 href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-brutal text-xs whitespace-nowrap"
+                className="inline-flex items-center justify-center px-6 py-3 font-display text-xs uppercase border-[3px] border-foreground bg-foreground text-background whitespace-nowrap shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg"
               >
                 Pedir ahora
               </a>
@@ -146,7 +146,7 @@ const DistributorsSection = () => {
             viewport={{ once: true }}
             className="space-y-4 order-last lg:order-last"
           >
-            <h3 className="font-display text-xl inline-block bg-secondary text-secondary-foreground px-2">DISTRIBUIDORES</h3>
+            <h3 className="font-display text-xl inline-block bg-foreground text-background px-2">DISTRIBUIDORES</h3>
 
             {distributors.map((dist, index) => {
               const Icon = dist.type === "supermarket" ? ShoppingBag : dist.type === "organic" ? Leaf : Store;
@@ -157,9 +157,9 @@ const DistributorsSection = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-start gap-4 p-4 border-2 border-foreground bg-background hover:bg-primary/10 transition-colors"
+                  className="flex items-start gap-4 p-4 border-2 border-foreground bg-background hover:bg-foreground/5 transition-colors"
                 >
-                  <div className="p-2 bg-primary border-2 border-foreground shrink-0">
+                  <div className="p-2 bg-foreground text-background border-2 border-foreground shrink-0">
                     <Icon size={18} />
                   </div>
                   <div className="flex-1">
@@ -199,7 +199,7 @@ const DistributorsSection = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="lg:hidden p-4 border-2 border-foreground bg-primary/10 flex items-center justify-between gap-4 mt-6 max-w-6xl mx-auto"
+          className="lg:hidden p-4 border-2 border-foreground bg-foreground/5 flex items-center justify-between gap-4 mt-6 max-w-6xl mx-auto"
         >
           <div>
             <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
@@ -209,7 +209,7 @@ const DistributorsSection = () => {
             href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-brutal text-xs whitespace-nowrap"
+            className="inline-flex items-center justify-center px-6 py-3 font-display text-xs uppercase border-[3px] border-foreground bg-foreground text-background whitespace-nowrap shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg"
           >
             Pedir ahora
           </a>
