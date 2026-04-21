@@ -41,8 +41,8 @@
     /* Core Palette - Matched to physical label */
     --paper: 40 30% 90%;
     --ink: 0 0% 0%;
-    --yellow-industrial: 50 100% 50%;
-    --orange-rust: 25 85% 37%;
+    --yellow-industrial: 40 30% 90%;
+    --orange-rust: 40 24% 86%;
     --cream: 40 28% 93%;
 
     /* Semantic tokens */
@@ -52,19 +52,19 @@
     --card-foreground: var(--ink);
     --popover: var(--paper);
     --popover-foreground: var(--ink);
-    --primary: var(--yellow-industrial);
+    --primary: var(--paper);
     --primary-foreground: var(--ink);
     --secondary: var(--orange-rust);
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: var(--ink);
     --muted: 40 20% 86%;
     --muted-foreground: 0 0% 20%;
     --accent: var(--orange-rust);
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: var(--ink);
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: var(--ink);
     --input: var(--ink);
-    --ring: var(--yellow-industrial);
+    --ring: var(--ink);
     --radius: 0;
 
     /* Typography */
@@ -74,8 +74,8 @@
     /* Brutalist shadows */
     --shadow-brutal: 4px 4px 0 hsl(var(--ink));
     --shadow-brutal-lg: 8px 8px 0 hsl(var(--ink));
-    --shadow-brutal-yellow: 4px 4px 0 hsl(var(--yellow-industrial));
-    --shadow-brutal-orange: 4px 4px 0 hsl(var(--orange-rust));
+    --shadow-brutal-yellow: 4px 4px 0 hsl(var(--ink));
+    --shadow-brutal-orange: 4px 4px 0 hsl(var(--ink));
   }
 
   .dark {
@@ -102,7 +102,7 @@
 
   /* Skip link para accesibilidad */
   .skip-link {
-    @apply absolute -top-full left-4 z-[100] bg-primary text-foreground px-4 py-2 font-display border-2 border-foreground;
+    @apply absolute -top-full left-4 z-[100] bg-primary text-primary-foreground px-4 py-2 font-display border-2 border-foreground;
     transition: top 0.2s;
   }
 
@@ -223,7 +223,7 @@
 
   /* Brutalist Buttons */
   .btn-brutal {
-    @apply inline-flex items-center justify-center px-6 py-3 font-display text-lg uppercase border-2 border-foreground bg-primary text-foreground cursor-pointer;
+    @apply inline-flex items-center justify-center px-6 py-3 font-display text-lg uppercase border-2 border-foreground bg-primary text-primary-foreground cursor-pointer;
     box-shadow: var(--shadow-brutal);
     transition: transform 0.15s, box-shadow 0.15s;
   }
@@ -441,5 +441,20 @@
 
   .shadow-brutal-orange {
     box-shadow: var(--shadow-brutal-orange);
+  }
+}
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

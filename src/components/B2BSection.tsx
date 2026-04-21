@@ -97,10 +97,10 @@ const B2BSection = () => {
               ¿ERES{" "}
               <span className="text-background">MAYORISTA</span>?
             </h2>
-            <p className="font-body text-lg text-background/80 max-w-xl mx-auto mb-12">
+            <p className="font-body text-lg text-background/90 max-w-xl mx-auto mb-12">
               Llevamos el mejor tofu de Puebla a tu negocio.<br></br> Precios competitivos y entregas a domicilio.
             </p>
-            <div className="font-body text-sm text-background/80 max-w-xl mx-auto mb-8 space-y-1">
+            <div className="font-body text-sm text-background/90 max-w-xl mx-auto mb-8 space-y-1">
               <p>• Puebla: entregas jueves, viernes y sábado.</p>
               <p>• CDMX: entregas los viernes.</p>
             </div>
@@ -120,7 +120,7 @@ const B2BSection = () => {
               >
                 <benefit.icon size={40} className="mb-4 text-background mx-auto" />
                 <h3 className="font-display text-xl mb-2">{benefit.title}</h3>
-                <p className="font-body text-sm text-background/70">{benefit.description}</p>
+                <p className="font-body text-sm text-background/90">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -143,7 +143,7 @@ const B2BSection = () => {
               QUIERO DISTRIBUIR
               <ArrowRight size={28} />
             </motion.a>
-            <p className="font-body text-sm text-background/80">
+            <p className="font-body text-sm text-background/90">
               Respuesta en menos de 24 horas
             </p>
           </motion.div>

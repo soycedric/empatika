@@ -117,15 +117,19 @@ const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[
   const [logoFailed, setLogoFailed] = useState(false);
 
   return (
-    <motion.div
+    <motion.a
+      href={restaurant.mapUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="card-brutal bg-background text-foreground"
+      className="card-brutal bg-background text-foreground block cursor-pointer group hover:-translate-y-1 hover:shadow-brutal-lg transition-all duration-200"
+      aria-label={`Ver ubicación de ${restaurant.name} en Google Maps`}
     >
       {/* Logo */}
-      <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg border-2 border-foreground flex items-center justify-center overflow-hidden">
+      <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg border-2 border-foreground flex items-center justify-center overflow-hidden group-hover:border-foreground/70 transition-colors">
         {logoFailed ? (
           <span className="text-2xl" aria-hidden="true">🍽️</span>
         ) : (
@@ -140,25 +144,22 @@ const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[
       </div>
 
       <h3 className="font-display text-lg text-center mb-1">{restaurant.name}</h3>
-      <a
-        href={restaurant.mapUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-body text-xs text-center mb-2 block hover:text-foreground/80 transition-colors"
-        aria-label={`Ver ubicación de ${restaurant.name} en el mapa`}
-      >
+      <p className="font-body text-xs text-center mb-2">
         📍 {restaurant.location}
-      </a>
-      <a
-        href={`https://instagram.com/${restaurant.instagram.replace('@', '')}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-body text-xs text-foreground hover:text-foreground/80 text-center block transition-colors font-medium"
+      </p>
+      <span
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.open(`https://instagram.com/${restaurant.instagram.replace('@', '')}`, '_blank', 'noopener,noreferrer');
+        }}
+        className="font-body text-xs text-foreground hover:text-foreground/60 text-center block transition-colors font-medium cursor-pointer"
+        role="link"
         aria-label={`Instagram de ${restaurant.name}`}
       >
         {restaurant.instagram}
-      </a>
-    </motion.div>
+      </span>
+    </motion.a>
   );
 };
 

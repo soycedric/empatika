@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+import { toast } from 'sonner';
+import { useOrderContext } from '@/hooks/OrderContext';
+import { ShoppingCart } from 'lucide-react';
 
 const products = [
   {
@@ -52,6 +55,25 @@ const products = [
 ];
 
 const ProductsSection = () => {
+  const { addItem } = useOrderContext();
+
+  const handleAddToCart = (variant: string) => {
+    // Map product card variants to catalog product IDs (prefer 400g)
+    const variantToId: Record<string, string> = {
+      'extra-firme': 'tofu-extra-firme-400g',
+      'ahumado': 'tofu-ahumado-400g',
+      'veganesa': 'veganesa-500g',
+    };
+    const productId = variantToId[variant];
+    if (productId) {
+      addItem(productId, 1);
+      const product = products.find(p => p.variant === variant);
+      toast.success('¡Agregado al pedido!', {
+        description: `${product?.name ?? variant} añadido`,
+      });
+    }
+  };
+
   return (
     <section id="productos" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
       <div className="container mx-auto px-4">
@@ -114,7 +136,7 @@ const ProductsSection = () => {
 
             const buttonClass = "inline-flex items-center justify-center px-6 py-3 font-display text-sm uppercase border-[3px] border-foreground bg-foreground text-background cursor-pointer shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg";
 
-            const rotations = ["-1.5deg", "1deg", "-0.5deg"];
+            const rotations = ["-0.5deg", "0.3deg", "-0.2deg"];
 
             return (
               <motion.article
@@ -214,13 +236,22 @@ const ProductsSection = () => {
                     Ingredientes: {product.ingredientes}
                   </p>
 
-                  {/* CTA */}
-                  <a
-                    href="#calculadora"
-                    className={`${buttonClass} mt-4 w-full justify-center`}
-                  >
-                    Comprar
-                  </a>
+                  {/* CTAs */}
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => handleAddToCart(product.variant)}
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 font-display text-sm uppercase border-[3px] border-foreground bg-foreground text-background cursor-pointer shadow-brutal transition-all duration-150 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-lg"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                      Agregar
+                    </button>
+                    <a
+                      href="#calculadora"
+                      className="inline-flex items-center justify-center px-4 py-3 font-display text-sm uppercase border-[3px] border-foreground bg-transparent text-foreground cursor-pointer transition-all duration-150 hover:bg-foreground/5"
+                    >
+                      Ver pedido
+                    </a>
+                  </div>
                 </div>
               </motion.article>
             );

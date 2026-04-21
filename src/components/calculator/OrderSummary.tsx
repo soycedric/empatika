@@ -67,6 +67,8 @@ export const OrderSummary = ({
     return getSuggestion(remainingVolume, products);
   }, [validation.isValid, items.length, remainingVolume, products]);
 
+  const fillPercent = (totalVolume / minimumVolume) * 100;
+
   return (
     <div className="space-y-6">
       {/* Badges informativos */}
@@ -83,10 +85,10 @@ export const OrderSummary = ({
 
       {/* Card Principal: Estado */}
       <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
-          ? 'bg-green-50 dark:bg-green-950/30'
-          : items.length === 0
-            ? ''
-            : 'bg-orange-50 dark:bg-orange-950/30'
+        ? 'bg-green-50 dark:bg-green-950/30'
+        : items.length === 0
+          ? ''
+          : 'bg-orange-50 dark:bg-orange-950/30'
         }`}>
         <div className="space-y-6">
           {/* Estado e Icono */}
@@ -135,27 +137,46 @@ export const OrderSummary = ({
               </Badge>
             </div>
 
-            <div className="h-4 bg-muted border-2 border-foreground overflow-hidden">
+            <div className="h-5 bg-muted border-2 border-foreground overflow-hidden relative">
               <motion.div
                 className={`h-full ${validation.isValid
-                    ? 'bg-green-500'
-                    : 'bg-foreground'
+                  ? 'bg-green-500'
+                  : fillPercent > 60
+                    ? 'bg-amber-500'
+                    : 'bg-red-500'
                   }`}
                 initial={{ width: 0 }}
                 animate={{
-                  width: `${Math.min(100, (totalVolume / minimumVolume) * 100)}%`
+                  width: `${Math.min(100, fillPercent)}%`
                 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               />
+              {items.length > 0 && (
+                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-display font-bold text-foreground mix-blend-difference">
+                  {Math.min(100, Math.round(fillPercent))}%
+                </span>
+              )}
             </div>
+
+            {/* Celebration when minimum reached */}
+            {validation.isValid && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                className="text-center py-2"
+              >
+                <span className="text-2xl">🎉</span>
+                <p className="font-display text-sm text-green-700 dark:text-green-300 mt-1">
+                  {deliveryZone === 'puebla' ? '¡ENVÍO GRATIS DESBLOQUEADO!' : '¡RECOGIDA DISPONIBLE!'}
+                </p>
+              </motion.div>
+            )}
           </div>
 
           {/* Mensaje de validación */}
-          {items.length > 0 && (
-            <div className={`p-4 border-2 border-foreground text-center font-medium text-sm ${validation.isValid
-                ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200'
-                : 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200'
-              }`}>
+          {items.length > 0 && !validation.isValid && (
+            <div className={`p-4 border-2 border-foreground text-center font-medium text-sm bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200`}>
               {validation.message}
             </div>
           )}

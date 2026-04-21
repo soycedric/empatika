@@ -1,12 +1,12 @@
 /**
  * Componente: Calculadora de Pedidos
  * Orquestador que compone ProductSelector, OrderItemsList y OrderSummary
+ * Ahora usa OrderContext para estado compartido con ProductsSection y FloatingCart.
  */
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { useOrderCalculator } from '@/hooks/use-order-calculator';
+import { useOrderContext } from '@/hooks/OrderContext';
 import { Button } from '@/components/ui/button';
 import { Package, Trash2 } from 'lucide-react';
 import { getProductById } from '@/data/products';
@@ -35,8 +35,6 @@ const calculatorTofuchos = [
 ];
 
 export const OrderCalculator = () => {
-  const [deliveryZone, setDeliveryZone] = useState<DeliveryZone>('puebla');
-
   const {
     items,
     products,
@@ -44,11 +42,13 @@ export const OrderCalculator = () => {
     validation,
     remainingVolume,
     minimumVolume,
+    deliveryZone,
+    setDeliveryZone,
     addItem,
     updateItemQuantity,
     removeItem,
     clearOrder
-  } = useOrderCalculator(deliveryZone);
+  } = useOrderContext();
 
   const handleAddProduct = (productId: string) => {
     const product = getProductById(productId);

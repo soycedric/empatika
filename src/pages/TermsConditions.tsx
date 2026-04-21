@@ -22,7 +22,7 @@ const TermsConditions = () => {
             {/* Header */}
             <div className="mb-12 text-center">
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl mb-4">
-                TÉRMINOS Y <span className="bg-primary text-foreground px-2">CONDICIONES</span>
+                TÉRMINOS Y <span className="bg-primary text-primary-foreground px-2">CONDICIONES</span>
               </h1>
               <p className="text-sm text-muted-foreground font-body">
                 Última actualización: Febrero 2026

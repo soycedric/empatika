@@ -4,6 +4,8 @@ import ProductsSection from "@/components/ProductsSection";
 import SEOHead from "@/components/SEOHead";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingCart from "@/components/FloatingCart";
+import { OrderProvider } from "@/hooks/OrderContext";
 
 // Lazy load de componentes below-the-fold para reducir bundle inicial
 const OrderCalculator = lazy(() => import("@/components/OrderCalculator").then(m => ({ default: m.OrderCalculator })));
@@ -25,29 +27,32 @@ const Index = () => {
   return (
     <>
       <SEOHead />
-      <div className="min-h-screen bg-background bg-paper-texture">
-        <a href="#main-content" className="skip-link">
-          Saltar al contenido principal
-        </a>
-        <Header />
-        <main id="main-content">
-          <HeroSection />
-          <ProductsSection />
-          <Suspense fallback={<SectionSkeleton />}>
-            <OrderCalculator />
-          </Suspense>
-          <Suspense fallback={<SectionSkeleton />}>
-            <RestaurantsSection />
-          </Suspense>
-          <Suspense fallback={<SectionSkeleton />}>
-            <DistributorsSection />
-          </Suspense>
-          <Suspense fallback={<SectionSkeleton />}>
-            <B2BSection />
-          </Suspense>
-        </main>
-        <Footer />
-      </div>
+      <OrderProvider>
+        <div className="min-h-screen bg-background bg-paper-texture">
+          <a href="#main-content" className="skip-link">
+            Saltar al contenido principal
+          </a>
+          <Header />
+          <main id="main-content">
+            <HeroSection />
+            <ProductsSection />
+            <Suspense fallback={<SectionSkeleton />}>
+              <OrderCalculator />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <RestaurantsSection />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <DistributorsSection />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <B2BSection />
+            </Suspense>
+          </main>
+          <Footer />
+          <FloatingCart />
+        </div>
+      </OrderProvider>
     </>
   );
 };
