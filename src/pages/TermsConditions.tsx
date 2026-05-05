@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
+import { withBaseUrl } from "@/lib/base-url";
 
 const TermsConditions = () => {
   return (
@@ -227,7 +228,7 @@ const TermsConditions = () => {
                 <h2 className="font-display text-2xl mb-4">10. PRIVACIDAD Y DATOS PERSONALES</h2>
                 <p>
                   El tratamiento de sus datos personales se rige por nuestro 
-                  <a href="/aviso-privacidad" className="text-primary hover:underline font-bold"> Aviso de Privacidad</a>, 
+                  <a href={withBaseUrl("aviso-privacidad")} className="text-primary hover:underline font-bold"> Aviso de Privacidad</a>, 
                   el cual forma parte integral de estos Términos y Condiciones. Le recomendamos leerlo 
                   detenidamente para conocer cómo protegemos su información.
                 </p>
@@ -273,7 +274,7 @@ const TermsConditions = () => {
             {/* Back Button */}
             <div className="mt-12 text-center">
               <a
-                href="/"
+                href={withBaseUrl("")}
                 className="inline-block px-8 py-3 border-2 border-foreground bg-background hover:bg-primary shadow-brutal hover:-translate-y-1 transition-all font-display text-lg"
               >
                 ← VOLVER AL INICIO

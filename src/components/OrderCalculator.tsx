@@ -13,6 +13,7 @@ import { getProductById } from '@/data/products';
 import { ProductSelector } from '@/components/calculator/ProductSelector';
 import { OrderItemsList } from '@/components/calculator/OrderItemsList';
 import { OrderSummary } from '@/components/calculator/OrderSummary';
+import { withBaseUrl } from '@/lib/base-url';
 
 type DeliveryZone = 'puebla' | 'cdmx';
 
@@ -30,8 +31,8 @@ const CDMX_PICKUP_POINTS = [
 
 // Tofuchos para decorar la calculadora
 const calculatorTofuchos = [
-  { src: "/tofuchos/tofucho pensando.png", position: "top-12 left-4 xl:left-12", size: "w-20 h-20 xl:w-24 xl:h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
-  { src: "/tofuchos/tofucho sorprendido.png", position: "bottom-12 right-4 xl:right-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
+  { src: withBaseUrl("tofuchos/tofucho pensando.png"), position: "top-12 left-4 xl:left-12", size: "w-20 h-20 xl:w-24 xl:h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
+  { src: withBaseUrl("tofuchos/tofucho sorprendido.png"), position: "bottom-12 right-4 xl:right-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
 ];
 
 export const OrderCalculator = () => {

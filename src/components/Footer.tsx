@@ -1,5 +1,6 @@
 import { Instagram, Facebook, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { withBaseUrl } from "@/lib/base-url";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,7 +13,7 @@ const Footer = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho meditando.png" alt="" aria-hidden="true" className="w-32 h-32 object-contain opacity-40" />
+        <img src={withBaseUrl("tofuchos/tofucho meditando.png")} alt="" aria-hidden="true" className="w-32 h-32 object-contain opacity-40" />
       </motion.div>
 
 
@@ -22,7 +23,7 @@ const Footer = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho meditando.png" alt="" aria-hidden="true" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho meditando.png")} alt="" aria-hidden="true" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
 
@@ -31,8 +32,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src="/logo/logo_icono_empatika.svg" alt="Empátika" className="h-10 w-auto" />
-              <img src="/logo/letras_empatika.svg" alt="empátika" className="h-10 w-auto" />
+              <img src={withBaseUrl("logo/logo_icono_empatika.svg")} alt="Empátika" className="h-10 w-auto" />
+              <img src={withBaseUrl("logo/letras_empatika.svg")} alt="empátika" className="h-10 w-auto" />
             </div>
             <p className="font-body text-sm text-muted-foreground max-w-sm mb-4">
               Tofu artesanal poblano. Proteína vegetal de la más alta calidad
@@ -64,9 +65,9 @@ const Footer = () => {
           <div>
             <h4 className="font-display text-lg mb-4">NAVEGACIÓN</h4>
             <ul className="space-y-2 font-body text-sm">
-              <li><a href="#productos" className="hover:text-dymo transition-all">Productos</a></li>
-              <li><a href="#distribuidores" className="hover:text-dymo transition-all">Dónde Comprar</a></li>
-              <li><a href="#mayoristas" className="hover:text-dymo transition-all">Mayoristas</a></li>
+              <li><a href={withBaseUrl("#productos")} className="hover:text-dymo transition-all">Productos</a></li>
+              <li><a href={withBaseUrl("#distribuidores")} className="hover:text-dymo transition-all">Dónde Comprar</a></li>
+              <li><a href={withBaseUrl("#mayoristas")} className="hover:text-dymo transition-all">Mayoristas</a></li>
             </ul>
           </div>
 
@@ -98,8 +99,8 @@ const Footer = () => {
             © {currentYear} Empátika. Hecho con 💚 en México.
           </p>
           <div className="flex gap-4 font-body text-xs">
-            <a href="/aviso-privacidad" className="hover:underline">Aviso de Privacidad</a>
-            <a href="/terminos-condiciones" className="hover:underline">Términos y Condiciones</a>
+            <a href={withBaseUrl("aviso-privacidad")} className="hover:underline">Aviso de Privacidad</a>
+            <a href={withBaseUrl("terminos-condiciones")} className="hover:underline">Términos y Condiciones</a>
           </div>
         </div>
       </div>

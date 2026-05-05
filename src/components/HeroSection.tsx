@@ -226,7 +226,7 @@ const HeroSection = () => {
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_20%,hsl(var(--foreground)/0.12),transparent_35%),radial-gradient(circle_at_85%_65%,hsl(var(--foreground)/0.08),transparent_40%)]" />
 
-      <div className="mx-auto grid min-h-[86svh] w-full max-w-7xl grid-cols-1 gap-8 px-4 pb-10 pt-20 sm:min-h-[88svh] sm:px-6 sm:pt-24 md:gap-10 lg:min-h-[min(100vh,980px)] lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-10 lg:px-10 lg:pb-12 lg:pt-24">
+      <div className="mx-auto grid min-h-[86svh] w-full max-w-7xl grid-cols-1 gap-8 px-4 pb-10 pt-20 sm:min-h-[88svh] sm:px-6 sm:pt-24 md:gap-10 lg:min-h-[min(100vh,980px)] lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-2 lg:px-10 lg:pb-12 lg:pt-24">
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 24 }}
           animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}

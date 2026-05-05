@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
 import { ShoppingCart } from 'lucide-react';
+import { withBaseUrl } from '@/lib/base-url';
 
 const products = [
   {
@@ -151,7 +152,7 @@ const ProductsSection = () => {
                 {/* Product Image */}
                 <div className="relative aspect-square bg-muted/20 border-b-[3px] border-foreground overflow-hidden">
                   <img
-                    src={`/productos/${product.variant}.jpg`}
+                    src={withBaseUrl(`productos/${product.variant}.jpg`)}
                     alt={product.name}
                     className="w-full h-full object-cover relative z-[1]"
                     onError={(e) => {

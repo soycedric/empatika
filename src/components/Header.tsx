@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { withBaseUrl } from "@/lib/base-url";
 
 const SCROLL_THRESHOLD = 10;
 
@@ -25,9 +26,9 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: "#productos", label: "Productos" },
-    { href: "#distribuidores", label: "Dónde comprar" },
-    { href: "#mayoristas", label: "Mayoristas" },
+    { href: withBaseUrl("#productos"), label: "Productos" },
+    { href: withBaseUrl("#distribuidores"), label: "Dónde comprar" },
+    { href: withBaseUrl("#mayoristas"), label: "Mayoristas" },
   ];
 
   return (
@@ -37,9 +38,9 @@ const Header = () => {
     >
       <nav className="container mx-auto flex items-center justify-between py-3 px-4">
         {/* Logo */}
-        <a href="/#inicio" className="flex items-center gap-2 group">
-          <img src="/logo/logo_icono_empatika.svg" alt="Empatika" className="h-8 w-auto" />
-          <img src="/logo/letras_empatika.svg" alt="empátika" className="h-8 w-auto hidden sm:block" />
+        <a href={withBaseUrl("#inicio")} className="flex items-center gap-2 group">
+          <img src={withBaseUrl("logo/logo_icono_empatika.svg")} alt="Empatika" className="h-8 w-auto" />
+          <img src={withBaseUrl("logo/letras_empatika.svg")} alt="empátika" className="h-8 w-auto hidden sm:block" />
         </a>
 
         {/* Desktop Navigation */}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { withBaseUrl } from "@/lib/base-url";
 
 // Data - Will be loaded from JSON
 const restaurants = [
@@ -7,28 +8,28 @@ const restaurants = [
     name: "Musabbaha",
     location: "Puebla",
     mapUrl: "https://maps.app.goo.gl/acYy1r5QcNHhzHJL9", // Agregar enlace real de Google Maps
-    logo: "/logos/musabbaha.jpg", // Agregar logo en /public/logos/
+    logo: withBaseUrl("logos/musabbaha.jpg"), // Agregar logo en /public/logos/
     instagram: "@musabbaha.veggie",
   },
   {
     name: "Britches",
     location: "Puebla",
     mapUrl: "https://maps.app.goo.gl/P6L7wXYzVSfwPWuJ6", // Agregar enlace real de Google Maps
-    logo: "/logos/britches.jpg", // Agregar logo en /public/logos/
+    logo: withBaseUrl("logos/britches.jpg"), // Agregar logo en /public/logos/
     instagram: "@britches.puebla",
   },
   {
     name: "Plant Neta Café",
     location: "Puebla",
     mapUrl: "https://maps.app.goo.gl/8DJ8dWRCXnWiQeJE8", // Agregar enlace real de Google Maps
-    logo: "/logos/plantneta.jpg", // Agregar logo en /public/logos/
+    logo: withBaseUrl("logos/plantneta.jpg"), // Agregar logo en /public/logos/
     instagram: "@plantnetacafe",
   },
   {
     name: "Break Free",
     location: "Puebla",
     mapUrl: "https://maps.app.goo.gl/uteK8Us41AHfd7Z26", // Agregar enlace real de Google Maps
-    logo: "/logos/breakfree.jpg", // Agregar logo en /public/logos/
+    logo: withBaseUrl("logos/breakfree.jpg"), // Agregar logo en /public/logos/
     instagram: "@breakfree_rest",
   },
 ];
@@ -42,7 +43,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho cocinando.png")} alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho leyendo recetas - Desktop */}
@@ -51,7 +52,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, 10, 0], rotate: [2, -2, 2] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho leyendo.png")} alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho cocinando - Mobile y Tablet */}
@@ -60,7 +61,7 @@ const RestaurantsSection = () => {
           animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <img src="/tofuchos/tofucho cocinando.png" alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
+          <img src={withBaseUrl("tofuchos/tofucho cocinando.png")} alt="" aria-hidden="true" loading="lazy" className="w-22 h-22 object-contain drop-shadow-lg" />
         </motion.div>
       </div>
 
@@ -70,7 +71,7 @@ const RestaurantsSection = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho leyendo.png" alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho leyendo.png")} alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
       </motion.div>
 
       <div className="container mx-auto px-4 mt-8">

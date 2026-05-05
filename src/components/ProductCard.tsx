@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { withBaseUrl } from "@/lib/base-url";
 
 interface ProductCardProps {
   name: string;
@@ -41,7 +42,7 @@ const ProductCard = ({ name, variant, description, weight, protein, image, index
           transition={{ duration: 3, repeat: Infinity }}
         >
           <img
-            src={variant === "extra-firme" ? "/tofuchos/tofucho_fuerte.svg" : "/tofuchos/tofucho_ahumado.svg"}
+            src={variant === "extra-firme" ? withBaseUrl("tofuchos/tofucho_fuerte.svg") : withBaseUrl("tofuchos/tofucho_ahumado.svg")}
             alt={`Tofucho ${name}`}
             className="w-24 h-24"
           />

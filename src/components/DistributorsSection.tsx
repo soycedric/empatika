@@ -4,6 +4,7 @@ import { Store, ShoppingBag, Leaf, MapPin, Instagram } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import distributorsData from "@/data/distribuidores.json";
+import { withBaseUrl } from "@/lib/base-url";
 
 type Distributor = {
   name: string;
@@ -20,7 +21,7 @@ type Distributor = {
 const distributors: Distributor[] = distributorsData;
 
 const markerIcon = L.icon({
-  iconUrl: "/tofuchos/tofucho corriendo.png",
+  iconUrl: withBaseUrl("tofuchos/tofucho corriendo.png"),
   iconSize: [24, 24],
   iconAnchor: [12, 24],
   popupAnchor: [0, -20],
@@ -40,7 +41,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -12, 0], scale: [1, 1.05, 1] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho sorprendido.png")} alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - Mobile y Tablet */}
@@ -49,7 +50,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -10, 0], rotate: [-3, 3, -3] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho corriendo.png")} alt="" aria-hidden="true" loading="lazy" className="w-18 h-18 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho sorprendido - Mobile y Tablet */}
@@ -58,7 +59,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho sorprendido.png" alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho sorprendido.png")} alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho pensando - Mobile y Tablet centro */}
@@ -67,7 +68,7 @@ const DistributorsSection = () => {
         animate={{ y: [0, -6, 0], rotate: [0, 4, 0] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho pensando.png")} alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-10 items-start max-w-6xl mx-auto">

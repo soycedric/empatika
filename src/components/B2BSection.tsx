@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Building2, Truck, Phone, ArrowRight } from "lucide-react";
+import { withBaseUrl } from "@/lib/base-url";
 
 const benefits = [
   {
@@ -37,7 +38,7 @@ const B2BSection = () => {
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho pensando.png")} alt="" aria-hidden="true" loading="lazy" className="w-28 h-28 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho ahumado - representando producto premium - Desktop */}
@@ -46,7 +47,7 @@ const B2BSection = () => {
         animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 6, repeat: Infinity, delay: 1 }}
       >
-        <img src="/tofuchos/tofucho ahumado.png" alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho ahumado.png")} alt="" aria-hidden="true" loading="lazy" className="w-24 h-24 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - entregas - Desktop XL */}
@@ -55,7 +56,7 @@ const B2BSection = () => {
         animate={{ x: [0, 20, 0], y: [0, -10, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain opacity-80 drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho corriendo.png")} alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain opacity-80 drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho pensando - Mobile */}
@@ -64,7 +65,7 @@ const B2BSection = () => {
         animate={{ y: [0, -12, 0], rotate: [0, 4, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho pensando.png" alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho pensando.png")} alt="" aria-hidden="true" loading="lazy" className="w-20 h-20 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho ahumado - Mobile */}
@@ -73,7 +74,7 @@ const B2BSection = () => {
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho ahumado.png" alt="" aria-hidden="true" loading="lazy" className="w-16 h-16 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho ahumado.png")} alt="" aria-hidden="true" loading="lazy" className="w-16 h-16 object-contain drop-shadow-lg" />
       </motion.div>
 
       {/* Tofucho corriendo - Mobile centro */}
@@ -82,7 +83,7 @@ const B2BSection = () => {
         animate={{ x: [0, 10, 0], y: [0, -5, 0] }}
         transition={{ duration: 3, repeat: Infinity }}
       >
-        <img src="/tofuchos/tofucho corriendo.png" alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho corriendo.png")} alt="" aria-hidden="true" loading="lazy" className="w-14 h-14 object-contain drop-shadow-lg" />
       </motion.div>
 
       <div className="container mx-auto px-4 relative z-10">
