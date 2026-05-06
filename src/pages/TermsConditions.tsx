@@ -7,9 +7,12 @@ import { withBaseUrl } from "@/lib/base-url";
 const TermsConditions = () => {
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Términos y Condiciones - Empátika"
         description="Términos y Condiciones de uso de Empátika. Lee nuestras políticas de compra, entrega y garantías."
+        canonicalUrl="https://empatika.mx/terminos-condiciones"
+        ogType="article"
+        ogImage="https://empatika.mx/logo/logo_icono_empatika.svg"
       />
       <div className="min-h-screen bg-background bg-paper-texture">
         <Header />

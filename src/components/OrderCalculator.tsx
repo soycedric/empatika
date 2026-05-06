@@ -22,13 +22,6 @@ const DELIVERY_ZONES: Record<DeliveryZone, string> = {
   cdmx: 'Ciudad de México'
 };
 
-const CDMX_PICKUP_POINTS = [
-  'Parque Delta',
-  'Plaza Universidad',
-  'Oasis Coyacán',
-  'Biblioteca Central UNAM'
-];
-
 // Tofuchos para decorar la calculadora
 const calculatorTofuchos = [
   { src: withBaseUrl("tofuchos/tofucho pensando.png"), position: "top-12 left-4 xl:left-12", size: "w-20 h-20 xl:w-24 xl:h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
@@ -45,6 +38,10 @@ export const OrderCalculator = () => {
     minimumVolume,
     deliveryZone,
     setDeliveryZone,
+    deliveryMethod,
+    setDeliveryMethod,
+    pickupPoint,
+    setPickupPoint,
     addItem,
     updateItemQuantity,
     removeItem,
@@ -62,6 +59,14 @@ export const OrderCalculator = () => {
   };
 
   const handleCalculate = () => {
+    const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
+    if (isPickup && pickupPoint.trim().length === 0) {
+      toast.error('Falta el punto de pickup', {
+        description: 'Selecciona o escribe tu punto de pickup para continuar.'
+      });
+      return;
+    }
+
     if (validation.shouldRedirectToDistributors) {
       document.getElementById('distribuidores')?.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -69,18 +74,17 @@ export const OrderCalculator = () => {
       const sanitize = (text: string) => text.replace(/[<>"'&]/g, '');
 
       const lines: string[] = [];
-      lines.push(deliveryZone === 'puebla'
-        ? 'Hola! Quiero hacer un pedido con envio gratis:'
-        : 'Hola! Quiero hacer un pedido para recoger en CDMX:');
+      lines.push(isPickup
+        ? 'Hola! Quiero hacer un pedido para recoger:'
+        : 'Hola! Quiero hacer un pedido con envio gratis:');
       lines.push('');
       lines.push(`Zona: ${sanitize(DELIVERY_ZONES[deliveryZone])}`);
 
-      if (deliveryZone === 'cdmx') {
+      lines.push(`Metodo: ${isPickup ? 'Pickup' : 'Envio'}`);
+
+      if (isPickup) {
         lines.push('');
-        lines.push('Puntos de recogida disponibles:');
-        CDMX_PICKUP_POINTS.forEach((point, i) => {
-          lines.push(`${i + 1}. ${sanitize(point)}`);
-        });
+        lines.push(`Pickup: ${sanitize(pickupPoint)}`);
       }
 
       lines.push('');
@@ -146,7 +150,11 @@ export const OrderCalculator = () => {
               <ProductSelector
                 products={products}
                 deliveryZone={deliveryZone}
+                deliveryMethod={deliveryMethod}
+                pickupPoint={pickupPoint}
                 onZoneChange={setDeliveryZone}
+                onMethodChange={setDeliveryMethod}
+                onPickupPointChange={setPickupPoint}
                 onAddProduct={handleAddProduct}
               />
 
@@ -186,6 +194,8 @@ export const OrderCalculator = () => {
               minimumVolume={minimumVolume}
               remainingVolume={remainingVolume}
               deliveryZone={deliveryZone}
+              deliveryMethod={deliveryMethod}
+              pickupPoint={pickupPoint}
               products={products}
               onCalculate={handleCalculate}
             />

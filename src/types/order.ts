@@ -14,6 +14,7 @@ export interface Product {
    * Peso en kilogramos
    */
   weight: number;
+  price: number; // Precio por pieza/unidad
   pricePerKg?: number; // Opcional para futuras funcionalidades
   description?: string;
 }
@@ -46,6 +47,11 @@ export interface ValidationResult {
   isValid: boolean;
   totalVolume: number; // en kg
   minimumRequired: number; // en kg
+  subtotal: number; // en MXN
+  shippingCost: number; // en MXN
+  totalWithShipping: number; // en MXN
+  minimumOrderAmount: number; // en MXN
+  freeShippingThreshold: number; // en MXN
   zone: ZoneType;
   message: string;
   /**

@@ -11,6 +11,7 @@ import type { OrderItemWithId } from '@/hooks/use-order-calculator';
 import type { ValidationResult, Product } from '@/types/order';
 
 type DeliveryZone = 'puebla' | 'cdmx';
+type DeliveryMethod = 'delivery' | 'pickup';
 
 interface OrderSummaryProps {
   items: OrderItemWithId[];
@@ -19,6 +20,8 @@ interface OrderSummaryProps {
   minimumVolume: number;
   remainingVolume: number;
   deliveryZone: DeliveryZone;
+  deliveryMethod: DeliveryMethod;
+  pickupPoint: string;
   products: Product[];
   onCalculate: () => void;
 }
@@ -59,6 +62,8 @@ export const OrderSummary = ({
   minimumVolume,
   remainingVolume,
   deliveryZone,
+  deliveryMethod,
+  pickupPoint,
   products,
   onCalculate,
 }: OrderSummaryProps) => {
@@ -68,6 +73,8 @@ export const OrderSummary = ({
   }, [validation.isValid, items.length, remainingVolume, products]);
 
   const fillPercent = (totalVolume / minimumVolume) * 100;
+  const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
+  const canSubmit = !isPickup || pickupPoint.trim().length > 0;
 
   return (
     <div className="space-y-6">
@@ -75,11 +82,15 @@ export const OrderSummary = ({
       <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
         <div className="bg-background border-4 border-foreground px-4 py-2.5 font-display text-sm font-bold flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <Truck className="w-4 h-4" />
-          <span>{deliveryZone === 'puebla' ? 'ENVÍO GRATIS +3KG' : 'RECOGIDA +3KG'}</span>
+          <span>{isPickup ? 'RECOGIDA +3KG' : 'ENVÍO GRATIS +3KG'}</span>
         </div>
         <div className="bg-background border-4 border-foreground px-4 py-2.5 font-display text-sm font-bold flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <MapPin className="w-4 h-4" />
-          <span>{deliveryZone === 'puebla' ? 'PUEBLA - DOMICILIO' : 'CDMX - PUNTOS DE RECOGIDA'}</span>
+          <span>{
+            isPickup
+              ? `${deliveryZone === 'puebla' ? 'PUEBLA' : 'CDMX'} - PICKUP`
+              : 'PUEBLA - DOMICILIO'
+          }</span>
         </div>
       </div>
 
@@ -110,7 +121,7 @@ export const OrderSummary = ({
             </div>
             <h4 className="font-display text-2xl mb-2">
               {validation.isValid
-                ? (deliveryZone === 'puebla' ? '¡ENVÍO GRATIS!' : '¡LISTO PARA RECOGER!')
+                ? (isPickup ? '¡LISTO PARA RECOGER!' : '¡ENVÍO GRATIS!')
                 : items.length > 0 ? 'COMPLETA TU PEDIDO' : ''}
             </h4>
           </div>
@@ -168,7 +179,7 @@ export const OrderSummary = ({
               >
                 <span className="text-2xl">🎉</span>
                 <p className="font-display text-sm text-green-700 dark:text-green-300 mt-1">
-                  {deliveryZone === 'puebla' ? '¡ENVÍO GRATIS DESBLOQUEADO!' : '¡RECOGIDA DISPONIBLE!'}
+                  {isPickup ? '¡RECOGIDA DISPONIBLE!' : '¡ENVÍO GRATIS DESBLOQUEADO!'}
                 </p>
               </motion.div>
             )}
@@ -196,9 +207,15 @@ export const OrderSummary = ({
                   {suggestion.quantity} {suggestion.product.name} ({suggestion.product.weight} kg)
                 </span>{' '}
                 para alcanzar el mínimo de {minimumVolume} kg y obtener{' '}
-                {deliveryZone === 'puebla' ? 'envío gratis' : 'recogida en CDMX'}.
+                {isPickup ? 'recogida' : 'envío gratis'}.
               </p>
             </motion.div>
+          )}
+
+          {isPickup && pickupPoint.trim().length > 0 && (
+            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+              <span className="font-bold">Pickup:</span> {pickupPoint}
+            </div>
           )}
         </div>
       </div>
@@ -231,22 +248,28 @@ export const OrderSummary = ({
             <div className="bg-background border-4 border-foreground shadow-brutal p-6 bg-green-50 dark:bg-green-950/30">
               <div className="text-center mb-4">
                 <h3 className="font-display text-lg font-bold text-green-700 dark:text-green-300 mb-2">
-                  {deliveryZone === 'puebla' ? '¡LISTO PARA ENVIAR!' : '¡LISTO PARA RECOGER!'}
+                  {isPickup ? '¡LISTO PARA RECOGER!' : '¡LISTO PARA ENVIAR!'}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {deliveryZone === 'puebla'
-                    ? 'Tu pedido califica para envío gratis'
-                    : 'Coméntanos el punto de entrega de tu pedido.'}
+                  {isPickup
+                    ? 'Coméntanos el punto de entrega de tu pedido.'
+                    : 'Tu pedido califica para envío gratis'}
                 </p>
               </div>
               <Button
                 className="w-full font-display text-base py-6 bg-green-600 hover:bg-green-700 border-4 border-foreground shadow-brutal hover:shadow-brutal-hover active:shadow-none transition-all"
                 size="lg"
                 onClick={onCalculate}
+                disabled={!canSubmit}
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 ENVIAR POR WHATSAPP
               </Button>
+              {!canSubmit && (
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  Selecciona un punto de pickup para continuar.
+                </p>
+              )}
             </div>
           )}
         </motion.div>

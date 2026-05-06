@@ -1,10 +1,9 @@
-import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
 import { Store, ShoppingBag, Leaf, MapPin, Instagram } from "lucide-react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
 import distributorsData from "@/data/distribuidores.json";
 import { withBaseUrl } from "@/lib/base-url";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { Icon, LatLngBounds } from "leaflet";
 
 type Distributor = {
   name: string;
@@ -20,21 +19,94 @@ type Distributor = {
 
 const distributors: Distributor[] = distributorsData;
 
-const markerIcon = L.icon({
-  iconUrl: withBaseUrl("tofuchos/tofucho corriendo.png"),
-  iconSize: [24, 24],
-  iconAnchor: [12, 24],
-  popupAnchor: [0, -20],
-});
-
 const center: [number, number] = [19.04, -98.2];
-const bounds = distributors.length
-  ? L.latLngBounds(distributors.map((dist) => [dist.lat, dist.lng] as [number, number]))
-  : null;
 
 const DistributorsSection = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const [leafletModule, setLeafletModule] = useState<typeof import("leaflet") | null>(null);
+  const [reactLeafletModule, setReactLeafletModule] = useState<typeof import("react-leaflet") | null>(null);
+  const [markerIcon, setMarkerIcon] = useState<Icon | null>(null);
+  const [bounds, setBounds] = useState<LatLngBounds | null>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || shouldLoadMap) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, [shouldLoadMap]);
+
+  useEffect(() => {
+    if (!shouldLoadMap) {
+      return;
+    }
+
+    let isActive = true;
+
+    const loadMap = async () => {
+      const [leafletResult, reactLeaflet] = await Promise.all([
+        import("leaflet"),
+        import("leaflet/dist/leaflet.css"),
+        import("react-leaflet"),
+      ]).then(([leafletModule, _leafletCss, reactLeafletModule]) => [leafletModule, reactLeafletModule]);
+
+      const leaflet = ("default" in leafletResult ? leafletResult.default : leafletResult) as typeof import("leaflet");
+
+      if (!isActive) {
+        return;
+      }
+
+      const nextBounds = distributors.length
+        ? leaflet.latLngBounds(distributors.map((dist) => [dist.lat, dist.lng] as [number, number]))
+        : null;
+
+      setLeafletModule(leaflet);
+      setReactLeafletModule(reactLeaflet);
+      setBounds(nextBounds);
+      setMarkerIcon(
+        leaflet.icon({
+          iconUrl: withBaseUrl("tofuchos/tofucho corriendo.png"),
+          iconSize: [24, 24],
+          iconAnchor: [12, 24],
+          popupAnchor: [0, -20],
+        }),
+      );
+    };
+
+    void loadMap();
+
+    return () => {
+      isActive = false;
+    };
+  }, [shouldLoadMap]);
+
+  const mapContainerProps = useMemo(() => {
+    if (bounds) {
+      return { bounds, boundsOptions: { padding: [20, 20] as [number, number] } };
+    }
+
+    return { center, zoom: 11 };
+  }, [bounds]);
+
   return (
-    <section id="distribuidores" className="py-24 relative overflow-hidden bg-paper-texture">
+    <section
+      id="distribuidores"
+      ref={sectionRef}
+      className="py-24 relative overflow-hidden bg-paper-texture"
+    >
       {/* Tofucho sorprendido decorativo - Desktop */}
       <motion.div
         className="absolute top-10 right-10 hidden lg:block z-10"
@@ -85,37 +157,41 @@ const DistributorsSection = () => {
             </h2>
 
             <div className="relative aspect-video border-4 border-foreground shadow-brutal overflow-hidden">
-              <MapContainer
-                {...(bounds
-                  ? { bounds, boundsOptions: { padding: [20, 20] as [number, number] } }
-                  : { center, zoom: 11 })}
-                scrollWheelZoom
-                zoomControl
-                dragging
-                doubleClickZoom
-                touchZoom
-                className="h-full w-full map-brutalist"
-              >
-                <TileLayer
-                  attribution=''
-                  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                />
-                {distributors.map((dist) => (
-                  <Marker
-                    key={`${dist.name}-${dist.address}`}
-                    position={[dist.lat, dist.lng]}
-                    icon={markerIcon}
-                  >
-                    <Popup>
-                      <div className="font-body text-sm">
-                        <p className="font-display text-base mb-1">{dist.name}</p>
-                        <p className="text-xs text-muted-foreground">{dist.address}</p>
-                        <p className="text-xs mt-1">{dist.city}, {dist.state}</p>
-                      </div>
-                    </Popup>
-                  </Marker>
-                ))}
-              </MapContainer>
+              {reactLeafletModule && leafletModule && markerIcon ? (
+                <reactLeafletModule.MapContainer
+                  {...mapContainerProps}
+                  scrollWheelZoom
+                  zoomControl
+                  dragging
+                  doubleClickZoom
+                  touchZoom
+                  className="h-full w-full map-brutalist"
+                >
+                  <reactLeafletModule.TileLayer
+                    attribution=""
+                    url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                  />
+                  {distributors.map((dist) => (
+                    <reactLeafletModule.Marker
+                      key={`${dist.name}-${dist.address}`}
+                      position={[dist.lat, dist.lng]}
+                      icon={markerIcon}
+                    >
+                      <reactLeafletModule.Popup>
+                        <div className="font-body text-sm">
+                          <p className="font-display text-base mb-1">{dist.name}</p>
+                          <p className="text-xs text-muted-foreground">{dist.address}</p>
+                          <p className="text-xs mt-1">{dist.city}, {dist.state}</p>
+                        </div>
+                      </reactLeafletModule.Popup>
+                    </reactLeafletModule.Marker>
+                  ))}
+                </reactLeafletModule.MapContainer>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-background text-xs text-muted-foreground">
+                  Cargando mapa...
+                </div>
+              )}
             </div>
 
             {/* Delivery Info (desktop only) */}

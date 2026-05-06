@@ -9,12 +9,16 @@ import { OrderValidationService } from '@/services/order-validation.service';
 import { getAllProducts, getProductById } from '@/data/products';
 
 type DeliveryZone = 'puebla' | 'cdmx';
+type DeliveryMethod = 'delivery' | 'pickup';
 
 export interface OrderItemWithId extends OrderItem {
   id: string; // Para React keys
 }
 
-export const useOrderCalculator = (zone: DeliveryZone = 'puebla') => {
+export const useOrderCalculator = (
+  zone: DeliveryZone = 'puebla',
+  method: DeliveryMethod = 'delivery'
+) => {
   const [items, setItems] = useState<OrderItemWithId[]>([]);
 
   const products = useMemo(() => getAllProducts(), []);
@@ -100,8 +104,8 @@ export const useOrderCalculator = (zone: DeliveryZone = 'puebla') => {
    * Valida el pedido actual según la zona
    */
   const validation: ValidationResult = useMemo(() => {
-    return OrderValidationService.validateOrder(items, zone);
-  }, [items, zone]);
+    return OrderValidationService.validateOrder(items, zone, method);
+  }, [items, zone, method]);
 
   /**
    * Obtiene el volumen faltante para envío gratuito

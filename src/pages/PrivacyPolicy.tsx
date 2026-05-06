@@ -7,9 +7,12 @@ import { withBaseUrl } from "@/lib/base-url";
 const PrivacyPolicy = () => {
   return (
     <>
-      <SEOHead 
+      <SEOHead
         title="Aviso de Privacidad - Empátika"
         description="Aviso de Privacidad de Empátika. Conoce cómo protegemos y utilizamos tus datos personales."
+        canonicalUrl="https://empatika.mx/aviso-privacidad"
+        ogType="article"
+        ogImage="https://empatika.mx/logo/letras_empatika.svg"
       />
       <div className="min-h-screen bg-background bg-paper-texture">
         <Header />

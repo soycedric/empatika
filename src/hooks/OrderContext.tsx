@@ -9,6 +9,7 @@ import { OrderValidationService } from '@/services/order-validation.service';
 import { getAllProducts, getProductById } from '@/data/products';
 
 type DeliveryZone = 'puebla' | 'cdmx';
+type DeliveryMethod = 'delivery' | 'pickup';
 
 export interface OrderItemWithId extends OrderItem {
     id: string;
@@ -22,7 +23,11 @@ interface OrderContextValue {
     remainingVolume: number;
     minimumVolume: number;
     deliveryZone: DeliveryZone;
+    deliveryMethod: DeliveryMethod;
+    pickupPoint: string;
     setDeliveryZone: (zone: DeliveryZone) => void;
+    setDeliveryMethod: (method: DeliveryMethod) => void;
+    setPickupPoint: (point: string) => void;
     addItem: (productId: string, quantity?: number) => void;
     updateItemQuantity: (itemId: string, quantity: number) => void;
     removeItem: (itemId: string) => void;
@@ -40,6 +45,8 @@ export const useOrderContext = () => {
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const [items, setItems] = useState<OrderItemWithId[]>([]);
     const [deliveryZone, setDeliveryZone] = useState<DeliveryZone>('puebla');
+    const [deliveryMethod, setDeliveryMethodState] = useState<DeliveryMethod>('delivery');
+    const [pickupPoint, setPickupPoint] = useState<string>('');
 
     const products = useMemo(() => getAllProducts(), []);
 
@@ -76,14 +83,49 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const clearOrder = useCallback(() => setItems([]), []);
 
     const totalVolume = useMemo(() => OrderValidationService.calculateTotalVolume(items), [items]);
-    const validation = useMemo(() => OrderValidationService.validateOrder(items, deliveryZone), [items, deliveryZone]);
+    const validation = useMemo(
+        () => OrderValidationService.validateOrder(items, deliveryZone, deliveryMethod),
+        [items, deliveryZone, deliveryMethod]
+    );
     const remainingVolume = useMemo(() => OrderValidationService.getRemainingVolume(totalVolume), [totalVolume]);
     const minimumVolume = useMemo(() => OrderValidationService.getMinimumVolume(), []);
 
+    const handleSetDeliveryZone = useCallback((zone: DeliveryZone) => {
+        setDeliveryZone(zone);
+        if (zone === 'cdmx') {
+            setDeliveryMethodState('pickup');
+        }
+        setPickupPoint('');
+    }, []);
+
+    const handleSetDeliveryMethod = useCallback((method: DeliveryMethod) => {
+        if (deliveryZone === 'cdmx') {
+            setDeliveryMethodState('pickup');
+            return;
+        }
+        setDeliveryMethodState(method);
+        if (method === 'delivery') {
+            setPickupPoint('');
+        }
+    }, [deliveryZone]);
+
     const value: OrderContextValue = {
-        items, products, totalVolume, validation, remainingVolume, minimumVolume,
-        deliveryZone, setDeliveryZone,
-        addItem, updateItemQuantity, removeItem, clearOrder
+        items,
+        products,
+        totalVolume,
+        validation,
+        remainingVolume,
+        minimumVolume,
+        deliveryZone,
+        deliveryMethod,
+        pickupPoint,
+        setDeliveryZone: handleSetDeliveryZone,
+        setDeliveryMethod: handleSetDeliveryMethod,
+        setPickupPoint,
+        addItem,
+        updateItemQuantity,
+        removeItem,
+        clearOrder,
     };
 
     return <OrderContext.Provider value={value}>{children}</OrderContext.Provider>;

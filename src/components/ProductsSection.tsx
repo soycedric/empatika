@@ -8,8 +8,8 @@ const products = [
   {
     name: "Extra Firme",
     variant: "extra-firme" as const,
-    description: "Perfecto para freír, asar o saltear. Su textura firme mantiene la forma.",
-    weight: "400g | 1 kg",
+    description: "Perfecto para freír, asar o saltear.",
+    weight: "400 g | 1 kg",
     protein: "8g",
     color: "yellow" as const,
     macros: {
@@ -35,13 +35,13 @@ const products = [
       carbohidratos: "<1 g",
       sodio: "15 mg",
     },
-    ingredientes: "Agua, Soya, Cloruro de magnesio, Humo natural.",
+    ingredientes: "Agua, Soya, Cloruro de magnesio, Humo líquido.",
   },
   {
     name: "Veganesa",
     variant: "veganesa" as const,
     description: "Mayonesa vegana cremosa y deliciosa. Sin huevo, sin lácteos.",
-    weight: "500 g",
+    weight: "250 g | 500 g",
     protein: "0g",
     color: "yellow" as const,
     macros: {
@@ -80,14 +80,6 @@ const ProductsSection = () => {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-dymo text-xs mb-6 inline-block"
-          >
-            Tofu artesanal mexicano
-          </motion.span>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -146,7 +138,7 @@ const ProductsSection = () => {
                 whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="bg-background border-[3px] border-foreground shadow-brutal relative diagonal-stripe"
+                className="bg-background border-[3px] border-foreground shadow-brutal relative"
                 style={{ transform: `rotate(${rotations[index]})` }}
               >
                 {/* Product Image */}
@@ -193,43 +185,6 @@ const ProductsSection = () => {
                     <span className="border-2 border-foreground font-body text-xs uppercase tracking-wider px-3 py-1.5">
                       📦 {product.weight}
                     </span>
-                    {product.protein !== "0g" && (
-                      <span className="border-2 border-foreground font-body text-xs uppercase tracking-wider px-3 py-1.5">
-                        💪 {product.protein} proteína
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Declaración Nutrimental — label style */}
-                  <div className="label-nutrimental">
-                    <div className="label-header">Declaración Nutrimental</div>
-                    <p className="text-[10px] text-background/60 mb-2 font-body">
-                      Por 100g
-                    </p>
-                    <table className="w-full">
-                      <tbody>
-                        <tr>
-                          <td>Calorías</td>
-                          <td className="text-right font-bold">{product.macros.calorias}</td>
-                        </tr>
-                        <tr>
-                          <td>Proteína</td>
-                          <td className="text-right font-bold">{product.macros.proteina}</td>
-                        </tr>
-                        <tr>
-                          <td>Grasa</td>
-                          <td className="text-right font-bold">{product.macros.grasa}</td>
-                        </tr>
-                        <tr>
-                          <td>Carbohidratos</td>
-                          <td className="text-right font-bold">{product.macros.carbohidratos}</td>
-                        </tr>
-                        <tr>
-                          <td>Sodio</td>
-                          <td className="text-right font-bold">{product.macros.sodio}</td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
 
                   {/* Ingredientes */}
@@ -246,12 +201,6 @@ const ProductsSection = () => {
                       <ShoppingCart className="w-4 h-4" />
                       Agregar
                     </button>
-                    <a
-                      href="#calculadora"
-                      className="inline-flex items-center justify-center px-4 py-3 font-display text-sm uppercase border-[3px] border-foreground bg-transparent text-foreground cursor-pointer transition-all duration-150 hover:bg-foreground/5"
-                    >
-                      Ver pedido
-                    </a>
                   </div>
                 </div>
               </motion.article>
