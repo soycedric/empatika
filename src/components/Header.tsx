@@ -30,6 +30,10 @@ const Header = () => {
     { href: withBaseUrl("#distribuidores"), label: "Dónde comprar" },
     { href: withBaseUrl("#mayoristas"), label: "Mayoristas" },
   ];
+  const navLinkClass =
+    "group font-body text-[1.05rem] tracking-wide transition-all duration-200";
+  const navLinkTextClass =
+    "inline-block px-2 py-1 transition-all duration-200 group-hover:bg-foreground group-hover:text-background group-hover:-rotate-1";
 
   return (
     <header
@@ -40,7 +44,7 @@ const Header = () => {
         {/* Logo */}
         <a href={withBaseUrl("#inicio")} className="flex items-center gap-2 group">
           <img src={withBaseUrl("logo/logo_icono_empatika.svg")} alt="Empatika" className="h-8 w-auto" />
-          <img src={withBaseUrl("logo/letras_empatika.svg")} alt="empátika" className="h-8 w-auto hidden sm:block" />
+          <span className="font-display text-[1.45rem] leading-none tracking-[-0.04em] hidden sm:block">empátika</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -49,9 +53,9 @@ const Header = () => {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="font-body text-sm tracking-wide hover:text-dymo transition-all duration-200"
+                  className={navLinkClass}
               >
-                {link.label}
+                  <span className={navLinkTextClass}>{link.label}</span>
               </a>
             </li>
           ))}
@@ -89,20 +93,21 @@ const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-background border-b-2 border-foreground overflow-hidden"
           >
-            <ul className="flex flex-col p-4 gap-4">
+            <ul className="flex flex-col items-center p-4 gap-4">
               {navLinks.map((link, index) => (
                 <motion.li
                   key={link.href}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
+                  className="w-full"
                 >
                   <a
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="font-body text-lg uppercase block py-2 hover:bg-primary px-3 border-2 border-transparent hover:border-foreground transition-all"
+                    className={`${navLinkClass} block px-3 py-2 text-center`}
                   >
-                    {link.label}
+                    <span className={navLinkTextClass}>{link.label}</span>
                   </a>
                 </motion.li>
               ))}

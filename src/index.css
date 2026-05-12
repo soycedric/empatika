@@ -8,14 +8,6 @@
 }
 
 @font-face {
-  font-family: 'Gunplay3D';
-  src: url('/fonts/gunplay-3d.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'CMU Typewriter Text';
   src: url('/fonts/cmu-typewriter-regular.ttf') format('truetype');
   font-weight: 400;
@@ -172,12 +164,6 @@
     line-height: 0.95;
   }
 
-  /* Hero title layers */
-  .hero-title-3d,
-  .hero-title-3d * {
-    font-family: 'Gunplay3D', sans-serif !important;
-  }
-
   .hero-title,
   .hero-title * {
     font-family: 'Gunplay', sans-serif !important;
@@ -213,7 +199,9 @@
     filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000)
       drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000)
       drop-shadow(1px 1px 0 #000) drop-shadow(-1px 1px 0 #000)
-      drop-shadow(1px -1px 0 #000) drop-shadow(-1px -1px 0 #000);
+      drop-shadow(1px -1px 0 #000) drop-shadow(-1px -1px 0 #000)
+      drop-shadow(0 0 12px hsla(45, 100%, 75%, 0.51))
+      drop-shadow(0 0 24px hsla(45, 100%, 75%, 0.33));
   }
 
   @media (min-width: 640px) {
@@ -221,7 +209,9 @@
       filter: drop-shadow(2px 0 0 #000) drop-shadow(-2px 0 0 #000)
         drop-shadow(0 2px 0 #000) drop-shadow(0 -2px 0 #000)
         drop-shadow(2px 2px 0 #000) drop-shadow(-2px 2px 0 #000)
-        drop-shadow(2px -2px 0 #000) drop-shadow(-2px -2px 0 #000);
+        drop-shadow(2px -2px 0 #000) drop-shadow(-2px -2px 0 #000)
+        drop-shadow(0 0 16px hsla(45, 100%, 75%, 0.51))
+        drop-shadow(0 0 32px hsla(45, 100%, 75%, 0.33));
     }
   }
 

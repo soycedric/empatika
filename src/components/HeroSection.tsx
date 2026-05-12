@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useReducedMotion, type PanInfo } from "framer-motion";
-import { useEffect, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import bowlTofu from "../../assets/platillosHero/bowlTofu.webp";
 import burgerTofu from "../../assets/platillosHero/burguerTofu.webp";
 import ramenTofu from "../../assets/platillosHero/ramenTofu.webp";
@@ -7,7 +7,11 @@ import revueltoTofu from "../../assets/platillosHero/revueltoTofu.webp";
 import tacoTofu from "../../assets/platillosHero/tacoTofu.webp";
 import { withBaseUrl } from "@/lib/base-url";
 
-const plateSizeClass = "h-72 w-72 sm:h-80 sm:w-80 lg:h-[30rem] lg:w-[30rem]";
+const plateSizeClass =
+  "h-[clamp(14.5rem,48vw,24rem)] w-[clamp(14.5rem,48vw,24rem)] sm:h-[clamp(16rem,42vw,26rem)] sm:w-[clamp(16rem,42vw,26rem)] lg:h-[clamp(22rem,36vw,30rem)] lg:w-[clamp(22rem,36vw,30rem)]";
+
+const plateStageClass =
+  "relative flex items-center justify-center h-[clamp(18rem,70vw,32rem)] w-[clamp(18rem,70vw,32rem)] sm:h-[clamp(22rem,60vw,34rem)] sm:w-[clamp(22rem,60vw,34rem)] lg:h-[clamp(30rem,44vw,38rem)] lg:w-[clamp(30rem,44vw,38rem)]";
 
 const platePlaceholders = [
   {
@@ -99,20 +103,21 @@ const subtitlePhrases = [
 ];
 
 const HeroSection = () => {
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = false;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBreakingPlate, setIsBreakingPlate] = useState(false);
   const [isSliderInteracting, setIsSliderInteracting] = useState(false);
   const [subtitleIndex, setSubtitleIndex] = useState(0);
+  const interactionTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (reducedMotion || isBreakingPlate || isSliderInteracting) {
+    if (isBreakingPlate || isSliderInteracting) {
       return;
     }
 
     const intervalId = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % platePlaceholders.length);
-    }, 5200);
+    }, reducedMotion ? 6200 : 5200);
 
     return () => window.clearInterval(intervalId);
   }, [reducedMotion, isBreakingPlate, isSliderInteracting]);
@@ -128,6 +133,33 @@ const HeroSection = () => {
 
     return () => window.clearInterval(intervalId);
   }, [reducedMotion]);
+
+  const pauseAutoPlay = (duration = 3800) => {
+    setIsSliderInteracting(true);
+
+    if (interactionTimeoutRef.current) {
+      window.clearTimeout(interactionTimeoutRef.current);
+    }
+
+    interactionTimeoutRef.current = window.setTimeout(() => {
+      setIsSliderInteracting(false);
+    }, duration);
+  };
+
+  const resumeAutoPlay = () => {
+    if (interactionTimeoutRef.current) {
+      window.clearTimeout(interactionTimeoutRef.current);
+      interactionTimeoutRef.current = null;
+    }
+
+    setIsSliderInteracting(false);
+  };
+
+  useEffect(() => () => {
+    if (interactionTimeoutRef.current) {
+      window.clearTimeout(interactionTimeoutRef.current);
+    }
+  }, []);
 
   const showNextPlate = () => {
     setActiveIndex((current) => (current + 1) % platePlaceholders.length);
@@ -250,13 +282,28 @@ const HeroSection = () => {
                         src={tofuchoJumpSrc}
                         alt=""
                         aria-hidden="true"
-                        className="pointer-events-none absolute -top-30 right-4 hidden h-28 w-28 lg:block"
+                        className="pointer-events-none absolute -top-30 -right-2 hidden h-28 w-28 lg:block"
                         animate={
                           reducedMotion
                             ? undefined
                             : { y: [0, -6, 0], x: [0, 6, 0], rotate: [0, 6, 0] }
                         }
                         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                    )}
+                    {isExtraFirme && (
+                      <motion.img
+                        src={tofuchoJumpSrc}
+                        alt=""
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -top-20 left-[75%] h-[4.8rem] w-[4.8rem] -translate-x-1/2 sm:-top-24 sm:h-[5.4rem] sm:w-[5.4rem] lg:hidden"
+                        style={{ scaleX: -1 }}
+                        animate={
+                          reducedMotion
+                            ? undefined
+                            : { y: [0, -6, 0], x: [0, -6, 0], rotate: [6, -2, 6], scaleX: -1 }
+                        }
+                        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                       />
                     )}
                     {segment.text}
@@ -323,7 +370,12 @@ const HeroSection = () => {
           transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
           aria-label="Galería interactiva de platillos con tofu"
         >
-          <div className="relative flex h-[26rem] w-[26rem] items-center justify-center sm:h-[30rem] sm:w-[30rem] lg:h-[38rem] lg:w-[38rem]">
+          <div
+            className={plateStageClass}
+            onPointerDown={() => pauseAutoPlay()}
+            onPointerUp={resumeAutoPlay}
+            onPointerCancel={resumeAutoPlay}
+          >
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -344,18 +396,14 @@ const HeroSection = () => {
                   type="button"
                   onClick={handleBreakPlate}
                   onKeyDown={handlePlateKeyDown}
-                  onHoverStart={() => setIsSliderInteracting(true)}
-                  onHoverEnd={() => setIsSliderInteracting(false)}
-                  onFocus={() => setIsSliderInteracting(true)}
-                  onBlur={() => setIsSliderInteracting(false)}
-                  onTouchStart={() => setIsSliderInteracting(true)}
-                  onTouchEnd={() => setIsSliderInteracting(false)}
+                  onFocus={() => pauseAutoPlay(5200)}
+                  onBlur={resumeAutoPlay}
                   drag={reducedMotion ? false : "x"}
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={0.25}
                   onDragEnd={handlePlateDragEnd}
                   aria-label={`Platillo interactivo: ${activePlate.label}. Toca para quebrarlo, desliza para cambiar o usa flechas del teclado.`}
-                  className={`${activePlate.size} ${activePlate.tilt} ${activePlate.base} group relative cursor-grab overflow-hidden shadow-none focus:outline-none focus-visible:outline-none will-change-transform active:cursor-grabbing`}
+                  className={`${activePlate.size} ${activePlate.tilt} ${activePlate.base} group relative cursor-grab overflow-visible shadow-none focus:outline-none focus-visible:outline-none will-change-transform active:cursor-grabbing`}
                   initial={reducedMotion ? false : { opacity: 0, scale: 0.84, rotate: -14 }}
                   animate={
                     reducedMotion
@@ -382,48 +430,50 @@ const HeroSection = () => {
                     className="plate-outline absolute inset-0 z-10 h-full w-full object-cover"
                     loading="lazy"
                   />
-                <motion.div
-                  className="pointer-events-none absolute inset-0"
-                  initial={false}
-                  animate={
-                    reducedMotion
-                      ? undefined
-                      : isBreakingPlate
-                        ? { opacity: 1 }
-                        : { opacity: 0 }
-                  }
-                >
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
                   <motion.div
-                    className="absolute inset-[16%] rounded-full bg-background/40"
+                    className="absolute inset-0"
+                    initial={false}
                     animate={
                       reducedMotion
                         ? undefined
                         : isBreakingPlate
-                          ? { opacity: [0, 0.7, 0], scale: [0.8, 1.15, 1.28] }
-                          : { opacity: 0, scale: 0.8 }
+                          ? { opacity: 1 }
+                          : { opacity: 0 }
                     }
-                    transition={{ duration: 0.34, ease: "easeOut" }}
-                  />
-                  {vanishParticles.map((particle) => (
-                    <motion.span
-                      key={`${particle.x}-${particle.y}`}
-                      className={`absolute left-1/2 top-1/2 ${particle.size} -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/90`}
+                  >
+                    <motion.div
+                      className="absolute inset-[16%] rounded-full bg-background/40"
                       animate={
                         reducedMotion
                           ? undefined
                           : isBreakingPlate
-                            ? {
-                                opacity: [0, 1, 0],
-                                x: [0, particle.x],
-                                y: [0, particle.y],
-                                scale: [0.8, 1.2, 0.4],
-                              }
-                            : { opacity: 0, x: 0, y: 0, rotate: 0 }
+                            ? { opacity: [0, 0.7, 0], scale: [0.8, 1.15, 1.28] }
+                            : { opacity: 0, scale: 0.8 }
                       }
-                      transition={{ duration: 0.34, delay: particle.delay, ease: "easeOut" }}
+                      transition={{ duration: 0.34, ease: "easeOut" }}
                     />
-                  ))}
-                </motion.div>
+                    {vanishParticles.map((particle) => (
+                      <motion.span
+                        key={`${particle.x}-${particle.y}`}
+                        className={`absolute left-1/2 top-1/2 ${particle.size} -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/90`}
+                        animate={
+                          reducedMotion
+                            ? undefined
+                            : isBreakingPlate
+                              ? {
+                                  opacity: [0, 1, 0],
+                                  x: [0, particle.x],
+                                  y: [0, particle.y],
+                                  scale: [0.8, 1.2, 0.4],
+                                }
+                              : { opacity: 0, x: 0, y: 0, rotate: 0 }
+                        }
+                        transition={{ duration: 0.34, delay: particle.delay, ease: "easeOut" }}
+                      />
+                    ))}
+                  </motion.div>
+                </div>
                 </motion.button>
               </motion.div>
             </AnimatePresence>
@@ -431,7 +481,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 sm:block">
+      <div className="pointer-events-none absolute bottom-4 left-1/2 hidden -translate-x-1/2 lg:block">
         <motion.div
           className="h-8 w-5 rounded-full border-2 border-foreground/40 pt-1"
           animate={reducedMotion ? undefined : { y: [0, 6, 0] }}

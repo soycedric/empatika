@@ -33,7 +33,7 @@ const Footer = () => {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img src={withBaseUrl("logo/logo_icono_empatika.svg")} alt="Empátika" className="h-10 w-auto" />
-              <img src={withBaseUrl("logo/letras_empatika.svg")} alt="empátika" className="h-10 w-auto" />
+              <span className="font-display text-[1.7rem] leading-none tracking-[-0.04em]">empátika</span>
             </div>
             <p className="font-body text-sm text-muted-foreground max-w-sm mb-4">
               Tofu artesanal poblano. Proteína vegetal de la más alta calidad
