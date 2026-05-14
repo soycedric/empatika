@@ -6,7 +6,8 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, Truck, MessageCircle, MapPin, Lightbulb } from 'lucide-react';
+import { Package, Truck, MessageCircle, Lightbulb, Trash2 } from 'lucide-react';
+import { OrderItemsList } from '@/components/calculator/OrderItemsList';
 import type { OrderItemWithId } from '@/hooks/use-order-calculator';
 import type { ValidationResult, Product } from '@/types/order';
 
@@ -31,6 +32,9 @@ interface OrderSummaryProps {
   providerInterest: boolean;
   products: Product[];
   onCalculate: () => void;
+  onUpdateQuantity: (itemId: string, quantity: number) => void;
+  onRemoveItem: (itemId: string) => void;
+  onClearOrder: () => void;
 }
 
 /**
@@ -78,6 +82,9 @@ export const OrderSummary = ({
   providerInterest,
   products,
   onCalculate,
+  onUpdateQuantity,
+  onRemoveItem,
+  onClearOrder,
 }: OrderSummaryProps) => {
   const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
   const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
@@ -100,8 +107,7 @@ export const OrderSummary = ({
   return (
     <div className="space-y-6">
 
-
-      {/* Card Principal: Estado */}
+      {/* Card Unificada: Pedido + Resumen */}
       <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
         ? 'bg-green-50 dark:bg-green-950/30'
         : items.length === 0
@@ -109,6 +115,32 @@ export const OrderSummary = ({
           : 'bg-orange-50 dark:bg-orange-950/30'
         }`}>
         <div className="space-y-6">
+          {/* Header: Tu Pedido */}
+          <div className="flex justify-between items-center pb-3 border-b-2 border-foreground/20">
+            <h3 className="font-display text-2xl flex items-center gap-2">
+              <Package className="w-6 h-6" />
+              TU PEDIDO
+            </h3>
+            {items.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearOrder}
+                className="text-destructive hover:text-destructive border-2 border-destructive hover:bg-destructive/10"
+                aria-label="Vaciar pedido completo"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+
+          {/* Lista de items */}
+          <OrderItemsList
+            items={items}
+            onUpdateQuantity={onUpdateQuantity}
+            onRemoveItem={onRemoveItem}
+          />
+
           {/* Estado e Icono */}
           <div className="text-center">
             <div className="flex justify-center mb-3">

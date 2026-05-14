@@ -7,11 +7,8 @@
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
-import { Button } from '@/components/ui/button';
-import { Package, Trash2 } from 'lucide-react';
 import { getProductById } from '@/data/products';
 import { ProductSelector } from '@/components/calculator/ProductSelector';
-import { OrderItemsList } from '@/components/calculator/OrderItemsList';
 import { OrderSummary } from '@/components/calculator/OrderSummary';
 import { withBaseUrl } from '@/lib/base-url';
 
@@ -183,7 +180,7 @@ export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps
       )}
 
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* Panel Izquierdo: Selector + Lista de items */}
+        {/* Panel Izquierdo: Selector */}
         <div className="space-y-6">
           <ProductSelector
             products={products}
@@ -205,36 +202,9 @@ export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps
             onDeliveryLocationChange={setDeliveryLocationLink}
             onAddProduct={handleAddProduct}
           />
-
-          {/* Card de items del pedido */}
-          <div className={`bg-background border-4 border-foreground shadow-brutal p-6`}>
-            <div className="flex justify-between items-center pb-3 border-b-2 border-foreground/20 mb-6">
-              <h3 className="font-display text-2xl flex items-center gap-2">
-                <Package className="w-6 h-6" />
-                TU PEDIDO
-              </h3>
-              {items.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearOrder}
-                  className="text-destructive hover:text-destructive border-2 border-destructive hover:bg-destructive/10"
-                  aria-label="Vaciar pedido completo"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
-
-            <OrderItemsList
-              items={items}
-              onUpdateQuantity={updateItemQuantity}
-              onRemoveItem={removeItem}
-            />
-          </div>
         </div>
 
-        {/* Panel Derecho: Resumen del Pedido */}
+        {/* Panel Derecho: Pedido + Resumen unificado */}
         <OrderSummary
           items={items}
           validation={validation}
@@ -245,14 +215,17 @@ export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps
           freeShippingThreshold={freeShippingThreshold}
           deliveryZone={deliveryZone}
           deliveryMethod={deliveryMethod}
-            pickupPoint={pickupPoint}
-            pickupSlot={pickupSlot}
-            deliveryLocation={deliveryLocationLink}
-            customerName={customerName}
-            customerPhone={customerPhone}
-            providerInterest={providerInterest}
+          pickupPoint={pickupPoint}
+          pickupSlot={pickupSlot}
+          deliveryLocation={deliveryLocationLink}
+          customerName={customerName}
+          customerPhone={customerPhone}
+          providerInterest={providerInterest}
           products={products}
           onCalculate={handleCalculate}
+          onUpdateQuantity={updateItemQuantity}
+          onRemoveItem={removeItem}
+          onClearOrder={clearOrder}
         />
       </div>
     </div>
