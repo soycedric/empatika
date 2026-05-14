@@ -14,19 +14,22 @@ const mockProducts: Product[] = [
     id: 'tofu-1kg',
     name: 'Tofu Extra Firme',
     variant: 'extra-firme',
-    weight: 1.0
+    weight: 1.0,
+    price: 130
   },
   {
     id: 'tofu-400g',
     name: 'Tofu Extra Firme',
     variant: 'extra-firme',
-    weight: 0.4
+    weight: 0.4,
+    price: 75
   },
   {
     id: 'veganesa-500g',
     name: 'Veganesa',
     variant: 'veganesa',
-    weight: 0.5
+    weight: 0.5,
+    price: 75
   }
 ];
 
@@ -59,87 +62,66 @@ describe('OrderValidationService', () => {
   });
 
   describe('validateOrder', () => {
-    it('debe validar correctamente un pedido vacío', () => {
-      const order: Order = {
-        items: [],
-        destinationZone: 'local'
-      };
+    it('debe invalidar un pedido vacío', () => {
+      const result = OrderValidationService.validateOrder([]);
 
-      const result = OrderValidationService.validateOrder(order);
-      
       expect(result.isValid).toBe(false);
       expect(result.shouldRedirectToDistributors).toBe(true);
-      expect(result.message).toContain('no contiene productos');
+      expect(result.message).toContain('Agrega productos');
     });
 
-    it('debe validar correctamente un pedido válido para zona local', () => {
-      const order: Order = {
-        items: [
-          { product: mockProducts[0], quantity: 3 } // 3kg total
-        ],
-        destinationZone: 'local'
-      };
+    it('debe enviar a distribuidores si el subtotal es menor a $150', () => {
+      const items = [
+        { product: mockProducts[0], quantity: 1 } // $130
+      ];
 
-      const result = OrderValidationService.validateOrder(order);
-      
+      const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
+
+      expect(result.isValid).toBe(false);
+      expect(result.subtotal).toBe(130);
+      expect(result.shouldRedirectToDistributors).toBe(true);
+    });
+
+    it('debe cobrar envio cuando el subtotal esta entre $150 y $399', () => {
+      const items = [
+        { product: mockProducts[0], quantity: 2 } // $260
+      ];
+
+      const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
+
       expect(result.isValid).toBe(true);
-      expect(result.totalVolume).toBe(3.0);
-      expect(result.minimumRequired).toBe(2.5);
-      expect(result.shouldRedirectToDistributors).toBe(false);
+      expect(result.subtotal).toBe(260);
+      expect(result.shippingCost).toBe(50);
+      expect(result.totalWithShipping).toBe(310);
     });
 
-    it('debe invalidar un pedido insuficiente para zona local', () => {
-      const order: Order = {
-        items: [
-          { product: mockProducts[1], quantity: 5 } // 2kg total (5 x 0.4)
-        ],
-        destinationZone: 'local'
-      };
+    it('debe dar envio gratis cuando el subtotal es $400 o mas', () => {
+      const items = [
+        { product: mockProducts[0], quantity: 4 } // $520
+      ];
 
-      const result = OrderValidationService.validateOrder(order);
-      
-      expect(result.isValid).toBe(false);
-      expect(result.totalVolume).toBe(2.0);
-      expect(result.minimumRequired).toBe(2.5);
-      expect(result.shouldRedirectToDistributors).toBe(true);
-    });
-  });
+      const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
 
-  describe('meetsMinimumVolume', () => {
-    it('debe retornar true cuando cumple el mínimo local', () => {
-      const result = OrderValidationService.meetsMinimumVolume(2.5, 'local');
-      expect(result).toBe(true);
-    });
-
-    it('debe retornar false cuando no cumple el mínimo local', () => {
-      const result = OrderValidationService.meetsMinimumVolume(2.4, 'local');
-      expect(result).toBe(false);
-    });
-
-    it('debe retornar true cuando cumple el mínimo regional', () => {
-      const result = OrderValidationService.meetsMinimumVolume(5.0, 'regional');
-      expect(result).toBe(true);
-    });
-
-    it('debe retornar false cuando no cumple el mínimo regional', () => {
-      const result = OrderValidationService.meetsMinimumVolume(4.9, 'regional');
-      expect(result).toBe(false);
+      expect(result.isValid).toBe(true);
+      expect(result.subtotal).toBe(520);
+      expect(result.shippingCost).toBe(0);
+      expect(result.totalWithShipping).toBe(520);
     });
   });
 
   describe('getRemainingVolume', () => {
-    it('debe calcular correctamente el volumen faltante', () => {
-      const remaining = OrderValidationService.getRemainingVolume(2.0, 'local');
-      expect(remaining).toBe(0.5); // 2.5 - 2.0
+    it('debe calcular correctamente el monto faltante para envio gratis', () => {
+      const remaining = OrderValidationService.getRemainingVolume(100);
+      expect(remaining).toBe(300); // 400 - 100
     });
 
-    it('debe retornar 0 cuando ya cumple el mínimo', () => {
-      const remaining = OrderValidationService.getRemainingVolume(3.0, 'local');
+    it('debe retornar 0 cuando ya cumple el minimo de envio gratis', () => {
+      const remaining = OrderValidationService.getRemainingVolume(400);
       expect(remaining).toBe(0);
     });
 
-    it('debe retornar 0 cuando excede el mínimo', () => {
-      const remaining = OrderValidationService.getRemainingVolume(5.0, 'local');
+    it('debe retornar 0 cuando excede el minimo de envio gratis', () => {
+      const remaining = OrderValidationService.getRemainingVolume(450);
       expect(remaining).toBe(0);
     });
   });
@@ -266,54 +248,42 @@ describe('ZoneStrategyFactory', () => {
 
 describe('Integration Tests', () => {
   it('debe procesar correctamente un pedido completo del mundo real', () => {
-    // Escenario: Un restaurante en CDMX quiere hacer un pedido regional
-    const order: Order = {
-      items: [
-        { product: mockProducts[0], quantity: 3 },  // 3kg tofu 1kg
-        { product: mockProducts[1], quantity: 5 },  // 2kg tofu 400g
-        { product: mockProducts[2], quantity: 2 }   // 1kg veganesa
-      ],
-      destinationZone: 'regional'
-    };
+    const items = [
+      { product: mockProducts[0], quantity: 3 },
+      { product: mockProducts[1], quantity: 5 },
+      { product: mockProducts[2], quantity: 2 }
+    ];
 
-    const result = OrderValidationService.validateOrder(order);
-    
-    expect(result.totalVolume).toBe(6.0); // 3 + 2 + 1
-    expect(result.isValid).toBe(true); // Cumple con 5kg mínimo regional
+    const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
+
+    expect(result.subtotal).toBe(915);
+    expect(result.isValid).toBe(true);
+    expect(result.shippingCost).toBe(0);
     expect(result.shouldRedirectToDistributors).toBe(false);
   });
 
   it('debe rechazar correctamente un pedido insuficiente y sugerir distribuidores', () => {
-    // Escenario: Un cliente individual quiere 1kg local
-    const order: Order = {
-      items: [
-        { product: mockProducts[0], quantity: 1 } // Solo 1kg
-      ],
-      destinationZone: 'local'
-    };
+    const items = [
+      { product: mockProducts[0], quantity: 1 }
+    ];
 
-    const result = OrderValidationService.validateOrder(order);
-    
-    expect(result.totalVolume).toBe(1.0);
+    const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
+
+    expect(result.subtotal).toBe(130);
     expect(result.isValid).toBe(false);
     expect(result.shouldRedirectToDistributors).toBe(true);
-    expect(result.message).toContain('2.5');
+    expect(result.message).toContain('$150');
   });
 
   it('debe manejar el caso límite justo en el mínimo', () => {
-    // Escenario: Pedido exactamente en el mínimo
-    const order: Order = {
-      items: [
-        { product: mockProducts[0], quantity: 2 },   // 2kg
-        { product: mockProducts[2], quantity: 1 }    // 0.5kg
-      ],
-      destinationZone: 'local'
-    };
+    const items = [
+      { product: mockProducts[1], quantity: 2 }
+    ];
 
-    const result = OrderValidationService.validateOrder(order);
-    
-    expect(result.totalVolume).toBe(2.5);
+    const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
+
+    expect(result.subtotal).toBe(150);
     expect(result.isValid).toBe(true);
-    expect(result.minimumRequired).toBe(2.5);
+    expect(result.shippingCost).toBe(50);
   });
 });

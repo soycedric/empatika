@@ -203,7 +203,7 @@ const DistributorsSection = () => {
             >
               <div>
                 <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
-                <p className="text-dymo text-sm rotate-1">Parque Delta, Plaza Universidad, Oasis Coyacán, Biblioteca Central UNAM</p>
+                <p className="text-dymo text-sm rotate-1">Parque Delta y Biblioteca Central UNAM</p>
               </div>
               <a
                 href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"
@@ -280,7 +280,7 @@ const DistributorsSection = () => {
         >
           <div>
             <p className="font-display text-sm mb-1">📦 Todos los viernes entrega de productos en CDMX</p>
-            <p className="text-dymo text-sm rotate-1">Parque Delta, Plaza Universidad, Oasis Coyacán, Biblioteca Central UNAM</p>
+            <p className="text-dymo text-sm rotate-1">Parque Delta y Biblioteca Central UNAM</p>
           </div>
           <a
             href="https://wa.me/522215606205?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20CDMX"

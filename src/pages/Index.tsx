@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
 import SEOHead from "@/components/SEOHead";
@@ -35,10 +36,40 @@ const Index = () => {
           <Header />
           <main id="main-content">
             <HeroSection />
-            <ProductsSection />
-            <Suspense fallback={<SectionSkeleton />}>
-              <OrderCalculator />
-            </Suspense>
+            <section id="productos" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
+              <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto text-center mb-12">
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
+                  >
+                    ELIGE TU <span className="inline-block bg-foreground text-background px-2">TOFU</span> Y ARMA TU PEDIDO
+                  </motion.h2>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="font-body text-sm sm:text-base leading-relaxed text-muted-foreground max-w-2xl mx-auto"
+                  >
+                    Entre mas compres y si eres frecuente, mejor precio. Mayoreo disponible con pedidos de $400+ y minimo $1200 al mes.
+                  </motion.p>
+                </div>
+
+                <div className="max-w-5xl mx-auto">
+                  <ProductsSection variant="embedded" />
+                </div>
+
+                <div id="calculadora" className="mt-16">
+                  <Suspense fallback={<SectionSkeleton />}>
+                    <OrderCalculator variant="embedded" />
+                  </Suspense>
+                </div>
+              </div>
+            </section>
             <Suspense fallback={<SectionSkeleton />}>
               <RestaurantsSection />
             </Suspense>

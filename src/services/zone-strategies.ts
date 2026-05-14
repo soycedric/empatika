@@ -29,12 +29,18 @@ export class LocalZoneStrategy implements ZoneValidationStrategy {
 
   validate(order: Order): ValidationResult {
     const totalVolume = this.calculateTotalVolume(order);
+    const subtotal = this.calculateSubtotal(order);
     const isValid = totalVolume >= this.config.minimumVolume;
 
     return {
       isValid,
       totalVolume,
       minimumRequired: this.config.minimumVolume,
+      subtotal,
+      shippingCost: 0,
+      totalWithShipping: subtotal,
+      minimumOrderAmount: 0,
+      freeShippingThreshold: 0,
       zone: 'local',
       message: isValid
         ? `✅ Pedido válido para entrega local. Total: ${totalVolume.toFixed(2)} kg`
@@ -46,6 +52,12 @@ export class LocalZoneStrategy implements ZoneValidationStrategy {
   private calculateTotalVolume(order: Order): number {
     return order.items.reduce((total, item) => {
       return total + (item.product.weight * item.quantity);
+    }, 0);
+  }
+
+  private calculateSubtotal(order: Order): number {
+    return order.items.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
     }, 0);
   }
 }
@@ -63,12 +75,18 @@ export class RegionalZoneStrategy implements ZoneValidationStrategy {
 
   validate(order: Order): ValidationResult {
     const totalVolume = this.calculateTotalVolume(order);
+    const subtotal = this.calculateSubtotal(order);
     const isValid = totalVolume >= this.config.minimumVolume;
 
     return {
       isValid,
       totalVolume,
       minimumRequired: this.config.minimumVolume,
+      subtotal,
+      shippingCost: 0,
+      totalWithShipping: subtotal,
+      minimumOrderAmount: 0,
+      freeShippingThreshold: 0,
       zone: 'regional',
       message: isValid
         ? `✅ Pedido válido para entrega regional. Total: ${totalVolume.toFixed(2)} kg`
@@ -80,6 +98,12 @@ export class RegionalZoneStrategy implements ZoneValidationStrategy {
   private calculateTotalVolume(order: Order): number {
     return order.items.reduce((total, item) => {
       return total + (item.product.weight * item.quantity);
+    }, 0);
+  }
+
+  private calculateSubtotal(order: Order): number {
+    return order.items.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
     }, 0);
   }
 }
@@ -97,12 +121,18 @@ export class NationalZoneStrategy implements ZoneValidationStrategy {
 
   validate(order: Order): ValidationResult {
     const totalVolume = this.calculateTotalVolume(order);
+    const subtotal = this.calculateSubtotal(order);
     const isValid = totalVolume >= this.config.minimumVolume;
 
     return {
       isValid,
       totalVolume,
       minimumRequired: this.config.minimumVolume,
+      subtotal,
+      shippingCost: 0,
+      totalWithShipping: subtotal,
+      minimumOrderAmount: 0,
+      freeShippingThreshold: 0,
       zone: 'nacional',
       message: isValid
         ? `✅ Pedido válido para entrega nacional. Total: ${totalVolume.toFixed(2)} kg`
@@ -114,6 +144,12 @@ export class NationalZoneStrategy implements ZoneValidationStrategy {
   private calculateTotalVolume(order: Order): number {
     return order.items.reduce((total, item) => {
       return total + (item.product.weight * item.quantity);
+    }, 0);
+  }
+
+  private calculateSubtotal(order: Order): number {
+    return order.items.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
     }, 0);
   }
 }

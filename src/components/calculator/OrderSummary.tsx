@@ -15,40 +15,45 @@ type DeliveryMethod = 'delivery' | 'pickup';
 
 interface OrderSummaryProps {
   items: OrderItemWithId[];
-  totalVolume: number;
   validation: ValidationResult;
-  minimumVolume: number;
-  remainingVolume: number;
+  subtotal: number;
+  shippingCost: number;
+  totalWithShipping: number;
+  minimumOrderAmount: number;
+  freeShippingThreshold: number;
   deliveryZone: DeliveryZone;
   deliveryMethod: DeliveryMethod;
   pickupPoint: string;
+  pickupSlot: string;
+  deliveryLocation: string;
+  customerName: string;
+  customerPhone: string;
+  providerInterest: boolean;
   products: Product[];
   onCalculate: () => void;
 }
 
 /**
- * Calcula la mejor sugerencia de producto para alcanzar el mínimo
+ * Calcula la mejor sugerencia para alcanzar un monto objetivo
  */
-function getSuggestion(
-  remainingVolume: number,
+function getPriceSuggestion(
+  remainingAmount: number,
   products: Product[]
-): { product: Product; quantity: number } | null {
-  if (remainingVolume <= 0) return null;
+): { product: Product; quantity: number; addedAmount: number } | null {
+  if (remainingAmount <= 0) return null;
 
-  // Ordenar productos de mayor a menor peso para minimizar unidades
-  const sorted = [...products].sort((a, b) => b.weight - a.weight);
-
-  let bestOption: { product: Product; quantity: number } | null = null;
+  const sorted = [...products].sort((a, b) => a.price - b.price);
+  let bestOption: { product: Product; quantity: number; addedAmount: number } | null = null;
   let bestExcess = Infinity;
 
   for (const product of sorted) {
-    const qty = Math.ceil(remainingVolume / product.weight);
-    const excess = product.weight * qty - remainingVolume;
+    const qty = Math.ceil(remainingAmount / product.price);
+    const addedAmount = product.price * qty;
+    const excess = addedAmount - remainingAmount;
 
-    // Preferimos la opción con menor excedente
     if (excess < bestExcess) {
       bestExcess = excess;
-      bestOption = { product, quantity: qty };
+      bestOption = { product, quantity: qty, addedAmount };
     }
   }
 
@@ -57,42 +62,44 @@ function getSuggestion(
 
 export const OrderSummary = ({
   items,
-  totalVolume,
   validation,
-  minimumVolume,
-  remainingVolume,
+  subtotal,
+  shippingCost,
+  totalWithShipping,
+  minimumOrderAmount,
+  freeShippingThreshold,
   deliveryZone,
   deliveryMethod,
   pickupPoint,
+  pickupSlot,
+  deliveryLocation,
+  customerName,
+  customerPhone,
+  providerInterest,
   products,
   onCalculate,
 }: OrderSummaryProps) => {
-  const suggestion = useMemo(() => {
-    if (validation.isValid || items.length === 0) return null;
-    return getSuggestion(remainingVolume, products);
-  }, [validation.isValid, items.length, remainingVolume, products]);
-
-  const fillPercent = (totalVolume / minimumVolume) * 100;
   const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
-  const canSubmit = !isPickup || pickupPoint.trim().length > 0;
+  const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
+  const hasDeliveryLocation = deliveryLocation.trim().length > 0;
+  const hasContact = customerName.trim().length > 0 && customerPhone.trim().length > 0;
+  const canSubmit = hasContact && (isPickup ? hasPickupInfo : hasDeliveryLocation);
+  const remainingToMinimum = Math.max(0, minimumOrderAmount - subtotal);
+  const remainingToFree = Math.max(0, freeShippingThreshold - subtotal);
+  const suggestionToMinimum = useMemo(() => {
+    if (items.length === 0 || remainingToMinimum <= 0) return null;
+    return getPriceSuggestion(remainingToMinimum, products);
+  }, [items.length, remainingToMinimum, products]);
+  const suggestionToFree = useMemo(() => {
+    if (isPickup || items.length === 0 || remainingToFree <= 0) return null;
+    if (subtotal < minimumOrderAmount) return null;
+    return getPriceSuggestion(remainingToFree, products);
+  }, [isPickup, items.length, remainingToFree, subtotal, minimumOrderAmount, products]);
+  const fillPercent = minimumOrderAmount > 0 ? (subtotal / minimumOrderAmount) * 100 : 0;
 
   return (
     <div className="space-y-6">
-      {/* Badges informativos */}
-      <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-        <div className="bg-background border-4 border-foreground px-4 py-2.5 font-display text-sm font-bold flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <Truck className="w-4 h-4" />
-          <span>{isPickup ? 'RECOGIDA +3KG' : 'ENVÍO GRATIS +3KG'}</span>
-        </div>
-        <div className="bg-background border-4 border-foreground px-4 py-2.5 font-display text-sm font-bold flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <MapPin className="w-4 h-4" />
-          <span>{
-            isPickup
-              ? `${deliveryZone === 'puebla' ? 'PUEBLA' : 'CDMX'} - PICKUP`
-              : 'PUEBLA - DOMICILIO'
-          }</span>
-        </div>
-      </div>
+
 
       {/* Card Principal: Estado */}
       <div className={`bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
@@ -121,30 +128,38 @@ export const OrderSummary = ({
             </div>
             <h4 className="font-display text-2xl mb-2">
               {validation.isValid
-                ? (isPickup ? '¡LISTO PARA RECOGER!' : '¡ENVÍO GRATIS!')
+                ? (isPickup
+                  ? '¡LISTO PARA RECOGER!'
+                  : subtotal >= freeShippingThreshold
+                    ? '¡ENVIO GRATIS!'
+                    : '¡LISTO PARA ENVIAR!')
                 : items.length > 0 ? 'COMPLETA TU PEDIDO' : ''}
             </h4>
           </div>
 
-          {/* Volumen Total */}
+          {/* Subtotal */}
           <div className="text-center py-4">
             <p className="text-xs text-muted-foreground mb-2 font-display uppercase tracking-wider">
-              Volumen Total
+              Subtotal
             </p>
             <div className="flex items-baseline justify-center gap-2">
               <span className="text-7xl font-display font-bold text-foreground">
-                {totalVolume.toFixed(1)}
+                ${subtotal.toFixed(0)}
               </span>
-              <span className="text-3xl font-display text-muted-foreground">kg</span>
+              <span className="text-2xl font-display text-muted-foreground">MXN</span>
+            </div>
+            <div className="mt-4 space-y-1 text-sm">
+              <p>Envio: ${shippingCost.toFixed(0)} MXN</p>
+              <p className="font-bold">Total: ${totalWithShipping.toFixed(0)} MXN</p>
             </div>
           </div>
 
           {/* Barra de progreso */}
           <div className="space-y-3">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground text-xs uppercase font-display">Mínimo:</span>
+              <span className="text-muted-foreground text-xs uppercase font-display">Minimo:</span>
               <Badge variant="outline" className="font-display border-2 border-foreground">
-                {minimumVolume} kg
+                ${minimumOrderAmount}
               </Badge>
             </div>
 
@@ -179,7 +194,11 @@ export const OrderSummary = ({
               >
                 <span className="text-2xl">🎉</span>
                 <p className="font-display text-sm text-green-700 dark:text-green-300 mt-1">
-                  {isPickup ? '¡RECOGIDA DISPONIBLE!' : '¡ENVÍO GRATIS DESBLOQUEADO!'}
+                  {isPickup
+                    ? '¡PICKUP DISPONIBLE!'
+                    : subtotal >= freeShippingThreshold
+                      ? '¡ENVIO GRATIS DESBLOQUEADO!'
+                      : '¡LISTO PARA ENVIAR!'}
                 </p>
               </motion.div>
             )}
@@ -192,8 +211,8 @@ export const OrderSummary = ({
             </div>
           )}
 
-          {/* Sugerencia inteligente */}
-          {suggestion && (
+          {/* Sugerencias inteligentes */}
+          {suggestionToMinimum && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -204,17 +223,46 @@ export const OrderSummary = ({
                 <span className="font-bold">Tip:</span>{' '}
                 Agrega{' '}
                 <span className="font-bold text-foreground">
-                  {suggestion.quantity} {suggestion.product.name} ({suggestion.product.weight} kg)
+                  {suggestionToMinimum.quantity} {suggestionToMinimum.product.name}
                 </span>{' '}
-                para alcanzar el mínimo de {minimumVolume} kg y obtener{' '}
-                {isPickup ? 'recogida' : 'envío gratis'}.
+                para llegar a ${minimumOrderAmount}.
               </p>
             </motion.div>
           )}
 
-          {isPickup && pickupPoint.trim().length > 0 && (
+          {suggestionToFree && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-foreground/5 border-2 border-foreground/40 flex items-start gap-3"
+            >
+              <Lightbulb className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
+              <p className="text-sm">
+                <span className="font-bold">Tip:</span>{' '}
+                Agrega{' '}
+                <span className="font-bold text-foreground">
+                  {suggestionToFree.quantity} {suggestionToFree.product.name}
+                </span>{' '}
+                para envio gratis desde ${freeShippingThreshold}.
+              </p>
+            </motion.div>
+          )}
+
+          {hasContact && (
             <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
-              <span className="font-bold">Pickup:</span> {pickupPoint}
+              <span className="font-bold">Cliente:</span> {customerName} · {customerPhone}{providerInterest ? ' · Proveedor interesado' : ''}
+            </div>
+          )}
+
+          {isPickup && hasPickupInfo && (
+            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+              <span className="font-bold">Pickup:</span> {pickupPoint} · {pickupSlot}
+            </div>
+          )}
+
+          {!isPickup && hasDeliveryLocation && (
+            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+              <span className="font-bold">Ubicacion:</span> {deliveryLocation}
             </div>
           )}
         </div>
@@ -230,10 +278,10 @@ export const OrderSummary = ({
             <div className="bg-background border-4 border-foreground shadow-brutal p-6 bg-orange-50 dark:bg-orange-950/30">
               <div className="text-center mb-4">
                 <h3 className="font-display text-lg font-bold mb-2">
-                  ¿BUSCAS MENOS CANTIDAD?
+                  ¿COMPRA MENOR A $150?
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Encuentra nuestros productos en distribuidores cerca de ti
+                  Te enviamos con distribuidores cerca de ti
                 </p>
               </div>
               <Button
@@ -253,7 +301,9 @@ export const OrderSummary = ({
                 <p className="text-sm text-muted-foreground">
                   {isPickup
                     ? 'Coméntanos el punto de entrega de tu pedido.'
-                    : 'Tu pedido califica para envío gratis'}
+                    : subtotal >= freeShippingThreshold
+                      ? 'Tu pedido califica para envio gratis'
+                      : `Envio con costo de $${shippingCost.toFixed(0)} MXN`}
                 </p>
               </div>
               <Button
@@ -267,7 +317,7 @@ export const OrderSummary = ({
               </Button>
               {!canSubmit && (
                 <p className="text-xs text-muted-foreground text-center mt-3">
-                  Selecciona un punto de pickup para continuar.
+                  Completa contacto y datos de entrega/pickup.
                 </p>
               )}
             </div>

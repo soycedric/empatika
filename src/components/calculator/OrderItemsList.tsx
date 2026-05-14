@@ -42,7 +42,7 @@ export const OrderItemsList = ({ items, onUpdateQuantity, onRemoveItem }: OrderI
                     {item.product.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {(item.product.weight * item.quantity).toFixed(2)} kg
+                    {item.quantity} x ${item.product.price} = ${item.product.price * item.quantity}
                   </p>
                 </div>
 

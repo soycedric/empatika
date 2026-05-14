@@ -107,19 +107,9 @@ export const useOrderCalculator = (
     return OrderValidationService.validateOrder(items, zone, method);
   }, [items, zone, method]);
 
-  /**
-   * Obtiene el volumen faltante para envío gratuito
-   */
-  const remainingVolume = useMemo(() => {
-    return OrderValidationService.getRemainingVolume(totalVolume);
-  }, [totalVolume]);
-
-  /**
-   * Obtiene el volumen mínimo requerido
-   */
-  const minimumVolume = useMemo(() => {
-    return OrderValidationService.getMinimumVolume();
-  }, []);
+  const subtotal = useMemo(() => {
+    return OrderValidationService.calculateSubtotal(items);
+  }, [items]);
 
   return {
     // Estado
@@ -129,8 +119,7 @@ export const useOrderCalculator = (
     // Métricas
     totalVolume,
     validation,
-    remainingVolume,
-    minimumVolume,
+    subtotal,
     
     // Acciones
     addItem,

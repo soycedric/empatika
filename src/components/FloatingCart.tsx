@@ -8,11 +8,27 @@ import { ShoppingCart, ArrowRight, X } from 'lucide-react';
 import { useOrderContext } from '@/hooks/OrderContext';
 
 const FloatingCart = () => {
-    const { items, totalVolume, minimumVolume, validation } = useOrderContext();
+    const {
+        items,
+        subtotal,
+        minimumOrderAmount,
+        freeShippingThreshold,
+        deliveryZone,
+        deliveryMethod,
+        validation
+    } = useOrderContext();
 
     if (items.length === 0) return null;
 
-    const fillPercent = Math.min(100, (totalVolume / minimumVolume) * 100);
+    const fillPercent = Math.min(100, (subtotal / minimumOrderAmount) * 100);
+    const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
+    const statusText = validation.shouldRedirectToDistributors
+        ? 'Proveedores'
+        : isPickup
+            ? 'Pickup'
+            : subtotal >= freeShippingThreshold
+                ? 'Envio gratis'
+                : 'Envio $50';
 
     return (
         <AnimatePresence>
@@ -35,12 +51,10 @@ const FloatingCart = () => {
                             </div>
                             <div className="min-w-0">
                                 <p className="font-display text-sm truncate">
-                                    {totalVolume.toFixed(1)} / {minimumVolume} kg
+                                    ${subtotal.toFixed(0)} / ${minimumOrderAmount}
                                 </p>
                                 <p className="font-body text-[10px] text-muted-foreground truncate">
-                                    {validation.isValid
-                                        ? '¡Pedido listo!'
-                                        : `Faltan ${(minimumVolume - totalVolume).toFixed(1)} kg`}
+                                    {statusText}
                                 </p>
                             </div>
                         </div>

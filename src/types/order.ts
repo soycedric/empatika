@@ -46,7 +46,7 @@ export type ZoneType = 'local' | 'regional' | 'nacional';
 export interface ValidationResult {
   isValid: boolean;
   totalVolume: number; // en kg
-  minimumRequired: number; // en kg
+  minimumRequired: number; // en MXN o kg, segun estrategia
   subtotal: number; // en MXN
   shippingCost: number; // en MXN
   totalWithShipping: number; // en MXN

@@ -20,14 +20,27 @@ interface OrderContextValue {
     products: ReturnType<typeof getAllProducts>;
     totalVolume: number;
     validation: ValidationResult;
-    remainingVolume: number;
-    minimumVolume: number;
+    subtotal: number;
+    shippingCost: number;
+    totalWithShipping: number;
+    minimumOrderAmount: number;
+    freeShippingThreshold: number;
     deliveryZone: DeliveryZone;
     deliveryMethod: DeliveryMethod;
+    customerName: string;
+    customerPhone: string;
+    providerInterest: boolean;
     pickupPoint: string;
+    pickupSlot: string;
+    deliveryLocationLink: string;
     setDeliveryZone: (zone: DeliveryZone) => void;
     setDeliveryMethod: (method: DeliveryMethod) => void;
+    setCustomerName: (name: string) => void;
+    setCustomerPhone: (phone: string) => void;
+    setProviderInterest: (value: boolean) => void;
     setPickupPoint: (point: string) => void;
+    setPickupSlot: (slot: string) => void;
+    setDeliveryLocationLink: (location: string) => void;
     addItem: (productId: string, quantity?: number) => void;
     updateItemQuantity: (itemId: string, quantity: number) => void;
     removeItem: (itemId: string) => void;
@@ -46,7 +59,12 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const [items, setItems] = useState<OrderItemWithId[]>([]);
     const [deliveryZone, setDeliveryZone] = useState<DeliveryZone>('puebla');
     const [deliveryMethod, setDeliveryMethodState] = useState<DeliveryMethod>('delivery');
+    const [customerName, setCustomerName] = useState<string>('');
+    const [customerPhone, setCustomerPhone] = useState<string>('');
+    const [providerInterest, setProviderInterest] = useState<boolean>(false);
     const [pickupPoint, setPickupPoint] = useState<string>('');
+    const [pickupSlot, setPickupSlot] = useState<string>('');
+    const [deliveryLocationLink, setDeliveryLocationLink] = useState<string>('');
 
     const products = useMemo(() => getAllProducts(), []);
 
@@ -87,8 +105,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         () => OrderValidationService.validateOrder(items, deliveryZone, deliveryMethod),
         [items, deliveryZone, deliveryMethod]
     );
-    const remainingVolume = useMemo(() => OrderValidationService.getRemainingVolume(totalVolume), [totalVolume]);
-    const minimumVolume = useMemo(() => OrderValidationService.getMinimumVolume(), []);
+    const subtotal = useMemo(() => OrderValidationService.calculateSubtotal(items), [items]);
 
     const handleSetDeliveryZone = useCallback((zone: DeliveryZone) => {
         setDeliveryZone(zone);
@@ -96,6 +113,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
             setDeliveryMethodState('pickup');
         }
         setPickupPoint('');
+        setPickupSlot('');
     }, []);
 
     const handleSetDeliveryMethod = useCallback((method: DeliveryMethod) => {
@@ -106,6 +124,9 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         setDeliveryMethodState(method);
         if (method === 'delivery') {
             setPickupPoint('');
+            setPickupSlot('');
+        } else {
+            setDeliveryLocationLink('');
         }
     }, [deliveryZone]);
 
@@ -114,14 +135,27 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         products,
         totalVolume,
         validation,
-        remainingVolume,
-        minimumVolume,
+        subtotal,
+        shippingCost: validation.shippingCost,
+        totalWithShipping: validation.totalWithShipping,
+        minimumOrderAmount: validation.minimumOrderAmount,
+        freeShippingThreshold: validation.freeShippingThreshold,
         deliveryZone,
         deliveryMethod,
+        customerName,
+        customerPhone,
+        providerInterest,
         pickupPoint,
+        pickupSlot,
+        deliveryLocationLink,
         setDeliveryZone: handleSetDeliveryZone,
         setDeliveryMethod: handleSetDeliveryMethod,
+        setCustomerName,
+        setCustomerPhone,
+        setProviderInterest,
         setPickupPoint,
+        setPickupSlot,
+        setDeliveryLocationLink,
         addItem,
         updateItemQuantity,
         removeItem,

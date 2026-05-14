@@ -6,7 +6,7 @@ const benefits = [
   {
     icon: Building2,
     title: "Restaurantes & Hoteles",
-    description: "Precios especiales para HORECA con entregas programadas.",
+    description: "Precios especiales con entregas programadas.",
   },
   {
     icon: Truck,

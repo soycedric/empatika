@@ -25,9 +25,9 @@ export const PRODUCT_CATALOG: Record<string, Product[]> = {
       name: 'Tofu Extra Firme',
       variant: 'extra-firme',
       weight: 1.0, // 1 kg
-      price: 130,
+      price: 150,
       description: 'Perfecto para freír, asar o saltear. Su textura firme mantiene la forma.',
-      pricePerKg: 140 // Ejemplo: $140 pesos por kg (descuento por volumen)
+      pricePerKg: 150 // Ejemplo: $150 pesos por kg
     }
   ],
   'tofu-ahumado': [
@@ -45,20 +45,29 @@ export const PRODUCT_CATALOG: Record<string, Product[]> = {
       name: 'Tofu Ahumado',
       variant: 'ahumado',
       weight: 1.0, // 1 kg
-      price: 130,
+      price: 150,
       description: 'Ahumado con madera de mezquite. Listo para comer.',
-      pricePerKg: 170 // Ejemplo: $170 pesos por kg
+      pricePerKg: 150 // Ejemplo: $150 pesos por kg
     }
   ],
   'veganesa': [
+    {
+      id: 'veganesa-250g',
+      name: 'Veganesa',
+      variant: 'veganesa',
+      weight: 0.25, // 250g = 0.25 kg
+      price: 75,
+      description: 'Mayonesa vegana cremosa y deliciosa. Sin huevo, sin lácteos.',
+      pricePerKg: 300 // Ejemplo: $300 pesos por kg
+    },
     {
       id: 'veganesa-500g',
       name: 'Veganesa',
       variant: 'veganesa',
       weight: 0.5, // 500g = 0.5 kg
-      price: 75,
+      price: 140,
       description: 'Mayonesa vegana cremosa y deliciosa. Sin huevo, sin lácteos.',
-      pricePerKg: 190 // Ejemplo: $190 pesos por kg
+      pricePerKg: 280 // Ejemplo: $280 pesos por kg
     }
   ]
 };

@@ -53,11 +53,13 @@ export class OrderValidationService {
 
     const shouldRedirectToDistributors = subtotal < MINIMUM_ORDER_AMOUNT;
     const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-    const shippingCost = isPickup
+    const shippingCost = shouldRedirectToDistributors
       ? 0
-      : qualifiesForFreeShipping
+      : isPickup
         ? 0
-        : DELIVERY_FEE;
+        : qualifiesForFreeShipping
+          ? 0
+          : DELIVERY_FEE;
 
     const isValid = !shouldRedirectToDistributors;
     const message = shouldRedirectToDistributors
@@ -105,18 +107,15 @@ export class OrderValidationService {
   }
 
   /**
-   * Obtiene el volumen faltante para envío gratuito
-   * 
-   * @param currentVolume - Volumen actual del pedido en kg
-   * @returns Kilogramos faltantes (0 si ya cumple)
+   * Obtiene el monto faltante para envio gratis
    */
-  static getRemainingVolume(currentVolume: number): number {
-    const remaining = FREE_SHIPPING_THRESHOLD - currentVolume;
+  static getRemainingVolume(currentSubtotal: number): number {
+    const remaining = FREE_SHIPPING_THRESHOLD - currentSubtotal;
     return Math.max(0, remaining);
   }
 
   /**
-   * Obtiene el volumen mínimo requerido
+   * Obtiene el monto minimo requerido
    */
   static getMinimumVolume(): number {
     return MINIMUM_ORDER_AMOUNT;
