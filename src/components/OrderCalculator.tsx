@@ -5,158 +5,100 @@
  */
 
 import { motion } from 'framer-motion';
-import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
-import { getProductById } from '@/data/products';
+import { useOrderSubmit } from '@/hooks/use-order-submit';
 import { ProductSelector } from '@/components/calculator/ProductSelector';
 import { OrderSummary } from '@/components/calculator/OrderSummary';
+import type { CalculatorDensity } from '@/components/calculator/types';
 import { withBaseUrl } from '@/lib/base-url';
 
-type DeliveryZone = 'puebla' | 'cdmx';
-
-const DELIVERY_ZONES: Record<DeliveryZone, string> = {
-  puebla: 'Puebla',
-  cdmx: 'Ciudad de México'
-};
-
-// Tofuchos para decorar la calculadora
 const calculatorTofuchos = [
   { src: withBaseUrl("tofuchos/tofucho pensando.png"), position: "top-12 left-4 xl:left-12", size: "w-20 h-20 xl:w-24 xl:h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
   { src: withBaseUrl("tofuchos/tofucho sorprendido.png"), position: "bottom-12 right-4 xl:right-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
 ];
 
 type OrderCalculatorVariant = 'standalone' | 'embedded';
+type OrderCalculatorLayout = 'split' | 'stacked';
 
 interface OrderCalculatorProps {
   variant?: OrderCalculatorVariant;
+  showSummary?: boolean;
+  layout?: OrderCalculatorLayout;
+  containerClassName?: string;
+  showDecorations?: boolean;
+  hideCta?: boolean;
 }
 
-export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps) => {
-  const {
-    items,
-    products,
-    totalVolume,
-    validation,
-    subtotal,
-    shippingCost,
-    totalWithShipping,
-    minimumOrderAmount,
-    freeShippingThreshold,
-    deliveryZone,
-    setDeliveryZone,
-    deliveryMethod,
-    setDeliveryMethod,
-    customerName,
-    customerPhone,
-    setCustomerName,
-    setCustomerPhone,
-    providerInterest,
-    setProviderInterest,
-    pickupPoint,
-    setPickupPoint,
-    pickupSlot,
-    setPickupSlot,
-    deliveryLocationLink,
-    setDeliveryLocationLink,
-    addItem,
-    updateItemQuantity,
-    removeItem,
-    clearOrder
-  } = useOrderContext();
+const sharedSelectorProps = (
+  ctx: ReturnType<typeof useOrderContext>,
+  density: CalculatorDensity
+) => ({
+  deliveryZone: ctx.deliveryZone,
+  deliveryMethod: ctx.deliveryMethod,
+  customerName: ctx.customerName,
+  customerPhone: ctx.customerPhone,
+  pickupPoint: ctx.pickupPoint,
+  pickupSlot: ctx.pickupSlot,
+  deliveryLocationLink: ctx.deliveryLocationLink,
+  onZoneChange: ctx.setDeliveryZone,
+  onMethodChange: ctx.setDeliveryMethod,
+  onCustomerNameChange: ctx.setCustomerName,
+  onCustomerPhoneChange: ctx.setCustomerPhone,
+  onPickupPointChange: ctx.setPickupPoint,
+  onPickupSlotChange: ctx.setPickupSlot,
+  onDeliveryLocationChange: ctx.setDeliveryLocationLink,
+  density,
+});
 
-  const handleAddProduct = (productId: string) => {
-    const product = getProductById(productId);
-    addItem(productId, 1);
-    if (product) {
-      toast.success('Producto agregado', {
-        description: `${product.name} (${product.weight} kg) añadido al pedido`,
-      });
-    }
-  };
+const sharedSummaryProps = (
+  ctx: ReturnType<typeof useOrderContext>,
+  handleCalculate: () => void,
+  density: CalculatorDensity,
+  hideCta?: boolean
+) => ({
+  items: ctx.items,
+  validation: ctx.validation,
+  subtotal: ctx.subtotal,
+  shippingCost: ctx.shippingCost,
+  totalWithShipping: ctx.totalWithShipping,
+  freeShippingThreshold: ctx.freeShippingThreshold,
+  deliveryZone: ctx.deliveryZone,
+  deliveryMethod: ctx.deliveryMethod,
+  pickupPoint: ctx.pickupPoint,
+  pickupSlot: ctx.pickupSlot,
+  deliveryLocation: ctx.deliveryLocationLink,
+  customerName: ctx.customerName,
+  customerPhone: ctx.customerPhone,
+  products: ctx.products,
+  onCalculate: handleCalculate,
+  onUpdateQuantity: ctx.updateItemQuantity,
+  onRemoveItem: ctx.removeItem,
+  onClearOrder: ctx.clearOrder,
+  density,
+  hideCta,
+});
 
-  const handleCalculate = () => {
-    const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
-    const hasContact = customerName.trim().length > 0 && customerPhone.trim().length > 0;
-    const hasDeliveryLocation = deliveryLocationLink.trim().length > 0;
-    const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
+export const OrderCalculator = ({
+  variant = 'standalone',
+  showSummary = true,
+  layout = 'split',
+  containerClassName,
+  showDecorations = true,
+  hideCta = false,
+}: OrderCalculatorProps) => {
+  const ctx = useOrderContext();
+  const { handleCalculate } = useOrderSubmit();
+  const isCompact = variant === 'embedded' && layout === 'stacked';
+  const density: CalculatorDensity = isCompact ? 'compact' : 'default';
+  const stackGap = isCompact ? 'space-y-4' : 'space-y-6';
 
-    if (!hasContact) {
-      toast.error('Faltan datos de contacto', {
-        description: 'Agrega tu nombre y telefono para continuar.'
-      });
-      return;
-    }
-
-    if (!isPickup && !hasDeliveryLocation) {
-      toast.error('Falta la ubicacion', {
-        description: 'Pega tus coordenadas para envio.'
-      });
-      return;
-    }
-
-    if (isPickup && !hasPickupInfo) {
-      toast.error('Falta el pickup', {
-        description: 'Selecciona punto y horario para continuar.'
-      });
-      return;
-    }
-    if (isPickup && pickupPoint.trim().length === 0) {
-      toast.error('Falta el punto de pickup', {
-        description: 'Selecciona o escribe tu punto de pickup para continuar.'
-      });
-      return;
-    }
-
-    if (validation.shouldRedirectToDistributors) {
-      document.getElementById('distribuidores')?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      const phoneNumber = '522213089090';
-      const sanitize = (text: string) => text.replace(/[<>"'&]/g, '');
-
-      const lines: string[] = [];
-      lines.push(isPickup
-        ? 'Hola! Quiero hacer un pedido para recoger:'
-        : subtotal >= freeShippingThreshold
-          ? 'Hola! Quiero hacer un pedido con envio gratis:'
-          : `Hola! Quiero hacer un pedido con envio (costo $${shippingCost.toFixed(0)}):`);
-      lines.push('');
-      lines.push(`Cliente: ${sanitize(customerName)}`);
-      lines.push(`Telefono: ${sanitize(customerPhone)}`);
-      lines.push(`Interes proveedor: ${providerInterest ? 'Si' : 'No'}`);
-      lines.push('');
-      lines.push(`Zona: ${sanitize(DELIVERY_ZONES[deliveryZone])}`);
-
-      lines.push(`Metodo: ${isPickup ? 'Pickup' : 'Envio'}`);
-
-      if (isPickup) {
-        lines.push('');
-        lines.push(`Pickup: ${sanitize(pickupPoint)}`);
-        lines.push(`Horario: ${sanitize(pickupSlot)}`);
-      } else {
-        lines.push('');
-        lines.push(`Ubicacion: ${sanitize(deliveryLocationLink)}`);
-      }
-
-      lines.push('');
-      lines.push(`Subtotal: $${subtotal.toFixed(0)} MXN`);
-      lines.push(`Envio: $${shippingCost.toFixed(0)} MXN`);
-      lines.push(`Total: $${totalWithShipping.toFixed(0)} MXN`);
-      lines.push('');
-      lines.push('Productos:');
-
-      items.forEach((item, i) => {
-        const weight = (item.product.weight * item.quantity).toFixed(2);
-        const lineTotal = item.product.price * item.quantity;
-        lines.push(`${i + 1}. ${sanitize(item.product.name)} (${item.product.weight}kg) x${item.quantity} = ${weight}kg - $${lineTotal}`);
-      });
-
-      const encodedMessage = encodeURIComponent(lines.join('\n'));
-      window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank', 'noopener,noreferrer');
-    }
-  };
+  const productSelector = <ProductSelector {...sharedSelectorProps(ctx, density)} />;
+  const orderSummary = showSummary ? (
+    <OrderSummary {...sharedSummaryProps(ctx, handleCalculate, density, hideCta)} />
+  ) : null;
 
   const content = (
-    <div className="max-w-5xl mx-auto">
+    <div className={`max-w-5xl mx-auto ${containerClassName ?? ''}`.trim()}>
       {variant === 'standalone' && (
         <div className="text-center mb-12">
           <motion.h2
@@ -174,72 +116,67 @@ export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps
             viewport={{ once: true }}
             className="text-muted-foreground max-w-2xl mx-auto"
           >
-            Compra desde $150. Envio $50 entre $150 y $399, y envio gratis desde $400. En CDMX solo pickup.
+            Envio $50 entre $0 y $399, y envio gratis desde $400. En CDMX solo pickup.
           </motion.p>
         </div>
       )}
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Panel Izquierdo: Selector */}
-        <div className="space-y-6">
-          <ProductSelector
-            products={products}
-            deliveryZone={deliveryZone}
-            deliveryMethod={deliveryMethod}
-            customerName={customerName}
-            customerPhone={customerPhone}
-            providerInterest={providerInterest}
-            pickupPoint={pickupPoint}
-            pickupSlot={pickupSlot}
-            deliveryLocationLink={deliveryLocationLink}
-            onZoneChange={setDeliveryZone}
-            onMethodChange={setDeliveryMethod}
-            onCustomerNameChange={setCustomerName}
-            onCustomerPhoneChange={setCustomerPhone}
-            onProviderInterestChange={setProviderInterest}
-            onPickupPointChange={setPickupPoint}
-            onPickupSlotChange={setPickupSlot}
-            onDeliveryLocationChange={setDeliveryLocationLink}
-            onAddProduct={handleAddProduct}
-          />
+      {layout === 'stacked' ? (
+        <div className={stackGap}>
+          {isCompact ? (
+            <>
+              {orderSummary}
+              {productSelector}
+            </>
+          ) : (
+            <>
+              {productSelector}
+              {orderSummary}
+            </>
+          )}
         </div>
-
-        {/* Panel Derecho: Pedido + Resumen unificado */}
-        <OrderSummary
-          items={items}
-          validation={validation}
-          subtotal={subtotal}
-          shippingCost={shippingCost}
-          totalWithShipping={totalWithShipping}
-          minimumOrderAmount={minimumOrderAmount}
-          freeShippingThreshold={freeShippingThreshold}
-          deliveryZone={deliveryZone}
-          deliveryMethod={deliveryMethod}
-          pickupPoint={pickupPoint}
-          pickupSlot={pickupSlot}
-          deliveryLocation={deliveryLocationLink}
-          customerName={customerName}
-          customerPhone={customerPhone}
-          providerInterest={providerInterest}
-          products={products}
-          onCalculate={handleCalculate}
-          onUpdateQuantity={updateItemQuantity}
-          onRemoveItem={removeItem}
-          onClearOrder={clearOrder}
-        />
-      </div>
+      ) : (
+        <div className={showSummary ? 'grid lg:grid-cols-[minmax(0,1fr)_360px] gap-8' : 'grid lg:grid-cols-1 gap-8'}>
+          <div className="space-y-6">{productSelector}</div>
+          {orderSummary}
+        </div>
+      )}
     </div>
   );
 
   if (variant === 'embedded') {
     return (
       <div className="relative overflow-hidden">
-        {calculatorTofuchos.map((tofucho, index) => (
+        {showDecorations &&
+          calculatorTofuchos.map((tofucho, index) => (
+            <motion.div
+              key={index}
+              className={`absolute ${tofucho.position} z-10 hidden lg:block`}
+              animate={tofucho.animation}
+              transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <img
+                src={tofucho.src}
+                alt=""
+                aria-hidden="true"
+                className={`${tofucho.size} object-contain opacity-70 drop-shadow-lg`}
+              />
+            </motion.div>
+          ))}
+        {isCompact ? content : <div className="container mx-auto px-4">{content}</div>}
+      </div>
+    );
+  }
+
+  return (
+    <section id="calculadora" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
+      {showDecorations &&
+        calculatorTofuchos.map((tofucho, index) => (
           <motion.div
             key={index}
             className={`absolute ${tofucho.position} z-10 hidden lg:block`}
             animate={tofucho.animation}
-            transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
           >
             <img
               src={tofucho.src}
@@ -249,35 +186,8 @@ export const OrderCalculator = ({ variant = 'standalone' }: OrderCalculatorProps
             />
           </motion.div>
         ))}
-        <div className="container mx-auto px-4">
-          {content}
-        </div>
-      </div>
-    );
-  }
 
-  return (
-    <section id="calculadora" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
-      {/* Tofuchos decorativos flotantes */}
-      {calculatorTofuchos.map((tofucho, index) => (
-        <motion.div
-          key={index}
-          className={`absolute ${tofucho.position} z-10 hidden lg:block`}
-          animate={tofucho.animation}
-          transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <img
-            src={tofucho.src}
-            alt=""
-            aria-hidden="true"
-            className={`${tofucho.size} object-contain opacity-70 drop-shadow-lg`}
-          />
-        </motion.div>
-      ))}
-
-      <div className="container mx-auto px-4">
-        {content}
-      </div>
+      <div className="container mx-auto px-4">{content}</div>
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import { Instagram, Facebook, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { withBaseUrl } from "@/lib/base-url";
+import { WHATSAPP_PHONE_DISPLAY, whatsappHref } from "@/lib/whatsapp";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -81,12 +82,12 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://wa.me/522215606205"
+                  href={whatsappHref()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-dymo transition-all"
                 >
-                  +52 221 560 6205
+                  {WHATSAPP_PHONE_DISPLAY}
                 </a>
               </li>
             </ul>

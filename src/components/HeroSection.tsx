@@ -99,7 +99,7 @@ const heroTitleLines = [
 const subtitlePhrases = [
   { highlight: "Marínalo", rest: ", fríelo o cómelo directo." },
   { highlight: "Textura firme", rest: " para cortes limpios." },
-  { highlight: "Proteína vegetal", rest: " para cocina profesional." },
+  { highlight: "Proteína vegetal", rest: " para tu cocina diaria." },
 ];
 
 const HeroSection = () => {
@@ -240,7 +240,7 @@ const HeroSection = () => {
         }}
       />
 
-      <div className="relative z-10 mx-auto grid min-h-[86svh] w-full max-w-7xl grid-cols-1 gap-0 px-4 pb-10 pt-10 sm:min-h-[88svh] sm:gap-0 sm:px-6 sm:pt-10 md:gap-0 md:pt-10 lg:min-h-[min(100vh,980px)] lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-2 lg:px-10 lg:pb-12 lg:pt-24">
+      <div className="relative z-10 mx-auto grid min-h-[86svh] w-full max-w-7xl grid-cols-1 gap-0 px-4 pb-10 pt-4 sm:min-h-[88svh] sm:gap-0 sm:px-6 sm:pt-5 md:gap-0 md:pt-5 lg:min-h-[min(100vh,980px)] lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-2 lg:px-10 lg:pb-12 lg:pt-6">
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 24 }}
           animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -339,17 +339,8 @@ const HeroSection = () => {
             transition={{ delay: 0.18, duration: 0.5, ease: "easeOut" }}
           >
             <motion.a
-              href="#calculadora"
-              className="btn-brutal btn-fill-anim w-full sm:w-auto"
-              style={{ "--btn-fill": "hsl(var(--foreground)/0.12)" } as CSSProperties}
-              whileHover={reducedMotion ? undefined : { y: -2 }}
-              whileTap={reducedMotion ? undefined : { scale: 0.98 }}
-            >
-              Comprar Tofu
-            </motion.a>
-            <motion.a
               href="#productos"
-              className="btn-brutal-outline btn-fill-anim w-full sm:w-auto"
+              className="btn-brutal btn-fill-anim w-full sm:w-auto"
               style={{
                 "--btn-fill": "hsl(var(--foreground))",
                 "--btn-fill-text": "hsl(var(--background))",
@@ -357,7 +348,16 @@ const HeroSection = () => {
               whileHover={reducedMotion ? undefined : { y: -2 }}
               whileTap={reducedMotion ? undefined : { scale: 0.98 }}
             >
-              Ver Productos
+              Comprar tofu
+            </motion.a>
+            <motion.a
+              href="#mayoristas"
+              className="btn-brutal-outline btn-fill-anim w-full sm:w-auto"
+              style={{ "--btn-fill": "hsl(var(--foreground)/0.12)" } as CSSProperties}
+              whileHover={reducedMotion ? undefined : { y: -2 }}
+              whileTap={reducedMotion ? undefined : { scale: 0.98 }}
+            >
+              Quiero precio mayorista
             </motion.a>
           </motion.div>
           </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { withBaseUrl } from "@/lib/base-url";
+import { whatsappHref } from "@/lib/whatsapp";
 
 // Data - Will be loaded from JSON
 const restaurants = [
@@ -104,7 +105,12 @@ const RestaurantsSection = () => {
           className="text-center mt-10 font-body text-sm text-background/70"
         >
           ¿Tu restaurante usa Empátika?{" "}
-          <a href="https://wa.me/522215606205" className="underline text-background hover:text-background/70">
+          <a
+            href={whatsappHref()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-background hover:text-background/70"
+          >
             Contáctanos
           </a>
         </motion.p>

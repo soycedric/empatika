@@ -1,29 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { withBaseUrl } from "@/lib/base-url";
-
-const SCROLL_THRESHOLD = 10;
+import { useOrderContext } from "@/hooks/OrderContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      // Always show at top of page
-      if (currentY < 60) {
-        setIsVisible(true);
-      } else if (Math.abs(currentY - lastScrollY.current) > SCROLL_THRESHOLD) {
-        setIsVisible(currentY < lastScrollY.current);
-      }
-      lastScrollY.current = currentY;
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const { items, isCartOpen, setCartOpen } = useOrderContext();
 
   const navLinks = [
     { href: withBaseUrl("#productos"), label: "Productos" },
@@ -36,10 +19,7 @@ const Header = () => {
     "inline-block px-2 py-1 transition-all duration-200 group-hover:bg-foreground group-hover:text-background group-hover:-rotate-1";
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b-2 border-foreground transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
-        }`}
-    >
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b-2 border-foreground">
       <nav className="container mx-auto flex items-center justify-between py-3 px-4">
         {/* Logo */}
         <a href={withBaseUrl("#inicio")} className="flex items-center gap-2 group">
@@ -51,37 +31,60 @@ const Header = () => {
         <ul className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
-                  className={navLinkClass}
-              >
-                  <span className={navLinkTextClass}>{link.label}</span>
+              <a href={link.href} className={navLinkClass}>
+                <span className={navLinkTextClass}>{link.label}</span>
               </a>
             </li>
           ))}
         </ul>
 
-        {/* CTA / Contacto */}
+        {/* CTA / Compra */}
         <div className="hidden md:flex items-center gap-3">
+          {items.length > 0 && !isCartOpen && (
+            <button
+              type="button"
+              onClick={() => setCartOpen(true)}
+              className="relative inline-flex items-center justify-center h-10 w-10 border-2 border-foreground bg-background shadow-brutal"
+              aria-label="Abrir carrito"
+            >
+              <ShoppingCart size={18} />
+              <span className="absolute -top-2 -right-2 bg-foreground text-background text-[10px] font-display w-5 h-5 flex items-center justify-center border border-background">
+                {items.length}
+              </span>
+            </button>
+          )}
           <a
-            href="https://wa.me/522215606205?text=Hola%20Empatika!%20Quiero%20información"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-colors"
+            href={withBaseUrl("#calculadora")}
+            className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-foreground text-background border-2 border-foreground shadow-brutal transition-colors"
           >
-            WhatsApp
+            Comprar
           </a>
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 border-2 border-foreground shadow-brutal bg-background"
-          aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={isMenuOpen}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          {items.length > 0 && !isCartOpen && (
+            <button
+              type="button"
+              onClick={() => setCartOpen(true)}
+              className="relative inline-flex items-center justify-center h-10 w-10 border-2 border-foreground shadow-brutal bg-background"
+              aria-label="Abrir carrito"
+            >
+              <ShoppingCart size={18} />
+              <span className="absolute -top-2 -right-2 bg-foreground text-background text-[10px] font-display w-5 h-5 flex items-center justify-center border border-background">
+                {items.length}
+              </span>
+            </button>
+          )}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 border-2 border-foreground shadow-brutal bg-background"
+            aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -117,12 +120,11 @@ const Header = () => {
                 transition={{ delay: navLinks.length * 0.1 }}
               >
                 <a
-                  href="https://wa.me/522215606205"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2 font-display text-sm uppercase bg-[#128C7E] hover:bg-[#075E54] text-white border-2 border-foreground shadow-brutal transition-colors w-full"
+                  href={withBaseUrl("#calculadora")}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 font-display text-sm uppercase bg-foreground text-background border-2 border-foreground shadow-brutal transition-colors w-full"
                 >
-                  WhatsApp
+                  Comprar
                 </a>
               </motion.li>
             </ul>

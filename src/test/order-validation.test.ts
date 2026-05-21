@@ -66,20 +66,21 @@ describe('OrderValidationService', () => {
       const result = OrderValidationService.validateOrder([]);
 
       expect(result.isValid).toBe(false);
-      expect(result.shouldRedirectToDistributors).toBe(true);
+      expect(result.shouldRedirectToDistributors).toBe(false);
       expect(result.message).toContain('Agrega productos');
     });
 
-    it('debe enviar a distribuidores si el subtotal es menor a $150', () => {
+    it('debe cobrar envio cuando el subtotal es menor a $400', () => {
       const items = [
         { product: mockProducts[0], quantity: 1 } // $130
       ];
 
       const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
 
-      expect(result.isValid).toBe(false);
+      expect(result.isValid).toBe(true);
       expect(result.subtotal).toBe(130);
-      expect(result.shouldRedirectToDistributors).toBe(true);
+      expect(result.shippingCost).toBe(50);
+      expect(result.totalWithShipping).toBe(180);
     });
 
     it('debe cobrar envio cuando el subtotal esta entre $150 y $399', () => {
@@ -270,12 +271,12 @@ describe('Integration Tests', () => {
     const result = OrderValidationService.validateOrder(items, 'puebla', 'delivery');
 
     expect(result.subtotal).toBe(130);
-    expect(result.isValid).toBe(false);
-    expect(result.shouldRedirectToDistributors).toBe(true);
-    expect(result.message).toContain('$150');
+    expect(result.isValid).toBe(true);
+    expect(result.shouldRedirectToDistributors).toBe(false);
+    expect(result.shippingCost).toBe(50);
   });
 
-  it('debe manejar el caso límite justo en el mínimo', () => {
+  it('debe cobrar envio en el caso límite de $150', () => {
     const items = [
       { product: mockProducts[1], quantity: 2 }
     ];

@@ -4,6 +4,7 @@
     "address": "Plaza Kentro, Atlixcáyotl 3432, Santa Fe, Supermanzana Pue Local 213, San Martinito, 72825",
     "city": "Puebla",
     "state": "Puebla",
+    "region": "puebla",
     "lat": 19.0160449305048,
     "lng": -98.25438110469126,
     "type": "supermarket",
@@ -15,6 +16,7 @@
     "address": "Calle 2 Nte. 1215, San Andrés Cholula, 72810",
     "city": "Cholula",
     "state": "Puebla",
+    "region": "puebla",
     "lat": 19.056377485840716,
     "lng": -98.29514723167624,
     "type": "supermarket",
@@ -26,6 +28,7 @@
     "address": "Av 9 Pte 1729, Barrio de Santiago, 72410",
     "city": "Puebla",
     "state": "Puebla",
+    "region": "puebla",
     "lat": 19.047923858226287,
     "lng": -98.21355527962417,
     "type": "restaurant",
@@ -37,10 +40,23 @@
     "address": "De Analco, C. 10 Sur 301, Barrio de Analco, 72500",
     "city": "Puebla",
     "state": "Puebla",
+    "region": "puebla",
     "lat": 19.0393391,
     "lng": -98.1939283,
     "type": "supermarket",
     "instagram": "@huellavegana.pue",
+    "mapUrl": "https://maps.app.goo.gl/"
+  },
+  {
+    "name": "Puro apapacho",
+    "address": "Calz Acoxpa 68-casa 14, Coapa, Villa Coapa, Tlalpan, 14390",
+    "city": "Ciudad de México",
+    "state": "CDMX",
+    "region": "cdmx",
+    "lat": 19.2915607,
+    "lng": -99.1236048,
+    "type": "supermarket",
+    "instagram": "@puro_apapacho",
     "mapUrl": "https://maps.app.goo.gl/"
   }
 ]

@@ -1,6 +1,6 @@
 /**
  * Servicio de validación de pedidos
- * Reglas por precio: < $150 distribuidores, $150-$399 envio $50, $400+ envio gratis
+ * Reglas por precio: envio $50 entre $0 y $399, envio gratis desde $400
  */
 
 import type { OrderItem, ValidationResult } from '@/types/order';
@@ -11,7 +11,7 @@ type DeliveryMethod = 'delivery' | 'pickup';
 /**
  * Reglas de envio por monto
  */
-const MINIMUM_ORDER_AMOUNT = 150;
+const MINIMUM_ORDER_AMOUNT = 0;
 const FREE_SHIPPING_THRESHOLD = 400;
 const DELIVERY_FEE = 50;
 
@@ -47,11 +47,11 @@ export class OrderValidationService {
         freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
         zone: 'local',
         message: 'Agrega productos a tu pedido',
-        shouldRedirectToDistributors: true
+        shouldRedirectToDistributors: false
       };
     }
 
-    const shouldRedirectToDistributors = subtotal < MINIMUM_ORDER_AMOUNT;
+    const shouldRedirectToDistributors = false;
     const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
     const shippingCost = shouldRedirectToDistributors
       ? 0
@@ -61,14 +61,12 @@ export class OrderValidationService {
           ? 0
           : DELIVERY_FEE;
 
-    const isValid = !shouldRedirectToDistributors;
-    const message = shouldRedirectToDistributors
-      ? `Compra minima $${MINIMUM_ORDER_AMOUNT} para envio. Si compras menos, te mandamos con proveedores.`
-      : qualifiesForFreeShipping
-        ? '✅ ¡Envio gratis desbloqueado!'
-        : isPickup
-          ? '✅ Pickup disponible'
-          : `Envio con costo de $${DELIVERY_FEE}. Gratis a partir de $${FREE_SHIPPING_THRESHOLD}.`;
+    const isValid = true;
+    const message = qualifiesForFreeShipping
+      ? '✅ ¡Envio gratis desbloqueado!'
+      : isPickup
+        ? '✅ Pickup disponible'
+        : `Envio con costo de $${DELIVERY_FEE}. Gratis a partir de $${FREE_SHIPPING_THRESHOLD}.`;
 
     return {
       isValid,

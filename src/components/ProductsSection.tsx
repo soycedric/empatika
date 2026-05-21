@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { withBaseUrl } from '@/lib/base-url';
@@ -119,12 +118,6 @@ const ProductsSection = ({ variant = 'standalone' }: ProductsSectionProps) => {
     if (!product || !selection) return;
 
     addItem(selection.sizeId, selection.quantity);
-
-    const size = product.sizes.find(sizeOption => sizeOption.id === selection.sizeId);
-    const sizeLabel = size ? `${size.label} - $${size.price}` : selection.sizeId;
-    toast.success('¡Agregado al pedido!', {
-      description: `${product.name} (${sizeLabel}) x${selection.quantity}`,
-    });
   };
 
   const productGrid = (

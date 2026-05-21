@@ -11,7 +11,6 @@ const FloatingCart = () => {
     const {
         items,
         subtotal,
-        minimumOrderAmount,
         freeShippingThreshold,
         deliveryZone,
         deliveryMethod,
@@ -20,7 +19,9 @@ const FloatingCart = () => {
 
     if (items.length === 0) return null;
 
-    const fillPercent = Math.min(100, (subtotal / minimumOrderAmount) * 100);
+    const fillPercent = freeShippingThreshold > 0
+        ? Math.min(100, (subtotal / freeShippingThreshold) * 100)
+        : 0;
     const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
     const statusText = validation.shouldRedirectToDistributors
         ? 'Proveedores'
@@ -51,7 +52,7 @@ const FloatingCart = () => {
                             </div>
                             <div className="min-w-0">
                                 <p className="font-display text-sm truncate">
-                                    ${subtotal.toFixed(0)} / ${minimumOrderAmount}
+                                    ${subtotal.toFixed(0)}
                                 </p>
                                 <p className="font-body text-[10px] text-muted-foreground truncate">
                                     {statusText}

@@ -3,7 +3,7 @@
  * OrderCalculator y FloatingCart.
  */
 
-import { createContext, useContext, useState, useMemo, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useMemo, useCallback, useEffect, type ReactNode } from 'react';
 import type { OrderItem, ValidationResult } from '@/types/order';
 import { OrderValidationService } from '@/services/order-validation.service';
 import { getAllProducts, getProductById } from '@/data/products';
@@ -29,18 +29,18 @@ interface OrderContextValue {
     deliveryMethod: DeliveryMethod;
     customerName: string;
     customerPhone: string;
-    providerInterest: boolean;
     pickupPoint: string;
     pickupSlot: string;
     deliveryLocationLink: string;
+    isCartOpen: boolean;
     setDeliveryZone: (zone: DeliveryZone) => void;
     setDeliveryMethod: (method: DeliveryMethod) => void;
     setCustomerName: (name: string) => void;
     setCustomerPhone: (phone: string) => void;
-    setProviderInterest: (value: boolean) => void;
     setPickupPoint: (point: string) => void;
     setPickupSlot: (slot: string) => void;
     setDeliveryLocationLink: (location: string) => void;
+    setCartOpen: (open: boolean) => void;
     addItem: (productId: string, quantity?: number) => void;
     updateItemQuantity: (itemId: string, quantity: number) => void;
     removeItem: (itemId: string) => void;
@@ -61,10 +61,11 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const [deliveryMethod, setDeliveryMethodState] = useState<DeliveryMethod>('delivery');
     const [customerName, setCustomerName] = useState<string>('');
     const [customerPhone, setCustomerPhone] = useState<string>('');
-    const [providerInterest, setProviderInterest] = useState<boolean>(false);
     const [pickupPoint, setPickupPoint] = useState<string>('');
     const [pickupSlot, setPickupSlot] = useState<string>('');
     const [deliveryLocationLink, setDeliveryLocationLink] = useState<string>('');
+    const [isCartOpen, setCartOpen] = useState(false);
+    const [hasAutoOpenedCart, setHasAutoOpenedCart] = useState(false);
 
     const products = useMemo(() => getAllProducts(), []);
 
@@ -107,6 +108,18 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     );
     const subtotal = useMemo(() => OrderValidationService.calculateSubtotal(items), [items]);
 
+    useEffect(() => {
+        if (items.length === 0) {
+            setCartOpen(false);
+            return;
+        }
+
+        if (!hasAutoOpenedCart) {
+            setCartOpen(true);
+            setHasAutoOpenedCart(true);
+        }
+    }, [items.length, hasAutoOpenedCart]);
+
     const handleSetDeliveryZone = useCallback((zone: DeliveryZone) => {
         setDeliveryZone(zone);
         if (zone === 'cdmx') {
@@ -144,18 +157,18 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         deliveryMethod,
         customerName,
         customerPhone,
-        providerInterest,
         pickupPoint,
         pickupSlot,
         deliveryLocationLink,
+        isCartOpen,
         setDeliveryZone: handleSetDeliveryZone,
         setDeliveryMethod: handleSetDeliveryMethod,
         setCustomerName,
         setCustomerPhone,
-        setProviderInterest,
         setPickupPoint,
         setPickupSlot,
         setDeliveryLocationLink,
+        setCartOpen,
         addItem,
         updateItemQuantity,
         removeItem,

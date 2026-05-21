@@ -1,22 +1,23 @@
 import { motion } from "framer-motion";
 import { Building2, Truck, Phone, ArrowRight } from "lucide-react";
 import { withBaseUrl } from "@/lib/base-url";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const benefits = [
   {
     icon: Building2,
     title: "Restaurantes & Hoteles",
-    description: "Precios especiales con entregas programadas.",
+    description: "Precios especiales por volumen y suministro constante.",
   },
   {
     icon: Truck,
     title: "Distribuidores",
-    description: "Únete a nuestra red de distribución en toda la República.",
+    description: "Abastece tu menú con calidad premium y márgenes claros.",
   },
   {
     icon: Phone,
     title: "Atención Directa",
-    description: "Línea exclusiva para mayoristas con respuesta inmediata.",
+    description: "Canal exclusivo para cotizaciones al por mayor.",
   },
 ];
 
@@ -95,16 +96,13 @@ const B2BSection = () => {
             viewport={{ once: true }}
           >
             <h2 className="font-display text-5xl sm:text-6xl lg:text-8xl mb-6">
-              ¿ERES{" "}
-              <span className="text-background">MAYORISTA</span>?
+              ¿TIENES{" "}
+              <span className="text-background">NEGOCIO</span>?
             </h2>
             <p className="font-body text-lg text-background/90 max-w-xl mx-auto mb-12">
-              Llevamos el mejor tofu de Puebla a tu negocio.<br></br> Precios competitivos y entregas a domicilio.
+              Precios especiales para negocios y pedidos al por mayor.<br />
+              Abastece tu menú con tofu premium y entregas programadas.
             </p>
-            <div className="font-body text-sm text-background/90 max-w-xl mx-auto mb-8 space-y-1">
-              <p>• Puebla: entregas jueves, viernes y sábado.</p>
-              <p>• CDMX: entregas los viernes.</p>
-            </div>
           </motion.div>
 
           {/* Benefits */}
@@ -134,18 +132,20 @@ const B2BSection = () => {
             className="space-y-4"
           >
             <motion.a
-              href="https://wa.me/522215606205?text=Hola!%20Soy%20mayorista%20y%20me%20interesa%20distribuir%20tofu%20Empátika"
+              href={whatsappHref(
+                'Hola! Soy negocio y me interesan precios especiales por volumen de Empátika',
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-background text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background)/0.3)] hover:shadow-[12px_12px_0_0_hsl(var(--background)/0.3)] hover:-translate-x-1 hover:-translate-y-1 transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              QUIERO DISTRIBUIR
+              QUIERO PRECIOS ESPECIALES
               <ArrowRight size={28} />
             </motion.a>
             <p className="font-body text-sm text-background/90">
-              Respuesta en menos de 24 horas
+              Cotizaciones personalizadas en menos de 24 horas
             </p>
           </motion.div>
 
