@@ -45,7 +45,7 @@ const Index = () => {
                     viewport={{ once: true }}
                     className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6"
                   >
-                  ARMA TU PEDIDO DE <span className="inline-block bg-foreground text-background px-2">TOFU</span> 
+                    ARMA TU PEDIDO DE <span className="inline-block bg-foreground text-background px-2">TOFU</span>
                   </motion.h2>
 
                   <motion.p

@@ -1,41 +1,70 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { withBaseUrl } from "@/lib/base-url";
 import { whatsappHref } from "@/lib/whatsapp";
+import restaurantsData from "@/data/restaurants.json";
 
-// Data - Will be loaded from JSON
-const restaurants = [
-  {
-    name: "Musabbaha",
-    location: "Puebla",
-    mapUrl: "https://maps.app.goo.gl/acYy1r5QcNHhzHJL9", // Agregar enlace real de Google Maps
-    logo: withBaseUrl("logos/musabbaha.jpg"), // Agregar logo en /public/logos/
-    instagram: "@musabbaha.veggie",
-  },
-  {
-    name: "Britches",
-    location: "Puebla",
-    mapUrl: "https://maps.app.goo.gl/P6L7wXYzVSfwPWuJ6", // Agregar enlace real de Google Maps
-    logo: withBaseUrl("logos/britches.jpg"), // Agregar logo en /public/logos/
-    instagram: "@britches.puebla",
-  },
-  {
-    name: "Plant Neta Café",
-    location: "Puebla",
-    mapUrl: "https://maps.app.goo.gl/8DJ8dWRCXnWiQeJE8", // Agregar enlace real de Google Maps
-    logo: withBaseUrl("logos/plantneta.jpg"), // Agregar logo en /public/logos/
-    instagram: "@plantnetacafe",
-  },
-  {
-    name: "Break Free",
-    location: "Puebla",
-    mapUrl: "https://maps.app.goo.gl/uteK8Us41AHfd7Z26", // Agregar enlace real de Google Maps
-    logo: withBaseUrl("logos/breakfree.jpg"), // Agregar logo en /public/logos/
-    instagram: "@breakfree_rest",
-  },
-];
+type Restaurant = {
+  name: string;
+  location: string;
+  mapUrl: string;
+  logo: string;
+  instagram: string;
+};
+
+const restaurants = (restaurantsData as Restaurant[]).map((restaurant) => ({
+  ...restaurant,
+  logo: withBaseUrl(restaurant.logo),
+}));
 
 const RestaurantsSection = () => {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const scrollByAmount = useMemo(() => {
+    return () => {
+      const element = scrollRef.current;
+      if (!element) {
+        return 0;
+      }
+
+      return Math.max(220, Math.round(element.clientWidth * 0.8));
+    };
+  }, []);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) {
+      return;
+    }
+
+    const updateState = () => {
+      const maxScrollLeft = element.scrollWidth - element.clientWidth - 1;
+      setCanScrollLeft(element.scrollLeft > 0);
+      setCanScrollRight(element.scrollLeft < maxScrollLeft);
+    };
+
+    updateState();
+    element.addEventListener("scroll", updateState, { passive: true });
+    window.addEventListener("resize", updateState);
+
+    return () => {
+      element.removeEventListener("scroll", updateState);
+      window.removeEventListener("resize", updateState);
+    };
+  }, []);
+
+  const handleScroll = (direction: "left" | "right") => {
+    const element = scrollRef.current;
+    if (!element) {
+      return;
+    }
+
+    const amount = scrollByAmount();
+    element.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
   return (
     <section id="restaurantes" className="py-24 bg-foreground text-background relative overflow-hidden">
       {/* Tofucho cocinando flotante - Desktop */}
@@ -90,11 +119,49 @@ const RestaurantsSection = () => {
           </p>
         </motion.div>
 
-        {/* Restaurant logos/cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          {restaurants.map((restaurant, index) => (
-            <RestaurantCard key={restaurant.name} restaurant={restaurant} index={index} />
-          ))}
+        {/* Restaurant carousel */}
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <p className="font-body text-xs uppercase tracking-[0.2em] text-background/70">
+              Arrastra para explorar
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleScroll("left")}
+                disabled={!canScrollLeft}
+                className="border-2 border-background px-3 py-2 text-xs font-display uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed hover:bg-background hover:text-foreground transition-colors"
+                aria-label="Desplazar carrusel hacia la izquierda"
+              >
+                ◀
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScroll("right")}
+                disabled={!canScrollRight}
+                className="border-2 border-background px-3 py-2 text-xs font-display uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed hover:bg-background hover:text-foreground transition-colors"
+                aria-label="Desplazar carrusel hacia la derecha"
+              >
+                ▶
+              </button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-foreground to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-foreground to-transparent" />
+            <div
+              ref={scrollRef}
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-1 cursor-grab active:cursor-grabbing touch-pan-x"
+              aria-label="Carrusel de restaurantes"
+            >
+              {restaurants.map((restaurant, index) => (
+                <div key={restaurant.name} className="snap-center shrink-0 w-[240px] sm:w-[260px]">
+                  <RestaurantCard restaurant={restaurant} index={index} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <motion.p
@@ -120,20 +187,17 @@ const RestaurantsSection = () => {
 };
 
 /** Subcomponente con manejo de errores de imagen basado en estado */
-const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[number]; index: number }) => {
+const RestaurantCard = ({ restaurant, index }: { restaurant: Restaurant; index: number }) => {
   const [logoFailed, setLogoFailed] = useState(false);
 
   return (
-    <motion.a
-      href={restaurant.mapUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="card-brutal bg-background text-foreground block cursor-pointer group hover:-translate-y-1 hover:shadow-brutal-lg transition-all duration-200"
-      aria-label={`Ver ubicación de ${restaurant.name} en Google Maps`}
+      whileHover={{ y: -6 }}
+      className="card-brutal bg-background text-foreground block group transition-all duration-200"
     >
       {/* Logo */}
       <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg border-2 border-foreground flex items-center justify-center overflow-hidden group-hover:border-foreground/70 transition-colors">
@@ -150,23 +214,32 @@ const RestaurantCard = ({ restaurant, index }: { restaurant: typeof restaurants[
         )}
       </div>
 
-      <h3 className="font-display text-lg text-center mb-1">{restaurant.name}</h3>
-      <p className="font-body text-xs text-center mb-2">
-        📍 {restaurant.location}
+      <h3 className="font-display text-lg text-center mb-2">{restaurant.name}</h3>
+      <p className="font-body text-xs text-center mb-3 uppercase tracking-wider text-foreground/70">
+        {restaurant.location}
       </p>
-      <span
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          window.open(`https://instagram.com/${restaurant.instagram.replace('@', '')}`, '_blank', 'noopener,noreferrer');
-        }}
-        className="font-body text-xs text-foreground hover:text-foreground/60 text-center block transition-colors font-medium cursor-pointer"
-        role="link"
-        aria-label={`Instagram de ${restaurant.name}`}
-      >
-        {restaurant.instagram}
-      </span>
-    </motion.a>
+
+      <div className="flex flex-col gap-2">
+        <a
+          href={restaurant.mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border-2 border-foreground text-foreground text-xs font-display uppercase tracking-wider py-2 text-center hover:bg-foreground hover:text-background transition-colors"
+          aria-label={`Ver ubicación de ${restaurant.name} en Google Maps`}
+        >
+          Ubicación
+        </a>
+        <a
+          href={`https://instagram.com/${restaurant.instagram}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border-2 border-foreground text-foreground text-xs font-display uppercase tracking-wider py-2 text-center hover:bg-foreground hover:text-background transition-colors"
+          aria-label={`Instagram de ${restaurant.name}`}
+        >
+          Instagram
+        </a>
+      </div>
+    </motion.article>
   );
 };
 

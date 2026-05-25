@@ -107,6 +107,25 @@
     letter-spacing: -0.01em;
   }
 
+  .side-menu-scroll {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--foreground)) hsl(var(--background));
+  }
+
+  .side-menu-scroll::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .side-menu-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+    border-left: 2px solid hsl(var(--foreground));
+  }
+
+  .side-menu-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--foreground));
+    border: 2px solid hsl(var(--background));
+  }
+
   /* Focus visible ring para accesibilidad de teclado */
   :focus-visible {
     outline: 3px solid hsl(var(--primary));

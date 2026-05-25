@@ -31,25 +31,16 @@ interface OrderSummaryProps {
   customerName: string;
   customerPhone: string;
   products: Product[];
+  density?: CalculatorDensity;
   onCalculate: () => void;
   onUpdateQuantity: (itemId: string, quantity: number) => void;
   onRemoveItem: (itemId: string) => void;
   onClearOrder: () => void;
-  density?: CalculatorDensity;
-  hideCta?: boolean;
 }
 
-export interface OrderSummaryCTAProps {
-  items: OrderItemWithId[];
-  subtotal: number;
-  shippingCost: number;
-  freeShippingThreshold: number;
-  deliveryZone: DeliveryZone;
-  deliveryMethod: DeliveryMethod;
-  onCalculate: () => void;
-  density?: CalculatorDensity;
-}
-
+/**
+ * Calcula la mejor sugerencia para alcanzar un monto objetivo
+ */
 function getPriceSuggestion(
   remainingAmount: number,
   products: Product[]
@@ -74,83 +65,6 @@ function getPriceSuggestion(
   return bestOption;
 }
 
-function getStatusBadgeLabel(
-  items: OrderItemWithId[],
-  validation: ValidationResult,
-  isPickup: boolean,
-  subtotal: number,
-  freeShippingThreshold: number
-): string | null {
-  if (items.length === 0) return null;
-  if (!validation.isValid) return 'Completa pedido';
-  if (isPickup) return 'Listo pickup';
-  if (subtotal >= freeShippingThreshold) return 'Envio gratis';
-  return 'Listo envio';
-}
-
-export const OrderSummaryCTA = ({
-  items,
-  subtotal,
-  shippingCost,
-  freeShippingThreshold,
-  deliveryZone,
-  deliveryMethod,
-  onCalculate,
-  density = 'default',
-}: OrderSummaryCTAProps) => {
-  if (items.length === 0) return null;
-
-  const compact = isCompactDensity(density);
-  const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
-
-  if (compact) {
-    return (
-      <div className="border-t-2 border-foreground bg-background px-4 py-3 shrink-0">
-        <Button
-          className="w-full font-display text-sm py-3 bg-green-600 hover:bg-green-700 border-2 border-foreground shadow-brutal hover:shadow-brutal active:shadow-none transition-all"
-          onClick={onCalculate}
-        >
-          <MessageCircle className="w-4 h-4 mr-2" />
-          ENVIAR PEDIDO
-        </Button>
-        <p className="text-[10px] text-muted-foreground text-center mt-1.5 leading-tight">
-          Ticket y seguimiento por WhatsApp.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="bg-background border-4 border-foreground shadow-brutal p-6 bg-green-50 dark:bg-green-950/30">
-        <div className="text-center mb-4">
-          <h3 className="font-display text-lg font-bold text-green-700 dark:text-green-300 mb-2">
-            {isPickup ? '¡LISTO PARA RECOGER!' : '¡LISTO PARA ENVIAR!'}
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            {isPickup
-              ? 'Coméntanos el punto de entrega de tu pedido.'
-              : subtotal >= freeShippingThreshold
-                ? 'Tu pedido califica para envio gratis'
-                : `Envio con costo de $${shippingCost.toFixed(0)} MXN`}
-          </p>
-        </div>
-        <Button
-          className="w-full font-display text-base py-6 bg-green-600 hover:bg-green-700 border-4 border-foreground shadow-brutal hover:shadow-brutal-hover active:shadow-none transition-all"
-          size="lg"
-          onClick={onCalculate}
-        >
-          <MessageCircle className="w-5 h-5 mr-2" />
-          ENVIAR PEDIDO AHORA
-        </Button>
-        <p className="text-xs text-muted-foreground text-center mt-3">
-          El ticket se entrega en WhatsApp y el seguimiento se hace por ahi.
-        </p>
-      </div>
-    </motion.div>
-  );
-};
-
 export const OrderSummary = ({
   items,
   validation,
@@ -166,205 +80,154 @@ export const OrderSummary = ({
   customerName,
   customerPhone,
   products,
+  density = 'default',
   onCalculate,
   onUpdateQuantity,
   onRemoveItem,
   onClearOrder,
-  density = 'default',
-  hideCta = false,
 }: OrderSummaryProps) => {
-  const compact = isCompactDensity(density);
   const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
+  const compact = isCompactDensity(density);
   const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
   const hasDeliveryLocation = deliveryLocation.trim().length > 0;
   const hasContact = customerName.trim().length > 0 && customerPhone.trim().length > 0;
+  const canSubmit = hasContact && (isPickup ? hasPickupInfo : hasDeliveryLocation);
   const remainingToFree = Math.max(0, freeShippingThreshold - subtotal);
   const suggestionToFree = useMemo(() => {
     if (isPickup || items.length === 0 || remainingToFree <= 0) return null;
     return getPriceSuggestion(remainingToFree, products);
-  }, [isPickup, items.length, remainingToFree, products]);
+  }, [isPickup, items.length, remainingToFree, subtotal, products]);
   const fillPercent = freeShippingThreshold > 0 ? (subtotal / freeShippingThreshold) * 100 : 0;
-  const statusBadge = getStatusBadgeLabel(
-    items,
-    validation,
-    isPickup,
-    subtotal,
-    freeShippingThreshold
-  );
-
-  const cardOuterClass = compact
-    ? `bg-background border-2 border-foreground shadow-brutal p-3 ${
-        validation.isValid
-          ? 'bg-green-50 dark:bg-green-950/30'
-          : items.length === 0
-            ? ''
-            : 'bg-orange-50 dark:bg-orange-950/30'
-      }`
-    : `bg-background border-4 border-foreground shadow-brutal p-6 ${
-        validation.isValid
-          ? 'bg-green-50 dark:bg-green-950/30'
-          : items.length === 0
-            ? ''
-            : 'bg-orange-50 dark:bg-orange-950/30'
-      }`;
-
-  const infoLines: { label: string; value: string }[] = [];
-  if (hasContact) infoLines.push({ label: 'Cliente', value: `${customerName} · ${customerPhone}` });
-  if (isPickup && hasPickupInfo) infoLines.push({ label: 'Pickup', value: `${pickupPoint} · ${pickupSlot}` });
-  if (!isPickup && hasDeliveryLocation) infoLines.push({ label: 'Ubicacion', value: deliveryLocation });
 
   return (
-    <div className={compact ? 'space-y-3' : 'space-y-6'}>
-      <div className={cardOuterClass}>
-        <div className={compact ? 'space-y-3' : 'space-y-6'}>
-          <div
-            className={`flex justify-between items-center gap-2 ${
-              compact ? 'pb-2 border-b border-foreground/20' : 'pb-3 border-b-2 border-foreground/20'
-            }`}
-          >
-            <h3
-              className={`font-display flex items-center gap-2 ${compact ? 'text-base' : 'text-2xl'}`}
-            >
-              <Package className={compact ? 'w-4 h-4' : 'w-6 h-6'} />
+    <div className={compact ? "space-y-4" : "space-y-6"}>
+
+      {/* Card Unificada: Pedido + Resumen */}
+      <div className={compact
+        ? "space-y-4"
+        : `bg-background border-4 border-foreground shadow-brutal p-6 ${validation.isValid
+          ? 'bg-green-50 dark:bg-green-950/30'
+          : items.length === 0
+            ? ''
+            : 'bg-orange-50 dark:bg-orange-950/30'
+          }`}
+      >
+        <div className={compact ? "space-y-4" : "space-y-6"}>
+          {/* Header: Tu Pedido */}
+          <div className={compact ? "flex justify-between items-center pb-2 border-b border-foreground/15" : "flex justify-between items-center pb-3 border-b-2 border-foreground/20"}>
+            <h3 className={compact ? "font-display text-lg flex items-center gap-2" : "font-display text-2xl flex items-center gap-2"}>
+              <Package className={compact ? "w-5 h-5" : "w-6 h-6"} />
               TU PEDIDO
             </h3>
-            <div className="flex items-center gap-2 shrink-0">
-              {compact && statusBadge && (
-                <Badge
-                  variant="outline"
-                  className="text-[10px] font-display border-foreground px-1.5 py-0"
-                >
-                  {statusBadge}
-                </Badge>
-              )}
-              {items.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClearOrder}
-                  className={`text-destructive hover:text-destructive border-2 border-destructive hover:bg-destructive/10 ${
-                    compact ? 'h-7 w-7 p-0' : ''
-                  }`}
-                  aria-label="Vaciar pedido completo"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
+            {items.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearOrder}
+                className="text-destructive hover:text-destructive border-2 border-destructive hover:bg-destructive/10"
+                aria-label="Vaciar pedido completo"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
 
+          {/* Lista de items */}
           <OrderItemsList
             items={items}
             onUpdateQuantity={onUpdateQuantity}
             onRemoveItem={onRemoveItem}
-            density={density}
+            density={compact ? 'compact' : 'default'}
           />
 
-          {!compact && (
-            <div className="text-center">
-              <div className="flex justify-center mb-3">
-                {validation.isValid ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-16 h-16 rounded-full bg-green-500 border-4 border-foreground flex items-center justify-center shadow-brutal"
-                  >
-                    <Truck className="w-8 h-8 text-white" />
-                  </motion.div>
-                ) : (
-                  <div className="w-16 h-16 rounded-full bg-muted border-4 border-foreground flex items-center justify-center">
-                    <Package className="w-8 h-8 text-muted-foreground" />
-                  </div>
-                )}
-              </div>
-              <h4 className="font-display text-2xl mb-2">
-                {validation.isValid
-                  ? isPickup
-                    ? '¡LISTO PARA RECOGER!'
-                    : subtotal >= freeShippingThreshold
-                      ? '¡ENVIO GRATIS!'
-                      : '¡LISTO PARA ENVIAR!'
-                  : items.length > 0
-                    ? 'COMPLETA TU PEDIDO'
-                    : ''}
-              </h4>
-            </div>
-          )}
-
-          {compact ? (
-            <div className="space-y-2">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs text-muted-foreground font-display uppercase">Subtotal</span>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-display font-bold">${subtotal.toFixed(0)}</span>
-                  <span className="text-sm font-display text-muted-foreground">MXN</span>
+          {/* Estado e Icono */}
+          <div className={compact ? "text-center" : "text-center"}>
+            <div className={compact ? "flex justify-center mb-2" : "flex justify-center mb-3"}>
+              {validation.isValid ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className={compact
+                    ? "w-12 h-12 rounded-full bg-green-500 border-2 border-foreground flex items-center justify-center"
+                    : "w-16 h-16 rounded-full bg-green-500 border-4 border-foreground flex items-center justify-center shadow-brutal-sm"
+                  }
+                >
+                  <Truck className={compact ? "w-6 h-6 text-white" : "w-8 h-8 text-white"} />
+                </motion.div>
+              ) : (
+                <div className={compact
+                  ? "w-12 h-12 rounded-full bg-muted border-2 border-foreground flex items-center justify-center"
+                  : "w-16 h-16 rounded-full bg-muted border-4 border-foreground flex items-center justify-center"
+                }>
+                  <Package className={compact ? "w-6 h-6 text-muted-foreground" : "w-8 h-8 text-muted-foreground"} />
                 </div>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Envio</span>
-                <span>${shippingCost.toFixed(0)} MXN</span>
-              </div>
-              <div className="flex justify-between text-sm font-bold">
-                <span>Total</span>
-                <span>${totalWithShipping.toFixed(0)} MXN</span>
-              </div>
+              )}
             </div>
-          ) : (
-            <div className="text-center py-4">
-              <p className="text-xs text-muted-foreground mb-2 font-display uppercase tracking-wider">
-                Subtotal
-              </p>
-              <div className="flex items-baseline justify-center gap-2">
-                <span className="text-7xl font-display font-bold text-foreground">
-                  ${subtotal.toFixed(0)}
-                </span>
-                <span className="text-2xl font-display text-muted-foreground">MXN</span>
-              </div>
-              <div className="mt-4 space-y-1 text-sm">
-                <p>Envio: ${shippingCost.toFixed(0)} MXN</p>
-                <p className="font-bold">Total: ${totalWithShipping.toFixed(0)} MXN</p>
-              </div>
-            </div>
-          )}
+            <h4 className={compact ? "font-display text-lg mb-1" : "font-display text-2xl mb-2"}>
+              {validation.isValid
+                ? (isPickup
+                  ? '¡LISTO PARA RECOGER!'
+                  : subtotal >= freeShippingThreshold
+                    ? '¡ENVIO GRATIS!'
+                    : '¡LISTO PARA ENVIAR!')
+                : items.length > 0 ? 'COMPLETA TU PEDIDO' : ''}
+            </h4>
+          </div>
 
+          {/* Subtotal */}
+          <div className={compact ? "text-center" : "text-center py-4"}>
+            <p className={compact ? "text-[10px] text-muted-foreground font-display uppercase tracking-wider" : "text-xs text-muted-foreground mb-2 font-display uppercase tracking-wider"}>
+              Subtotal
+            </p>
+            <div className="flex items-baseline justify-center gap-2">
+              <span className={compact ? "text-4xl font-display font-bold text-foreground" : "text-7xl font-display font-bold text-foreground"}>
+                ${subtotal.toFixed(0)}
+              </span>
+              <span className={compact ? "text-base font-display text-muted-foreground" : "text-2xl font-display text-muted-foreground"}>MXN</span>
+            </div>
+            <div className={compact ? "mt-2 space-y-1 text-sm" : "mt-4 space-y-1 text-sm"}>
+              <p>Envio: ${shippingCost.toFixed(0)} MXN</p>
+              <p className="font-bold">Total: ${totalWithShipping.toFixed(0)} MXN</p>
+            </div>
+          </div>
+
+          {/* Barra de progreso */}
           {!isPickup && (
-            <div className={compact ? 'space-y-1.5' : 'space-y-3'}>
+            <div className={compact ? "space-y-2" : "space-y-3"}>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-muted-foreground text-xs uppercase font-display">Envio gratis:</span>
-                <Badge variant="outline" className="font-display border-2 border-foreground">
+                <span className={compact ? "text-muted-foreground text-[10px] uppercase font-display" : "text-muted-foreground text-xs uppercase font-display"}>Envio gratis:</span>
+                <Badge variant="outline" className={compact ? "text-[10px] font-display border border-foreground" : "font-display border-2 border-foreground"}>
                   ${freeShippingThreshold}
                 </Badge>
               </div>
 
-              <div
-                className={`bg-muted border-2 border-foreground overflow-hidden relative ${
-                  compact ? 'h-3' : 'h-5'
-                }`}
-              >
+              <div className={compact ? "h-3 bg-muted border border-foreground overflow-hidden relative" : "h-5 bg-muted border-2 border-foreground overflow-hidden relative"}>
                 <motion.div
-                  className={`h-full ${
-                    subtotal >= freeShippingThreshold
-                      ? 'bg-green-500'
-                      : fillPercent > 60
-                        ? 'bg-amber-500'
-                        : 'bg-red-500'
-                  }`}
+                  className={`h-full ${subtotal >= freeShippingThreshold
+                    ? 'bg-green-500'
+                    : fillPercent > 60
+                      ? 'bg-amber-500'
+                      : 'bg-red-500'
+                    }`}
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, fillPercent)}%` }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  animate={{
+                    width: `${Math.min(100, fillPercent)}%`
+                  }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 />
-                {items.length > 0 && (
+                {items.length > 0 && !compact && (
                   <span className="absolute inset-0 flex items-center justify-center text-[10px] font-display font-bold text-foreground mix-blend-difference">
                     {Math.min(100, Math.round(fillPercent))}%
                   </span>
                 )}
               </div>
 
-              {!compact && validation.isValid && (
+            {/* Celebration when minimum reached */}
+              {validation.isValid && !compact && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
                   className="text-center py-2"
                 >
                   <span className="text-2xl">🎉</span>
@@ -375,36 +238,34 @@ export const OrderSummary = ({
                   </p>
                 </motion.div>
               )}
-
-              {compact && validation.isValid && subtotal >= freeShippingThreshold && (
-                <p className="text-xs text-green-700 dark:text-green-300 font-display">
-                  Envio gratis desbloqueado
-                </p>
-              )}
             </div>
           )}
 
+          {/* Mensaje de validación */}
           {items.length > 0 && !validation.isValid && (
-            <div
-              className={`border-2 border-foreground text-center font-medium bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 ${
-                compact ? 'p-2 text-xs' : 'p-4 text-sm'
-              }`}
-            >
+            <div className={compact
+              ? "text-center font-medium text-sm text-orange-700 dark:text-orange-300"
+              : "p-4 border-2 border-foreground text-center font-medium text-sm bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200"
+            }>
               {validation.message}
             </div>
           )}
+
+          {/* Sugerencias inteligentes */}
 
           {suggestionToFree && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`bg-foreground/5 border-2 border-foreground/40 flex items-start gap-2 ${
-                compact ? 'p-2' : 'p-4 gap-3'
-              }`}
+              className={compact
+                ? "flex items-start gap-2 text-sm text-muted-foreground"
+                : "p-4 bg-foreground/5 border-2 border-foreground/40 flex items-start gap-3"
+              }
             >
-              <Lightbulb className={`text-foreground shrink-0 ${compact ? 'w-4 h-4 mt-0' : 'w-5 h-5 mt-0.5'}`} />
-              <p className={compact ? 'text-xs' : 'text-sm'}>
-                <span className="font-bold">Tip:</span> Agrega{' '}
+              <Lightbulb className={compact ? "w-4 h-4 text-foreground shrink-0 mt-0.5" : "w-5 h-5 text-foreground shrink-0 mt-0.5"} />
+              <p className="text-sm">
+                <span className="font-bold">Tip:</span>{' '}
+                Agrega{' '}
                 <span className="font-bold text-foreground">
                   {suggestionToFree.quantity} {suggestionToFree.product.name}
                 </span>{' '}
@@ -413,47 +274,66 @@ export const OrderSummary = ({
             </motion.div>
           )}
 
-          {compact && infoLines.length > 0 && (
-            <div className="space-y-1 text-xs text-muted-foreground">
-              {infoLines.map((line) => (
-                <p key={line.label} className="truncate" title={line.value}>
-                  <span className="font-bold text-foreground">{line.label}:</span> {line.value}
-                </p>
-              ))}
-            </div>
-          )}
-
-          {!compact && hasContact && (
-            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+          {hasContact && (
+            <div className={compact ? "text-sm text-muted-foreground" : "p-3 border-2 border-foreground/40 bg-foreground/5 text-sm"}>
               <span className="font-bold">Cliente:</span> {customerName} · {customerPhone}
             </div>
           )}
 
-          {!compact && isPickup && hasPickupInfo && (
-            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+          {isPickup && hasPickupInfo && (
+            <div className={compact ? "text-sm text-muted-foreground" : "p-3 border-2 border-foreground/40 bg-foreground/5 text-sm"}>
               <span className="font-bold">Pickup:</span> {pickupPoint} · {pickupSlot}
             </div>
           )}
 
-          {!compact && !isPickup && hasDeliveryLocation && (
-            <div className="p-3 border-2 border-foreground/40 bg-foreground/5 text-sm">
+          {!isPickup && hasDeliveryLocation && (
+            <div className={compact ? "text-sm text-muted-foreground" : "p-3 border-2 border-foreground/40 bg-foreground/5 text-sm"}>
               <span className="font-bold">Ubicacion:</span> {deliveryLocation}
             </div>
           )}
         </div>
       </div>
 
-      {!hideCta && (
-        <OrderSummaryCTA
-          items={items}
-          subtotal={subtotal}
-          shippingCost={shippingCost}
-          freeShippingThreshold={freeShippingThreshold}
-          deliveryZone={deliveryZone}
-          deliveryMethod={deliveryMethod}
-          onCalculate={onCalculate}
-          density={density}
-        />
+      {/* CTA */}
+      {items.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className={compact
+            ? "pt-3 border-t border-foreground/10"
+            : "bg-background border-4 border-foreground shadow-brutal p-6 bg-green-50 dark:bg-green-950/30"
+          }>
+            <div className={compact ? "text-center mb-3" : "text-center mb-4"}>
+              <h3 className={compact ? "font-display text-sm font-bold text-green-700 dark:text-green-300" : "font-display text-lg font-bold text-green-700 dark:text-green-300 mb-2"}>
+                {isPickup ? '¡LISTO PARA RECOGER!' : '¡LISTO PARA ENVIAR!'}
+              </h3>
+              <p className={compact ? "text-xs text-muted-foreground" : "text-sm text-muted-foreground"}>
+                {isPickup
+                  ? 'Coméntanos el punto de entrega de tu pedido.'
+                  : subtotal >= freeShippingThreshold
+                    ? 'Tu pedido califica para envio gratis'
+                    : `Envio con costo de $${shippingCost.toFixed(0)} MXN`}
+              </p>
+            </div>
+            <Button
+              className={compact
+                ? "w-full font-display text-sm py-4 bg-green-600 hover:bg-green-700 border-2 border-foreground"
+                : "w-full font-display text-base py-6 bg-green-600 hover:bg-green-700 border-4 border-foreground shadow-brutal hover:shadow-brutal-hover active:shadow-none transition-all"
+              }
+              size="lg"
+              onClick={onCalculate}
+            >
+              <MessageCircle className={compact ? "w-4 h-4 mr-2" : "w-5 h-5 mr-2"} />
+              ENVIAR PEDIDO AHORA
+            </Button>
+            {!compact && (
+              <p className="text-xs text-muted-foreground text-center mt-3">
+                El ticket se entrega en WhatsApp y el seguimiento se hace por ahi.
+              </p>
+            )}
+          </div>
+        </motion.div>
       )}
     </div>
   );

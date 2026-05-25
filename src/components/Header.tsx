@@ -1,12 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { withBaseUrl } from "@/lib/base-url";
 import { useOrderContext } from "@/hooks/OrderContext";
 
+const SCROLL_THRESHOLD = 10;
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const { items, isCartOpen, setCartOpen } = useOrderContext();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      // Always show at top of page
+      if (currentY < 60) {
+        setIsVisible(true);
+      } else if (Math.abs(currentY - lastScrollY.current) > SCROLL_THRESHOLD) {
+        setIsVisible(currentY < lastScrollY.current);
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { href: withBaseUrl("#productos"), label: "Productos" },
@@ -19,7 +38,10 @@ const Header = () => {
     "inline-block px-2 py-1 transition-all duration-200 group-hover:bg-foreground group-hover:text-background group-hover:-rotate-1";
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b-2 border-foreground">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b-2 border-foreground transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+    >
       <nav className="container mx-auto flex items-center justify-between py-3 px-4">
         {/* Logo */}
         <a href={withBaseUrl("#inicio")} className="flex items-center gap-2 group">
@@ -31,8 +53,11 @@ const Header = () => {
         <ul className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className={navLinkClass}>
-                <span className={navLinkTextClass}>{link.label}</span>
+              <a
+                href={link.href}
+                  className={navLinkClass}
+              >
+                  <span className={navLinkTextClass}>{link.label}</span>
               </a>
             </li>
           ))}
@@ -121,7 +146,6 @@ const Header = () => {
               >
                 <a
                   href={withBaseUrl("#calculadora")}
-                  onClick={() => setIsMenuOpen(false)}
                   className="inline-flex items-center justify-center gap-2 px-4 py-2 font-display text-sm uppercase bg-foreground text-background border-2 border-foreground shadow-brutal transition-colors w-full"
                 >
                   Comprar

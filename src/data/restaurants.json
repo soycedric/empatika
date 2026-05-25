@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Musabbaha",
+    "location": "Puebla",
+    "mapUrl": "https://maps.app.goo.gl/acYy1r5QcNHhzHJL9",
+    "logo": "logos/musabbaha.jpg",
+    "instagram": "musabbaha.veggie"
+  },
+  {
+    "name": "Britches",
+    "location": "Puebla",
+    "mapUrl": "https://maps.app.goo.gl/P6L7wXYzVSfwPWuJ6",
+    "logo": "logos/britches.jpg",
+    "instagram": "britches.puebla"
+  },
+  {
+    "name": "Plant Neta Cafe",
+    "location": "Puebla",
+    "mapUrl": "https://maps.app.goo.gl/8DJ8dWRCXnWiQeJE8",
+    "logo": "logos/plantneta.jpg",
+    "instagram": "plantnetacafe"
+  },
+  {
+    "name": "Break Free",
+    "location": "Puebla",
+    "mapUrl": "https://maps.app.goo.gl/uteK8Us41AHfd7Z26",
+    "logo": "logos/breakfree.jpg",
+    "instagram": "breakfree_rest"
+  }
+]

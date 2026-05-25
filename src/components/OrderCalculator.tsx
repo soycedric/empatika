@@ -5,13 +5,16 @@
  */
 
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
 import { useOrderSubmit } from '@/hooks/use-order-submit';
+import { getProductById } from '@/data/products';
 import { ProductSelector } from '@/components/calculator/ProductSelector';
 import { OrderSummary } from '@/components/calculator/OrderSummary';
 import type { CalculatorDensity } from '@/components/calculator/types';
 import { withBaseUrl } from '@/lib/base-url';
 
+// Tofuchos para decorar la calculadora
 const calculatorTofuchos = [
   { src: withBaseUrl("tofuchos/tofucho pensando.png"), position: "top-12 left-4 xl:left-12", size: "w-20 h-20 xl:w-24 xl:h-24", animation: { y: [0, -8, 0], rotate: [-3, 3, -3] } },
   { src: withBaseUrl("tofuchos/tofucho sorprendido.png"), position: "bottom-12 right-4 xl:right-12", size: "w-16 h-16 xl:w-20 xl:h-20", animation: { y: [0, -10, 0], scale: [1, 1.02, 1] } },
@@ -26,57 +29,8 @@ interface OrderCalculatorProps {
   layout?: OrderCalculatorLayout;
   containerClassName?: string;
   showDecorations?: boolean;
-  hideCta?: boolean;
+  density?: CalculatorDensity;
 }
-
-const sharedSelectorProps = (
-  ctx: ReturnType<typeof useOrderContext>,
-  density: CalculatorDensity
-) => ({
-  deliveryZone: ctx.deliveryZone,
-  deliveryMethod: ctx.deliveryMethod,
-  customerName: ctx.customerName,
-  customerPhone: ctx.customerPhone,
-  pickupPoint: ctx.pickupPoint,
-  pickupSlot: ctx.pickupSlot,
-  deliveryLocationLink: ctx.deliveryLocationLink,
-  onZoneChange: ctx.setDeliveryZone,
-  onMethodChange: ctx.setDeliveryMethod,
-  onCustomerNameChange: ctx.setCustomerName,
-  onCustomerPhoneChange: ctx.setCustomerPhone,
-  onPickupPointChange: ctx.setPickupPoint,
-  onPickupSlotChange: ctx.setPickupSlot,
-  onDeliveryLocationChange: ctx.setDeliveryLocationLink,
-  density,
-});
-
-const sharedSummaryProps = (
-  ctx: ReturnType<typeof useOrderContext>,
-  handleCalculate: () => void,
-  density: CalculatorDensity,
-  hideCta?: boolean
-) => ({
-  items: ctx.items,
-  validation: ctx.validation,
-  subtotal: ctx.subtotal,
-  shippingCost: ctx.shippingCost,
-  totalWithShipping: ctx.totalWithShipping,
-  freeShippingThreshold: ctx.freeShippingThreshold,
-  deliveryZone: ctx.deliveryZone,
-  deliveryMethod: ctx.deliveryMethod,
-  pickupPoint: ctx.pickupPoint,
-  pickupSlot: ctx.pickupSlot,
-  deliveryLocation: ctx.deliveryLocationLink,
-  customerName: ctx.customerName,
-  customerPhone: ctx.customerPhone,
-  products: ctx.products,
-  onCalculate: handleCalculate,
-  onUpdateQuantity: ctx.updateItemQuantity,
-  onRemoveItem: ctx.removeItem,
-  onClearOrder: ctx.clearOrder,
-  density,
-  hideCta,
-});
 
 export const OrderCalculator = ({
   variant = 'standalone',
@@ -84,18 +38,48 @@ export const OrderCalculator = ({
   layout = 'split',
   containerClassName,
   showDecorations = true,
-  hideCta = false,
+  density = 'default',
 }: OrderCalculatorProps) => {
-  const ctx = useOrderContext();
+  const compact = density === 'compact';
+  const {
+    items,
+    products,
+    totalVolume,
+    validation,
+    subtotal,
+    shippingCost,
+    totalWithShipping,
+    freeShippingThreshold,
+    deliveryZone,
+    setDeliveryZone,
+    deliveryMethod,
+    setDeliveryMethod,
+    customerName,
+    customerPhone,
+    setCustomerName,
+    setCustomerPhone,
+    pickupPoint,
+    setPickupPoint,
+    pickupSlot,
+    setPickupSlot,
+    deliveryLocationLink,
+    setDeliveryLocationLink,
+    addItem,
+    updateItemQuantity,
+    removeItem,
+    clearOrder
+  } = useOrderContext();
   const { handleCalculate } = useOrderSubmit();
-  const isCompact = variant === 'embedded' && layout === 'stacked';
-  const density: CalculatorDensity = isCompact ? 'compact' : 'default';
-  const stackGap = isCompact ? 'space-y-4' : 'space-y-6';
 
-  const productSelector = <ProductSelector {...sharedSelectorProps(ctx, density)} />;
-  const orderSummary = showSummary ? (
-    <OrderSummary {...sharedSummaryProps(ctx, handleCalculate, density, hideCta)} />
-  ) : null;
+  const handleAddProduct = (productId: string) => {
+    const product = getProductById(productId);
+    addItem(productId, 1);
+    if (product) {
+      toast.success('Producto agregado', {
+        description: `${product.name} (${product.weight} kg) añadido al pedido`,
+      });
+    }
+  };
 
   const content = (
     <div className={`max-w-5xl mx-auto ${containerClassName ?? ''}`.trim()}>
@@ -122,23 +106,99 @@ export const OrderCalculator = ({
       )}
 
       {layout === 'stacked' ? (
-        <div className={stackGap}>
-          {isCompact ? (
-            <>
-              {orderSummary}
-              {productSelector}
-            </>
-          ) : (
-            <>
-              {productSelector}
-              {orderSummary}
-            </>
+        <div className="space-y-6">
+          <ProductSelector
+            products={products}
+            deliveryZone={deliveryZone}
+            deliveryMethod={deliveryMethod}
+            customerName={customerName}
+            customerPhone={customerPhone}
+            pickupPoint={pickupPoint}
+            pickupSlot={pickupSlot}
+            deliveryLocationLink={deliveryLocationLink}
+            onZoneChange={setDeliveryZone}
+            onMethodChange={setDeliveryMethod}
+            onCustomerNameChange={setCustomerName}
+            onCustomerPhoneChange={setCustomerPhone}
+            onPickupPointChange={setPickupPoint}
+            onPickupSlotChange={setPickupSlot}
+            onDeliveryLocationChange={setDeliveryLocationLink}
+            onAddProduct={handleAddProduct}
+            density={density}
+          />
+          {showSummary && (
+            <OrderSummary
+              items={items}
+              validation={validation}
+              subtotal={subtotal}
+              shippingCost={shippingCost}
+              totalWithShipping={totalWithShipping}
+              freeShippingThreshold={freeShippingThreshold}
+              deliveryZone={deliveryZone}
+              deliveryMethod={deliveryMethod}
+              pickupPoint={pickupPoint}
+              pickupSlot={pickupSlot}
+              deliveryLocation={deliveryLocationLink}
+              customerName={customerName}
+              customerPhone={customerPhone}
+              products={products}
+              onCalculate={handleCalculate}
+              onUpdateQuantity={updateItemQuantity}
+              onRemoveItem={removeItem}
+              onClearOrder={clearOrder}
+              density={density}
+            />
           )}
         </div>
       ) : (
-        <div className={showSummary ? 'grid lg:grid-cols-[minmax(0,1fr)_360px] gap-8' : 'grid lg:grid-cols-1 gap-8'}>
-          <div className="space-y-6">{productSelector}</div>
-          {orderSummary}
+        <div className={showSummary ? "grid lg:grid-cols-[minmax(0,1fr)_360px] gap-8" : "grid lg:grid-cols-1 gap-8"}>
+          {/* Panel Izquierdo: Selector */}
+          <div className="space-y-6">
+            <ProductSelector
+              products={products}
+              deliveryZone={deliveryZone}
+              deliveryMethod={deliveryMethod}
+              customerName={customerName}
+              customerPhone={customerPhone}
+              pickupPoint={pickupPoint}
+              pickupSlot={pickupSlot}
+              deliveryLocationLink={deliveryLocationLink}
+              onZoneChange={setDeliveryZone}
+              onMethodChange={setDeliveryMethod}
+              onCustomerNameChange={setCustomerName}
+              onCustomerPhoneChange={setCustomerPhone}
+              onPickupPointChange={setPickupPoint}
+              onPickupSlotChange={setPickupSlot}
+              onDeliveryLocationChange={setDeliveryLocationLink}
+              onAddProduct={handleAddProduct}
+              density={density}
+            />
+          </div>
+
+          {/* Panel Derecho: Pedido + Resumen unificado */}
+          {showSummary && (
+            <OrderSummary
+              items={items}
+              validation={validation}
+              subtotal={subtotal}
+              shippingCost={shippingCost}
+              totalWithShipping={totalWithShipping}
+              freeShippingThreshold={freeShippingThreshold}
+              deliveryZone={deliveryZone}
+              deliveryMethod={deliveryMethod}
+              pickupPoint={pickupPoint}
+              pickupSlot={pickupSlot}
+              deliveryLocation={deliveryLocationLink}
+              customerName={customerName}
+              customerPhone={customerPhone}
+              products={products}
+              onCalculate={handleCalculate}
+              onUpdateQuantity={updateItemQuantity}
+              onRemoveItem={removeItem}
+              onClearOrder={clearOrder}
+              density={density}
+            />
+          )}
         </div>
       )}
     </div>
@@ -147,36 +207,12 @@ export const OrderCalculator = ({
   if (variant === 'embedded') {
     return (
       <div className="relative overflow-hidden">
-        {showDecorations &&
-          calculatorTofuchos.map((tofucho, index) => (
-            <motion.div
-              key={index}
-              className={`absolute ${tofucho.position} z-10 hidden lg:block`}
-              animate={tofucho.animation}
-              transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <img
-                src={tofucho.src}
-                alt=""
-                aria-hidden="true"
-                className={`${tofucho.size} object-contain opacity-70 drop-shadow-lg`}
-              />
-            </motion.div>
-          ))}
-        {isCompact ? content : <div className="container mx-auto px-4">{content}</div>}
-      </div>
-    );
-  }
-
-  return (
-    <section id="calculadora" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
-      {showDecorations &&
-        calculatorTofuchos.map((tofucho, index) => (
+        {showDecorations && calculatorTofuchos.map((tofucho, index) => (
           <motion.div
             key={index}
             className={`absolute ${tofucho.position} z-10 hidden lg:block`}
             animate={tofucho.animation}
-            transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
           >
             <img
               src={tofucho.src}
@@ -186,8 +222,35 @@ export const OrderCalculator = ({
             />
           </motion.div>
         ))}
+        <div className={`container mx-auto ${compact ? 'px-0' : 'px-4'}`}>
+          {content}
+        </div>
+      </div>
+    );
+  }
 
-      <div className="container mx-auto px-4">{content}</div>
+  return (
+    <section id="calculadora" className="py-24 relative overflow-hidden bg-muted/30 bg-paper-texture">
+      {/* Tofuchos decorativos flotantes */}
+      {showDecorations && calculatorTofuchos.map((tofucho, index) => (
+        <motion.div
+          key={index}
+          className={`absolute ${tofucho.position} z-10 hidden lg:block`}
+          animate={tofucho.animation}
+          transition={{ duration: 4 + index, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <img
+            src={tofucho.src}
+            alt=""
+            aria-hidden="true"
+            className={`${tofucho.size} object-contain opacity-70 drop-shadow-lg`}
+          />
+        </motion.div>
+      ))}
+
+      <div className="container mx-auto px-4">
+        {content}
+      </div>
     </section>
   );
 };

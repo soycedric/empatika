@@ -4,7 +4,6 @@
 
 import { toast } from 'sonner';
 import { useOrderContext } from '@/hooks/OrderContext';
-import { WHATSAPP_PHONE_E164 } from '@/lib/whatsapp';
 
 const DELIVERY_ZONES = {
   puebla: 'Puebla',
@@ -89,7 +88,7 @@ export const useOrderSubmit = () => {
       return;
     }
 
-    const phoneNumber = WHATSAPP_PHONE_E164;
+    const phoneNumber = '522213089090';
     const sanitize = (text: string) => text.replace(/[<>"'&]/g, '');
 
     const lines: string[] = [];

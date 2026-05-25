@@ -39,7 +39,7 @@ export const OrderItemsList = ({
       ) : (
         <>
           <div
-            className={`space-y-2 overflow-y-auto pr-2 ${compact ? 'max-h-[200px] mb-2' : 'max-h-[300px] mb-6'}`}
+            className={`space-y-2 overflow-y-auto ${compact ? 'max-h-[180px]' : 'pr-2 max-h-[300px] mb-6'}`}
           >
             {items.map((item) => (
               <motion.div
@@ -47,9 +47,10 @@ export const OrderItemsList = ({
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className={`flex items-center bg-muted/50 border-2 border-foreground/20 hover:border-foreground/50 transition-colors ${
-                  compact ? 'gap-2 p-2' : 'gap-3 p-3'
-                }`}
+                className={compact
+                  ? "flex items-center gap-2 py-2 border-b border-foreground/10 last:border-b-0"
+                  : "flex items-center bg-muted/50 border-2 border-foreground/20 hover:border-foreground/50 transition-colors gap-3 p-3"
+                }
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm truncate">{item.product.name}</p>
