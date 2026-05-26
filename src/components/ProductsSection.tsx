@@ -138,7 +138,7 @@ const ProductsSection = ({ variant = 'standalone' }: ProductsSectionProps) => {
             whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.15 }}
-            className="bg-background border-[3px] border-foreground shadow-brutal relative"
+            className="bg-background border-[3px] border-foreground shadow-brutal relative overflow-hidden"
             style={{ transform: `rotate(${rotations[index]})` }}
           >
             {/* Product Image */}

@@ -20,11 +20,11 @@ const Footer = () => {
 
       {/* Tofucho meditando - Mobile */}
       <motion.div
-        className="absolute bottom-40 right-20 lg:hidden z-40"
+        className="absolute bottom-4 right-4 lg:hidden z-0 pointer-events-none"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src={withBaseUrl("tofuchos/tofucho meditando.png")} alt="" aria-hidden="true" className="w-24 h-24 object-contain drop-shadow-lg" />
+        <img src={withBaseUrl("tofuchos/tofucho meditando.png")} alt="" aria-hidden="true" className="w-16 h-16 object-contain opacity-25" />
       </motion.div>
 
 

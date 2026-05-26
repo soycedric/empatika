@@ -228,7 +228,7 @@ const HeroSection = () => {
   return (
     <section
       id="inicio"
-      className="relative isolate overflow-hidden"
+      className="relative isolate"
       style={{ backgroundColor: "hsl(var(--paper))" }}
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_20%,hsl(var(--foreground)/0.12),transparent_35%),radial-gradient(circle_at_85%_65%,hsl(var(--foreground)/0.08),transparent_40%)]" />
@@ -240,12 +240,13 @@ const HeroSection = () => {
         }}
       />
 
-      <div className="relative z-10 mx-auto grid min-h-[86svh] w-full max-w-7xl grid-cols-1 gap-0 px-4 pb-10 pt-4 sm:min-h-[88svh] sm:gap-0 sm:px-6 sm:pt-5 md:gap-0 md:pt-5 lg:min-h-[min(100vh,980px)] lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-2 lg:px-10 lg:pb-12 lg:pt-6">
+      {/* pt compensa el header fijo (~64px). pb asegura espacio visible para los platillos. */}
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-0 px-4 pb-12 pt-[4.5rem] sm:px-6 sm:pt-[4.5rem] sm:pb-14 md:pt-[4.75rem] md:pb-14 lg:min-h-screen lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-center lg:gap-2 lg:px-10 lg:pb-16 lg:pt-[5rem]">
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 24 }}
           animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="order-2 mx-auto w-full max-w-none text-center relative mt-[-1.3rem] sm:mt-[-1.3rem] md:mt-[-1.3rem] lg:order-1 lg:mx-0 lg:mt-0 lg:max-w-3xl lg:pr-4 lg:text-left"
+          className="order-2 mx-auto w-full max-w-none text-center relative mt-[-1.3rem] sm:mt-[-1.3rem] md:mt-[-1.3rem] lg:order-1 lg:mx-0 lg:mt-0 lg:max-w-3xl lg:pr-4 lg:text-left overflow-visible"
         >
           <div className="relative z-10">
             <div className="mb-5 hidden flex-wrap justify-center gap-2 lg:flex lg:justify-start">
@@ -266,7 +267,7 @@ const HeroSection = () => {
             {heroTitleLines.map((line, lineIndex) => (
               <span
                 key={line.id}
-                className={`flex w-full justify-center whitespace-nowrap lg:justify-start ${lineIndex === 0 ? "mb-3" : ""}`}
+                className={`flex w-full justify-center flex-wrap lg:justify-start ${lineIndex === 0 ? "mb-3" : ""}`}
               >
                 {line.segments.map((segment, segmentIndex) => (
                   (() => {
@@ -282,7 +283,7 @@ const HeroSection = () => {
                         src={tofuchoJumpSrc}
                         alt=""
                         aria-hidden="true"
-                        className="pointer-events-none absolute -top-30 -right-2 hidden h-28 w-28 lg:block"
+                        className="pointer-events-none absolute -top-30 -right-2 hidden h-28 w-28 lg:block z-30"
                         animate={
                           reducedMotion
                             ? undefined
@@ -296,7 +297,7 @@ const HeroSection = () => {
                         src={tofuchoJumpSrc}
                         alt=""
                         aria-hidden="true"
-                        className="pointer-events-none absolute -top-20 left-[75%] h-[4.8rem] w-[4.8rem] -translate-x-1/2 sm:-top-24 sm:h-[5.4rem] sm:w-[5.4rem] lg:hidden"
+                        className="pointer-events-none absolute -top-20 left-[75%] h-[4.8rem] w-[4.8rem] -translate-x-1/2 sm:-top-24 sm:h-[5.4rem] sm:w-[5.4rem] lg:hidden z-30"
                         style={{ scaleX: -1 }}
                         animate={
                           reducedMotion
@@ -333,14 +334,14 @@ const HeroSection = () => {
           </p>
 
           <motion.div
-            className="mt-7 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3 lg:mt-8 lg:justify-start"
+            className="mt-7 grid grid-cols-1 gap-3 xs:grid-cols-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3 lg:mt-8 lg:justify-start"
             initial={reducedMotion ? false : { opacity: 0, y: 14 }}
             animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.18, duration: 0.5, ease: "easeOut" }}
           >
             <motion.a
               href="#productos"
-              className="btn-brutal btn-fill-anim w-full sm:w-auto"
+              className="btn-brutal btn-fill-anim w-full"
               style={{
                 "--btn-fill": "hsl(var(--foreground))",
                 "--btn-fill-text": "hsl(var(--background))",
@@ -352,7 +353,7 @@ const HeroSection = () => {
             </motion.a>
             <motion.a
               href="#mayoristas"
-              className="btn-brutal-outline btn-fill-anim w-full sm:w-auto"
+              className="btn-brutal-outline btn-fill-anim w-full"
               style={{ "--btn-fill": "hsl(var(--foreground)/0.12)" } as CSSProperties}
               whileHover={reducedMotion ? undefined : { y: -2 }}
               whileTap={reducedMotion ? undefined : { scale: 0.98 }}
@@ -364,7 +365,7 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.div
-          className="order-1 relative mx-auto flex w-full max-w-xl items-center justify-center lg:order-2 lg:max-w-none lg:justify-center"
+          className="order-1 relative mx-auto flex w-full max-w-xl items-center justify-center overflow-visible lg:order-2 lg:max-w-none lg:justify-center"
           initial={reducedMotion ? false : { opacity: 0, y: 30 }}
           animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
@@ -428,7 +429,7 @@ const HeroSection = () => {
                     src={activePlate.image}
                     alt={activePlate.label}
                     className="plate-outline absolute inset-0 z-10 h-full w-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                   <motion.div

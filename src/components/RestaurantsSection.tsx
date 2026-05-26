@@ -148,8 +148,8 @@ const RestaurantsSection = () => {
           </div>
 
           <div className="relative">
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-foreground to-transparent" />
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-foreground to-transparent" />
+            <div className={`pointer-events-none absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-foreground to-transparent transition-opacity duration-200 ${canScrollLeft ? 'opacity-100' : 'opacity-0'}`} />
+            <div className={`pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-foreground to-transparent transition-opacity duration-200 ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
             <div
               ref={scrollRef}
               className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-1 cursor-grab active:cursor-grabbing touch-pan-x"

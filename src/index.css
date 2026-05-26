@@ -89,7 +89,12 @@
 
   /* Compensar header fijo en navegación por anchors */
   section[id] {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 4rem;
+  }
+
+  /* El hero (#inicio) NO necesita scroll-margin ya que lleva su propio pt */
+  section#inicio {
+    scroll-margin-top: 0;
   }
 
   /* Skip link para accesibilidad */
@@ -128,8 +133,8 @@
 
   /* Focus visible ring para accesibilidad de teclado */
   :focus-visible {
-    outline: 3px solid hsl(var(--primary));
-    outline-offset: 2px;
+    outline: 3px solid hsl(var(--foreground));
+    outline-offset: 3px;
   }
 
   /* Clase para screen readers */

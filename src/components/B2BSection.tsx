@@ -137,12 +137,13 @@ const B2BSection = () => {
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-background text-foreground font-display text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background)/0.3)] hover:shadow-[12px_12px_0_0_hsl(var(--background)/0.3)] hover:-translate-x-1 hover:-translate-y-1 transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-background text-foreground font-display text-base sm:text-2xl uppercase border-4 border-background shadow-[8px_8px_0_0_hsl(var(--background)/0.3)] hover:shadow-[12px_12px_0_0_hsl(var(--background)/0.3)] hover:-translate-x-1 hover:-translate-y-1 transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               QUIERO PRECIOS ESPECIALES
-              <ArrowRight size={28} />
+              <ArrowRight size={20} className="sm:hidden" />
+              <ArrowRight size={28} className="hidden sm:block" />
             </motion.a>
             <p className="font-body text-sm text-background/90">
               Cotizaciones personalizadas en menos de 24 horas

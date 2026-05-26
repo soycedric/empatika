@@ -81,7 +81,7 @@ const DistributorsSection = () => {
         >
           <span className="text-dymo text-xs inline-block">Puntos de venta</span>
           <h2 className="font-display text-4xl sm:text-5xl mt-2">
-            <span className="inline-block bg-foreground text-background px-2">DÓNDE</span> COMPRAR
+            <span className="inline-block bg-foreground text-background px-3">DÓNDE</span> COMPRAR
           </h2>
         </motion.div>
 
