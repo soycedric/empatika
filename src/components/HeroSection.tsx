@@ -427,7 +427,7 @@ const HeroSection = () => {
                 >
                   <img
                     src={activePlate.image}
-                    alt={activePlate.label}
+                    alt={`Platillo preparado con Empátika: ${activePlate.label}`}
                     className="plate-outline absolute inset-0 z-10 h-full w-full object-cover"
                     loading="eager"
                   />

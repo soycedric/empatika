@@ -145,7 +145,7 @@ const ProductsSection = ({ variant = 'standalone' }: ProductsSectionProps) => {
             <div className="relative aspect-square bg-muted/20 border-b-[3px] border-foreground overflow-hidden">
               <img
                 src={withBaseUrl(`productos/${product.variant}.jpg`)}
-                alt={product.name}
+                alt={`${product.variant === 'veganesa' ? 'Veganesa' : 'Tofu ' + product.name} artesanal mexicano de Empátika`}
                 className="w-full h-full object-cover relative z-[1]"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';

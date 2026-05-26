@@ -9,7 +9,7 @@
     "lng": -98.25438110469126,
     "type": "supermarket",
     "instagram": "@mr.tofu.oficial",
-    "mapUrl": "https://maps.app.goo.gl/"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.0160449305048,-98.25438110469126"
   },
   {
     "name": "Veggie Deli",
@@ -21,7 +21,7 @@
     "lng": -98.29514723167624,
     "type": "supermarket",
     "instagram": "@veggiedeli.cholula",
-    "mapUrl": "https://maps.app.goo.gl/"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.056377485840716,-98.29514723167624"
   },
   {
     "name": "El Rincón de Tacotlan",
@@ -33,7 +33,7 @@
     "lng": -98.21355527962417,
     "type": "restaurant",
     "instagram": "@rincontacotlan",
-    "mapUrl": "https://maps.app.goo.gl/"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.047923858226287,-98.21355527962417"
   },
   {
     "name": "Huella Vegana",
@@ -45,7 +45,7 @@
     "lng": -98.1939283,
     "type": "supermarket",
     "instagram": "@huellavegana.pue",
-    "mapUrl": "https://maps.app.goo.gl/"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.0393391,-98.1939283"
   },
   {
     "name": "Puro apapacho",
@@ -57,6 +57,6 @@
     "lng": -99.1236048,
     "type": "supermarket",
     "instagram": "@puro_apapacho",
-    "mapUrl": "https://maps.app.goo.gl/"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.2915607,-99.1236048"
   }
 ]

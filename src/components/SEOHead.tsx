@@ -13,17 +13,17 @@ const SEOHead = ({
   title = "Empátika - Tofu Artesanal Mexicano | Proteína Vegetal",
   description = "El tofu dejó de ser aburrido. Tofu artesanal mexicano, proteína vegetal 100% natural. Extra Firme y Ahumado. Encuentra distribuidores en México y recetas deliciosas.",
   keywords = "tofu México, proteína vegetal, recetas con tofu, tofu firme, tofu ahumado, distribuidora de alimentos veganos, Empátika, tofu artesanal, comida vegana México",
-  ogImage = "https://empatika.mx/og-image.jpg",
+  ogImage = "https://empatika.shop/og-image.jpg",
   ogType = "website",
-  canonicalUrl = "https://empatika.mx",
+  canonicalUrl = "https://empatika.shop",
 }: SEOHeadProps) => {
   // JSON-LD Structured Data for Organization
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Empatika",
-    url: "https://empatika.mx",
-    logo: "https://empatika.mx/logo.png",
+    name: "Empátika",
+    url: "https://empatika.shop",
+    logo: "https://empatika.shop/logo/logo_icono_empatika.svg",
     description: "Tofu artesanal mexicano de alta calidad. Proteína vegetal 100% natural.",
     address: {
       "@type": "PostalAddress",
@@ -51,8 +51,8 @@ const SEOHead = ({
         "@type": "Product",
         position: 1,
         name: "Tofu Extra Firme Empátika",
-        description: "Tofu extra firme ideal para freír, asar o saltear. Proteína vegetal mexicana de alta calidad.",
-        image: "https://empatika.mx/tofu-extra-firme.jpg",
+        description: "Tofu extra firme ideal para freír, asar o saltear. Proteína vegetal mexicana de alta calidad, elaborado artesanalmente en Puebla.",
+        image: "https://empatika.shop/productos/extra-firme.jpg",
         brand: {
           "@type": "Brand",
           name: "Empátika",
@@ -77,8 +77,8 @@ const SEOHead = ({
         "@type": "Product",
         position: 2,
         name: "Tofu Ahumado Empátika",
-        description: "Tofu ahumado naturalmente con madera de mezquite. Sabor intenso, listo para comer.",
-        image: "https://empatika.mx/tofu-ahumado.jpg",
+        description: "Tofu ahumado naturalmente con madera de mezquite. Sabor intenso, firmeza perfecta y listo para comer. Producto 100% vegetal.",
+        image: "https://empatika.shop/productos/ahumado.jpg",
         brand: {
           "@type": "Brand",
           name: "Empátika",
@@ -141,6 +141,28 @@ const SEOHead = ({
       </script>
       <script type="application/ld+json">
         {JSON.stringify(productsSchema)}
+      </script>
+      {/* FAQ Schema for AEO/GEO */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [{
+            "@type": "Question",
+            "name": "¿Qué es el tofu extra firme de Empátika?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "El tofu extra firme de Empátika es una proteína vegetal de alta calidad elaborada artesanalmente en Puebla, México, ideal para asar, freír o saltear."
+            }
+          }, {
+            "@type": "Question",
+            "name": "¿El tofu Empátika es 100% vegetal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí, todos los productos de Empátika son 100% de origen vegetal, sin conservadores y aptos para dietas veganas y vegetarianas."
+            }
+          }]
+        })}
       </script>
     </Helmet>
   );
