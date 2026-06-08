@@ -3,7 +3,7 @@
  */
 
 import { toast } from 'sonner';
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 
 const DELIVERY_ZONES = {
   puebla: 'Puebla',
@@ -88,7 +88,7 @@ export const useOrderSubmit = () => {
       return;
     }
 
-    const phoneNumber = '522213089090';
+    const phoneNumber = '522215606205';
     const sanitize = (text: string) => text.replace(/[<>"'&]/g, '');
 
     const lines: string[] = [];

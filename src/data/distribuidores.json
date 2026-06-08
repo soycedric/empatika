@@ -1,17 +1,5 @@
 [
   {
-    "name": "Mr. Tofu",
-    "address": "Plaza Kentro, Atlixcáyotl 3432, Santa Fe, Supermanzana Pue Local 213, San Martinito, 72825",
-    "city": "Puebla",
-    "state": "Puebla",
-    "region": "puebla",
-    "lat": 19.0160449305048,
-    "lng": -98.25438110469126,
-    "type": "supermarket",
-    "instagram": "@mr.tofu.oficial",
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=19.0160449305048,-98.25438110469126"
-  },
-  {
     "name": "Veggie Deli",
     "address": "Calle 2 Nte. 1215, San Andrés Cholula, 72810",
     "city": "Cholula",

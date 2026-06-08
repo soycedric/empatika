@@ -77,7 +77,7 @@ export const useOrderCalculator = (
           : item
       )
     );
-  }, []);
+  }, [removeItem]);
 
   /**
    * Remueve un item del pedido

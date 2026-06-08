@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 import { withBaseUrl } from '@/lib/base-url';
 

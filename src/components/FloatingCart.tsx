@@ -5,7 +5,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, ArrowRight, X } from 'lucide-react';
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 
 const FloatingCart = () => {
     const {

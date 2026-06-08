@@ -4,7 +4,7 @@
 
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { OrderCalculator } from '@/components/OrderCalculator';
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 
 const CartSideMenu = () => {
   const { isCartOpen, setCartOpen, items } = useOrderContext();

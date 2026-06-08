@@ -6,7 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartSideMenu from "@/components/CartSideMenu";
-import { OrderProvider } from "@/hooks/OrderContext";
+import { OrderProvider } from "@/contexts/OrderContext";
 
 // Lazy load de componentes below-the-fold para reducir bundle inicial
 const OrderCalculator = lazy(() => import("@/components/OrderCalculator").then(m => ({ default: m.OrderCalculator })));

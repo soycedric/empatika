@@ -230,7 +230,7 @@ describe('ZoneStrategyFactory', () => {
 
   it('debe lanzar error para zona inválida', () => {
     expect(() => {
-      ZoneStrategyFactory.getStrategy('invalid' as any);
+      ZoneStrategyFactory.getStrategy('invalid' as unknown as ZoneType);
     }).toThrow();
   });
 

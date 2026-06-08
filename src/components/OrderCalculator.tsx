@@ -6,7 +6,7 @@
 
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 import { useOrderSubmit } from '@/hooks/use-order-submit';
 import { getProductById } from '@/data/products';
 import { ProductSelector } from '@/components/calculator/ProductSelector';

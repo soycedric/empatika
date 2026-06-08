@@ -3,7 +3,7 @@
  */
 
 import { OrderSummary } from '@/components/calculator/OrderSummary';
-import { useOrderContext } from '@/hooks/OrderContext';
+import { useOrderContext } from '@/contexts/OrderContext';
 import { useOrderSubmit } from '@/hooks/use-order-submit';
 
 const OrderSidebar = () => {

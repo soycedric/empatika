@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { withBaseUrl } from "@/lib/base-url";
-import { useOrderContext } from "@/hooks/OrderContext";
+import { useOrderContext } from "@/contexts/OrderContext";
 
 const SCROLL_THRESHOLD = 10;
 
@@ -79,7 +79,7 @@ const Header = () => {
             </button>
           )}
           <a
-            href={withBaseUrl("#calculadora")}
+            href={withBaseUrl("#productos")}
             className="inline-flex items-center gap-2 px-4 py-2 font-display text-sm uppercase bg-foreground text-background border-2 border-foreground shadow-brutal transition-colors"
           >
             Comprar
@@ -145,7 +145,7 @@ const Header = () => {
                 transition={{ delay: navLinks.length * 0.1 }}
               >
                 <a
-                  href={withBaseUrl("#calculadora")}
+                  href={withBaseUrl("#productos")}
                   className="inline-flex items-center justify-center gap-2 px-4 py-2 font-display text-sm uppercase bg-foreground text-background border-2 border-foreground shadow-brutal transition-colors w-full"
                 >
                   Comprar
