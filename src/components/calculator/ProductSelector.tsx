@@ -11,6 +11,8 @@ import { ShoppingCart, MapPin, Truck, CalendarDays } from 'lucide-react';
 import type { CalculatorDensity } from '@/components/calculator/types';
 import { isCompactDensity } from '@/components/calculator/types';
 import { DeliveryDatePicker } from '@/components/calculator/DeliveryDatePicker';
+import * as turf from '@turf/turf';
+import pueblaZone from '@/data/puebla-zone.json';
 
 type DeliveryZone = 'puebla' | 'cdmx';
 type DeliveryMethod = 'delivery' | 'pickup';
@@ -79,10 +81,20 @@ export const ProductSelector = ({
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        const link = `https://maps.google.com/?q=${latitude},${longitude}`;
-        onDeliveryLocationChange(link);
-        setLocationStatus('success');
-        setIsLocating(false);
+        const point = turf.point([longitude, latitude]);
+        const polygon = pueblaZone.features[0] as any;
+        const isInside = turf.booleanPointInPolygon(point, polygon);
+
+        if (isInside) {
+          const link = `https://maps.google.com/?q=${latitude},${longitude}`;
+          onDeliveryLocationChange(link);
+          setLocationStatus('success');
+          setIsLocating(false);
+        } else {
+          setLocationError('El envío no llega hasta su ubicación, le recomendamos visitar o contactar a nuestros distribuidores.');
+          setLocationStatus('error');
+          setIsLocating(false);
+        }
       },
       () => {
         setLocationError('No pudimos obtener tu ubicacion.');
