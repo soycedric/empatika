@@ -62,6 +62,13 @@ export const useOrderCalculator = (
   }, []);
 
   /**
+   * Remueve un item del pedido
+   */
+  const removeItem = useCallback((itemId: string) => {
+    setItems(current => current.filter(item => item.id !== itemId));
+  }, []);
+
+  /**
    * Actualiza la cantidad de un item
    */
   const updateItemQuantity = useCallback((itemId: string, quantity: number) => {
@@ -78,13 +85,6 @@ export const useOrderCalculator = (
       )
     );
   }, [removeItem]);
-
-  /**
-   * Remueve un item del pedido
-   */
-  const removeItem = useCallback((itemId: string) => {
-    setItems(current => current.filter(item => item.id !== itemId));
-  }, []);
 
   /**
    * Limpia todos los items del pedido

@@ -45,9 +45,9 @@ export const PRODUCT_CATALOG: Record<string, Product[]> = {
       name: 'Tofu Ahumado',
       variant: 'ahumado',
       weight: 1.0, // 1 kg
-      price: 150,
+      price: 165,
       description: 'Ahumado con madera de mezquite. Listo para comer.',
-      pricePerKg: 150 // Ejemplo: $150 pesos por kg
+      pricePerKg: 165 // $165 pesos por kg
     }
   ],
   'veganesa': [
