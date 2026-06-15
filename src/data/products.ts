@@ -25,9 +25,9 @@ export const PRODUCT_CATALOG: Record<string, Product[]> = {
       name: 'Tofu Extra Firme',
       variant: 'extra-firme',
       weight: 1.0, // 1 kg
-      price: 150,
+      price: 165,
       description: 'Perfecto para freír, asar o saltear. Su textura firme mantiene la forma.',
-      pricePerKg: 150 // Ejemplo: $150 pesos por kg
+      pricePerKg: 165 // Ejemplo: $165 pesos por kg
     }
   ],
   'tofu-ahumado': [
