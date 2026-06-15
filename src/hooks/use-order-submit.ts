@@ -23,7 +23,7 @@ export const useOrderSubmit = () => {
     customerName,
     customerPhone,
     pickupPoint,
-    pickupSlot,
+    deliveryDate,
     deliveryLocationLink,
   } = useOrderContext();
 
@@ -31,7 +31,8 @@ export const useOrderSubmit = () => {
     const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
     const hasContact = customerName.trim().length > 0 && customerPhone.trim().length > 0;
     const hasDeliveryLocation = deliveryLocationLink.trim().length > 0;
-    const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
+    const hasPickupInfo = pickupPoint.trim().length > 0;
+    const hasDate = deliveryDate.trim().length > 0;
 
     const scrollToField = (fieldId: string) => {
       const target = document.getElementById(fieldId);
@@ -56,6 +57,14 @@ export const useOrderSubmit = () => {
       return;
     }
 
+    if (!hasDate) {
+      scrollToField('delivery-date');
+      toast.error('Falta la fecha de entrega', {
+        description: 'Selecciona una fecha disponible en el calendario.'
+      });
+      return;
+    }
+
     if (!isPickup && !hasDeliveryLocation) {
       scrollToField('delivery-location');
       toast.error('Falta la ubicacion', {
@@ -65,17 +74,6 @@ export const useOrderSubmit = () => {
     }
 
     if (isPickup && !hasPickupInfo) {
-      if (pickupPoint.trim().length === 0) {
-        scrollToField('pickup-point');
-      } else if (pickupSlot.trim().length === 0) {
-        scrollToField('pickup-slot');
-      }
-      toast.error('Falta el pickup', {
-        description: 'Selecciona punto y horario para continuar.'
-      });
-      return;
-    }
-    if (isPickup && pickupPoint.trim().length === 0) {
       scrollToField('pickup-point');
       toast.error('Falta el punto de pickup', {
         description: 'Selecciona o escribe tu punto de pickup para continuar.'
@@ -91,6 +89,19 @@ export const useOrderSubmit = () => {
     const phoneNumber = '522215606205';
     const sanitize = (text: string) => text.replace(/[<>"'&]/g, '');
 
+    /** Formatea "2025-06-20" -> "viernes, 20 de junio de 2025" */
+    const formatDate = (iso: string): string => {
+      if (!iso) return '';
+      const [year, month, day] = iso.split('-').map(Number);
+      const d = new Date(year, month - 1, day);
+      return d.toLocaleDateString('es-MX', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    };
+
     const lines: string[] = [];
     lines.push(isPickup
       ? 'Hola! Quiero hacer un pedido para recoger:'
@@ -101,13 +112,13 @@ export const useOrderSubmit = () => {
     lines.push(`Cliente: ${sanitize(customerName)}`);
     lines.push(`Telefono: ${sanitize(customerPhone)}`);
     lines.push(`Zona: ${sanitize(DELIVERY_ZONES[deliveryZone])}`);
-
     lines.push(`Metodo: ${isPickup ? 'Pickup' : 'Envio'}`);
+    lines.push(`Fecha de entrega: ${formatDate(deliveryDate)}`);
 
     if (isPickup) {
       lines.push('');
-      lines.push(`Pickup: ${sanitize(pickupPoint)}`);
-      lines.push(`Horario: ${sanitize(pickupSlot)}`);
+      lines.push(`Punto de pickup: ${sanitize(pickupPoint)}`);
+      lines.push('Horario: A coordinar por WhatsApp');
     } else {
       lines.push('');
       lines.push(`Ubicacion: ${sanitize(deliveryLocationLink)}`);

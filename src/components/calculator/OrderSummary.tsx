@@ -26,7 +26,7 @@ interface OrderSummaryProps {
   deliveryZone: DeliveryZone;
   deliveryMethod: DeliveryMethod;
   pickupPoint: string;
-  pickupSlot: string;
+  deliveryDate: string;
   deliveryLocation: string;
   customerName: string;
   customerPhone: string;
@@ -75,7 +75,7 @@ export const OrderSummary = ({
   deliveryZone,
   deliveryMethod,
   pickupPoint,
-  pickupSlot,
+  deliveryDate,
   deliveryLocation,
   customerName,
   customerPhone,
@@ -88,10 +88,11 @@ export const OrderSummary = ({
 }: OrderSummaryProps) => {
   const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
   const compact = isCompactDensity(density);
-  const hasPickupInfo = pickupPoint.trim().length > 0 && pickupSlot.trim().length > 0;
+  const hasPickupInfo = pickupPoint.trim().length > 0;
   const hasDeliveryLocation = deliveryLocation.trim().length > 0;
   const hasContact = customerName.trim().length > 0 && customerPhone.trim().length > 0;
-  const canSubmit = hasContact && (isPickup ? hasPickupInfo : hasDeliveryLocation);
+  const hasDate = deliveryDate.trim().length > 0;
+  const canSubmit = hasContact && hasDate && (isPickup ? hasPickupInfo : hasDeliveryLocation);
   const remainingToFree = Math.max(0, freeShippingThreshold - subtotal);
   const suggestionToFree = useMemo(() => {
     if (isPickup || items.length === 0 || remainingToFree <= 0) return null;
@@ -282,7 +283,13 @@ export const OrderSummary = ({
 
           {isPickup && hasPickupInfo && (
             <div className={compact ? "text-sm text-muted-foreground" : "p-3 border-2 border-foreground/40 bg-foreground/5 text-sm"}>
-              <span className="font-bold">Pickup:</span> {pickupPoint} · {pickupSlot}
+              <span className="font-bold">Pickup:</span> {pickupPoint}
+            </div>
+          )}
+
+          {hasDate && (
+            <div className={compact ? "text-sm text-muted-foreground" : "p-3 border-2 border-foreground/40 bg-foreground/5 text-sm"}>
+              <span className="font-bold">📅 Fecha:</span> {deliveryDate}
             </div>
           )}
 

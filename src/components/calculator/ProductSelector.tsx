@@ -7,9 +7,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ShoppingCart, MapPin, Truck } from 'lucide-react';
+import { ShoppingCart, MapPin, Truck, CalendarDays } from 'lucide-react';
 import type { CalculatorDensity } from '@/components/calculator/types';
 import { isCompactDensity } from '@/components/calculator/types';
+import { DeliveryDatePicker } from '@/components/calculator/DeliveryDatePicker';
 
 type DeliveryZone = 'puebla' | 'cdmx';
 type DeliveryMethod = 'delivery' | 'pickup';
@@ -30,7 +31,7 @@ interface ProductSelectorProps {
   customerName: string;
   customerPhone: string;
   pickupPoint: string;
-  pickupSlot: string;
+  deliveryDate: string;
   deliveryLocationLink: string;
   density?: CalculatorDensity;
   onZoneChange: (zone: DeliveryZone) => void;
@@ -38,7 +39,7 @@ interface ProductSelectorProps {
   onCustomerNameChange: (name: string) => void;
   onCustomerPhoneChange: (phone: string) => void;
   onPickupPointChange: (point: string) => void;
-  onPickupSlotChange: (slot: string) => void;
+  onDeliveryDateChange: (date: string) => void;
   onDeliveryLocationChange: (location: string) => void;
 }
 
@@ -48,7 +49,7 @@ export const ProductSelector = ({
   customerName,
   customerPhone,
   pickupPoint,
-  pickupSlot,
+  deliveryDate,
   deliveryLocationLink,
   density = 'default',
   onZoneChange,
@@ -56,7 +57,7 @@ export const ProductSelector = ({
   onCustomerNameChange,
   onCustomerPhoneChange,
   onPickupPointChange,
-  onPickupSlotChange,
+  onDeliveryDateChange,
   onDeliveryLocationChange,
 }: ProductSelectorProps) => {
   const [isLocating, setIsLocating] = useState(false);
@@ -65,28 +66,6 @@ export const ProductSelector = ({
   const isPickup = deliveryZone === 'cdmx' || deliveryMethod === 'pickup';
   const compact = isCompactDensity(density);
 
-  const buildTimeSlots = (start: string, end: string) => {
-    const [startHour, startMinute] = start.split(':').map(Number);
-    const [endHour, endMinute] = end.split(':').map(Number);
-    const slots: string[] = [];
-    let currentMinutes = startHour * 60 + startMinute;
-    const endMinutes = endHour * 60 + endMinute;
-    while (currentMinutes <= endMinutes - 30) {
-      const endSlotMinutes = currentMinutes + 30;
-      const format = (minutes: number) => {
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-      };
-      slots.push(`${format(currentMinutes)} - ${format(endSlotMinutes)}`);
-      currentMinutes = endSlotMinutes;
-    }
-    return slots;
-  };
-
-  const pueblaSlots = buildTimeSlots('09:00', '14:00');
-  const cdmxDeltaSlots = buildTimeSlots('10:00', '14:00');
-  const cdmxUnamSlots = buildTimeSlots('14:00', '18:00');
 
   const handleShareLocation = () => {
     if (!navigator.geolocation) {
@@ -126,14 +105,6 @@ export const ProductSelector = ({
     : locationStatus === 'error'
       ? 'bg-red-600 text-white'
       : 'bg-foreground text-background';
-
-  const pickupSlots = deliveryZone === 'cdmx'
-    ? pickupPoint.startsWith('Parque Delta')
-      ? cdmxDeltaSlots
-      : pickupPoint.startsWith('Biblioteca Central')
-        ? cdmxUnamSlots
-        : []
-    : pueblaSlots;
 
   return (
     <div className={compact ? "space-y-3" : "bg-background border-4 border-foreground shadow-brutal p-6"}>
@@ -204,7 +175,28 @@ export const ProductSelector = ({
         )}
       </div>
 
-      {/* Paso 3: Ubicacion o Pickup */}
+      {/* Paso 3: Fecha de entrega */}
+      <motion.div
+        key={deliveryZone}
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        className={compact ? 'space-y-2' : 'mb-4 p-3 bg-foreground/5 border-2 border-foreground/30 rounded'}
+      >
+        <div className={compact ? 'flex items-center gap-2' : 'flex items-center gap-2 mb-2'}>
+          <CalendarDays className="w-4 h-4 text-foreground" />
+          <label className={compact ? 'text-[10px] font-display uppercase tracking-wider text-muted-foreground' : 'text-xs font-display uppercase tracking-wider text-muted-foreground'}>
+            {compact ? 'Fecha' : 'Paso 3: Fecha de entrega'}
+          </label>
+        </div>
+        <DeliveryDatePicker
+          deliveryZone={deliveryZone}
+          value={deliveryDate}
+          onChange={onDeliveryDateChange}
+          density={density}
+        />
+      </motion.div>
+
+      {/* Paso 4: Ubicacion o Pickup */}
       {deliveryMethod === 'delivery' && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
@@ -260,7 +252,7 @@ export const ProductSelector = ({
           className={compact ? "space-y-2" : "mb-4 p-3 bg-foreground/5 border-2 border-foreground/30 rounded"}
         >
           <p className={compact ? "text-[10px] font-display uppercase tracking-wider text-muted-foreground" : "text-xs font-display uppercase tracking-wider text-muted-foreground mb-2"}>
-            {compact ? 'Pickup y horario' : 'Paso 3: Pickup + horario'}
+            {compact ? 'Punto de pickup' : 'Paso 4: Punto de pickup'}
           </p>
           {deliveryZone === 'cdmx' ? (
             <Select value={pickupPoint} onValueChange={onPickupPointChange}>
@@ -287,22 +279,8 @@ export const ProductSelector = ({
               </a>
             </div>
           )}
-          <div className={compact ? "" : "mt-3"}>
-            <Select value={pickupSlot} onValueChange={onPickupSlotChange}>
-              <SelectTrigger id="pickup-slot" className="border-2 border-foreground" disabled={pickupSlots.length === 0}>
-                <SelectValue placeholder={pickupSlots.length > 0 ? 'Selecciona horario' : 'Selecciona punto primero'} />
-              </SelectTrigger>
-              <SelectContent>
-                {pickupSlots.map((slot) => (
-                  <SelectItem key={slot} value={slot}>
-                    {slot}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
           <p className={compact ? "text-[11px] text-muted-foreground" : "text-xs text-muted-foreground mt-2"}>
-            Este paso es obligatorio para pickup.
+            Acordaremos el horario exacto por WhatsApp.
           </p>
         </motion.div>
       )}

@@ -60,8 +60,8 @@ export const OrderCalculator = ({
     setCustomerPhone,
     pickupPoint,
     setPickupPoint,
-    pickupSlot,
-    setPickupSlot,
+    deliveryDate,
+    setDeliveryDate,
     deliveryLocationLink,
     setDeliveryLocationLink,
     addItem,
@@ -114,14 +114,14 @@ export const OrderCalculator = ({
             customerName={customerName}
             customerPhone={customerPhone}
             pickupPoint={pickupPoint}
-            pickupSlot={pickupSlot}
+            deliveryDate={deliveryDate}
             deliveryLocationLink={deliveryLocationLink}
             onZoneChange={setDeliveryZone}
             onMethodChange={setDeliveryMethod}
             onCustomerNameChange={setCustomerName}
             onCustomerPhoneChange={setCustomerPhone}
             onPickupPointChange={setPickupPoint}
-            onPickupSlotChange={setPickupSlot}
+            onDeliveryDateChange={setDeliveryDate}
             onDeliveryLocationChange={setDeliveryLocationLink}
             onAddProduct={handleAddProduct}
             density={density}
@@ -137,7 +137,7 @@ export const OrderCalculator = ({
               deliveryZone={deliveryZone}
               deliveryMethod={deliveryMethod}
               pickupPoint={pickupPoint}
-              pickupSlot={pickupSlot}
+              deliveryDate={deliveryDate}
               deliveryLocation={deliveryLocationLink}
               customerName={customerName}
               customerPhone={customerPhone}
@@ -161,14 +161,14 @@ export const OrderCalculator = ({
               customerName={customerName}
               customerPhone={customerPhone}
               pickupPoint={pickupPoint}
-              pickupSlot={pickupSlot}
+              deliveryDate={deliveryDate}
               deliveryLocationLink={deliveryLocationLink}
               onZoneChange={setDeliveryZone}
               onMethodChange={setDeliveryMethod}
               onCustomerNameChange={setCustomerName}
               onCustomerPhoneChange={setCustomerPhone}
               onPickupPointChange={setPickupPoint}
-              onPickupSlotChange={setPickupSlot}
+              onDeliveryDateChange={setDeliveryDate}
               onDeliveryLocationChange={setDeliveryLocationLink}
               onAddProduct={handleAddProduct}
               density={density}
@@ -187,7 +187,7 @@ export const OrderCalculator = ({
               deliveryZone={deliveryZone}
               deliveryMethod={deliveryMethod}
               pickupPoint={pickupPoint}
-              pickupSlot={pickupSlot}
+              deliveryDate={deliveryDate}
               deliveryLocation={deliveryLocationLink}
               customerName={customerName}
               customerPhone={customerPhone}

@@ -30,7 +30,7 @@ interface OrderContextValue {
     customerName: string;
     customerPhone: string;
     pickupPoint: string;
-    pickupSlot: string;
+    deliveryDate: string;
     deliveryLocationLink: string;
     isCartOpen: boolean;
     setDeliveryZone: (zone: DeliveryZone) => void;
@@ -38,7 +38,7 @@ interface OrderContextValue {
     setCustomerName: (name: string) => void;
     setCustomerPhone: (phone: string) => void;
     setPickupPoint: (point: string) => void;
-    setPickupSlot: (slot: string) => void;
+    setDeliveryDate: (date: string) => void;
     setDeliveryLocationLink: (location: string) => void;
     setCartOpen: (open: boolean) => void;
     addItem: (productId: string, quantity?: number) => void;
@@ -62,7 +62,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const [customerName, setCustomerName] = useState<string>('');
     const [customerPhone, setCustomerPhone] = useState<string>('');
     const [pickupPoint, setPickupPoint] = useState<string>('');
-    const [pickupSlot, setPickupSlot] = useState<string>('');
+    const [deliveryDate, setDeliveryDate] = useState<string>('');
     const [deliveryLocationLink, setDeliveryLocationLink] = useState<string>('');
     const [isCartOpen, setCartOpen] = useState(false);
     const [hasAutoOpenedCart, setHasAutoOpenedCart] = useState(false);
@@ -126,7 +126,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
             setDeliveryMethodState('pickup');
         }
         setPickupPoint('');
-        setPickupSlot('');
+        setDeliveryDate(''); // Resetear fecha al cambiar zona (los días habilitados cambian)
     }, []);
 
     const handleSetDeliveryMethod = useCallback((method: DeliveryMethod) => {
@@ -137,7 +137,6 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         setDeliveryMethodState(method);
         if (method === 'delivery') {
             setPickupPoint('');
-            setPickupSlot('');
         } else {
             setDeliveryLocationLink('');
         }
@@ -158,7 +157,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         customerName,
         customerPhone,
         pickupPoint,
-        pickupSlot,
+        deliveryDate,
         deliveryLocationLink,
         isCartOpen,
         setDeliveryZone: handleSetDeliveryZone,
@@ -166,7 +165,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         setCustomerName,
         setCustomerPhone,
         setPickupPoint,
-        setPickupSlot,
+        setDeliveryDate,
         setDeliveryLocationLink,
         setCartOpen,
         addItem,
