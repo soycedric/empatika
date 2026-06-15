@@ -18,7 +18,7 @@ export const PRODUCT_CATALOG: Record<string, Product[]> = {
       weight: 0.4, // 400g = 0.4 kg
       price: 75,
       description: 'Perfecto para freír, asar o saltear. Su textura firme mantiene la forma.',
-      pricePerKg: 150 // Ejemplo: $150 pesos por kg
+      pricePerKg: 165
     },
     {
       id: 'tofu-extra-firme-1kg',

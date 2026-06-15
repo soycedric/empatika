@@ -22,7 +22,7 @@ const products = [
     ingredientes: "Agua, Soya, Cloruro de magnesio.",
     sizes: [
       { id: 'tofu-extra-firme-400g', label: '400 g', price: 75 },
-      { id: 'tofu-extra-firme-1kg', label: '1 kg', price: 150 }
+      { id: 'tofu-extra-firme-1kg', label: '1 kg', price: 165 }
     ]
   },
   {
@@ -42,7 +42,7 @@ const products = [
     ingredientes: "Agua, Soya, Cloruro de magnesio, Humo líquido.",
     sizes: [
       { id: 'tofu-ahumado-400g', label: '400 g', price: 75 },
-      { id: 'tofu-ahumado-1kg', label: '1 kg', price: 150 }
+      { id: 'tofu-ahumado-1kg', label: '1 kg', price: 165 }
     ]
   },
   {
