@@ -9,13 +9,12 @@ import 'leaflet/dist/leaflet.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
 import { setWorkerUrl } from 'maplibre-gl';
-import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import { withBaseUrl } from '@/lib/base-url';
 import type { Distributor } from '@/components/distributors/types';
 import { getDistributorId } from '@/components/distributors/types';
 
-setWorkerUrl(workerUrl);
+setWorkerUrl(new URL('maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).toString());
 
 const DEFAULT_CENTER: [number, number] = [19.04, -98.2];
 const FLY_ZOOM = 15;
