@@ -456,23 +456,37 @@
     z-index: 0;
   }
 
-  /* Mapa: sin filtro en tiles (legibilidad); estilo brutalista solo en controles y popups */
+  /* Mapa: sobrio, limpio y con algo de carácter visual */
+  .map-brutalist .leaflet-container,
+  .map-brutalist .maplibregl-map {
+    background: hsl(var(--background));
+  }
+
+  .map-brutalist .maplibregl-canvas {
+    filter: saturate(0.94) contrast(1.02) brightness(0.99);
+  }
+
+  .map-brutalist .maplibregl-ctrl-top-right {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
   .map-brutalist .leaflet-control-zoom {
     border: none;
     box-shadow: none;
   }
 
   .map-brutalist .leaflet-control-zoom a {
-    width: 44px;
-    height: 44px;
-    line-height: 42px;
-    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    line-height: 38px;
+    font-size: 20px;
     font-weight: 700;
-    color: hsl(var(--foreground));
+    color: hsl(var(--foreground) / 0.9);
     background: hsl(var(--background));
-    border: 2px solid hsl(var(--foreground));
-    box-shadow: var(--shadow-brutal);
-    border-radius: 0;
+    border: 1px solid hsl(var(--foreground) / 0.22);
+    box-shadow: 0 8px 20px hsl(var(--foreground) / 0.08);
+    border-radius: 9999px;
   }
 
   .map-brutalist .leaflet-control-zoom a:hover {
@@ -490,28 +504,28 @@
   }
 
   .map-popup-brutal .leaflet-popup-content-wrapper {
-    background: hsl(var(--background));
+    background: hsl(var(--background) / 0.96);
     color: hsl(var(--foreground));
-    border: 2px solid hsl(var(--foreground));
-    border-radius: 0;
-    box-shadow: var(--shadow-brutal);
+    border: 1px solid hsl(var(--foreground) / 0.14);
+    border-radius: 12px;
+    box-shadow: 0 12px 28px hsl(var(--foreground) / 0.1);
     font-family: var(--font-body);
   }
 
   .map-popup-brutal .leaflet-popup-tip {
     background: hsl(var(--background));
-    border: 2px solid hsl(var(--foreground));
+    border: 1px solid hsl(var(--foreground) / 0.14);
     box-shadow: none;
   }
 
   .map-popup-brutal .leaflet-popup-close-button {
     color: hsl(var(--foreground));
-    font-size: 20px;
-    width: 28px;
-    height: 28px;
-    line-height: 26px;
-    top: 6px;
-    right: 6px;
+    font-size: 18px;
+    width: 24px;
+    height: 24px;
+    line-height: 22px;
+    top: 8px;
+    right: 8px;
   }
 
   .map-popup-brutal .leaflet-popup-close-button:hover {
@@ -520,7 +534,7 @@
   }
 
   .map-popup-content {
-    margin: 4px 2px;
+    margin: 2px 2px 0;
   }
 
   /* Macro badge — aggressive nutritional highlight for fitness audience */

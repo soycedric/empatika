@@ -1,17 +1,32 @@
 /**
  * Mapa Leaflet de puntos de venta con flyTo, fitBounds por región, popups y resize handling.
+ * Usa OpenFreeMap con estilo vectorial open source sin API key.
  */
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
+import { setWorkerUrl } from 'maplibre-gl';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+import { MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import { withBaseUrl } from '@/lib/base-url';
 import type { Distributor } from '@/components/distributors/types';
 import { getDistributorId } from '@/components/distributors/types';
 
+setWorkerUrl(workerUrl);
+
 const DEFAULT_CENTER: [number, number] = [19.04, -98.2];
 const FLY_ZOOM = 15;
+const OPENFREEMAP_STYLE_URL = 'https://tiles.openfreemap.org/styles/positron';
+const HIDDEN_LAYER_IDS = new Set([
+  'highway-name-major',
+  'road_shield_us',
+  'road_shield_non_us',
+  'road_one_way_arrow',
+  'road_one_way_arrow_opposite',
+]);
 
 interface DistributorsMapProps {
   distributors: Distributor[];
@@ -19,6 +34,15 @@ interface DistributorsMapProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
 }
+
+type MapLibreStyle = {
+  version: number;
+  sources: Record<string, unknown>;
+  layers: Array<{ id: string; [key: string]: unknown }>;
+  sprite?: string;
+  glyphs?: string;
+  [key: string]: unknown;
+};
 
 const markerIcon = L.icon({
   iconUrl: withBaseUrl('tofuchos/tofucho corriendo.png'),
@@ -104,6 +128,20 @@ function MapSelectionHandler({
   return null;
 }
 
+function OpenFreeMapLayer({ style }: { style: MapLibreStyle }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const layer = maplibreGL({ style }).addTo(map);
+
+    return () => {
+      layer.remove();
+    };
+  }, [map, style]);
+
+  return null;
+}
+
 const DistributorPopup = ({ dist }: { dist: Distributor }) => (
   <div className="map-popup-content font-body text-sm min-w-[180px]">
     <p className="font-display text-base mb-1">{dist.name}</p>
@@ -121,9 +159,45 @@ const DistributorsMap = ({
   onSelect,
 }: DistributorsMapProps) => {
   const markerRefs = useRef<Record<string, L.Marker | null>>({});
+  const [mapStyle, setMapStyle] = useState<MapLibreStyle | null>(null);
 
   // Región derivada de los distribuidores para remontar el mapa cuando cambia
   const regionKey = distributors[0]?.region ?? 'puebla';
+
+  useEffect(() => {
+    if (!shouldLoad) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadStyle = async () => {
+      const response = await fetch(OPENFREEMAP_STYLE_URL);
+      if (!response.ok) {
+        throw new Error(`Failed to load map style: ${response.status}`);
+      }
+
+      const style = (await response.json()) as MapLibreStyle;
+      const filteredStyle: MapLibreStyle = {
+        ...style,
+        layers: style.layers.filter(
+          (layer) => !HIDDEN_LAYER_IDS.has(layer.id) && !layer.id.startsWith('road_shield_')
+        ),
+      };
+
+      if (!cancelled) {
+        setMapStyle(filteredStyle);
+      }
+    };
+
+    loadStyle().catch((error) => {
+      console.error('Failed to load OpenFreeMap style', error);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [shouldLoad]);
 
   const initialMapProps = useMemo(() => {
     if (distributors.length === 0) {
@@ -148,10 +222,13 @@ const DistributorsMap = ({
       aria-label="Mapa de puntos de venta Empátika"
       role="region"
     >
-      {shouldLoad ? (
+      {shouldLoad && mapStyle ? (
         <MapContainer
           key={regionKey}
           {...initialMapProps}
+          maxBounds={[[180, -Infinity], [-180, Infinity]]}
+          maxBoundsViscosity={1}
+          minZoom={1}
           scrollWheelZoom={false}
           zoomControl
           dragging
@@ -159,10 +236,7 @@ const DistributorsMap = ({
           touchZoom
           className="h-full w-full map-brutalist z-0"
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-          />
+          <OpenFreeMapLayer style={mapStyle} />
           <MapResizeHandler />
           <MapBoundsHandler distributors={distributors} />
           <MapSelectionHandler
